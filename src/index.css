@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.background-container {
+  position: relative;
+  width: 100%; /* Adjust the width as needed */
+  height: 100vh; /* Adjust the height as needed */
+  background-image: url("./assets/Loginpagebg.png"); /* Replace with your image path */
+  background-size: cover; /* Cover ensures the image covers the entire container */
+  background-position: center; /* Center the background image */
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
