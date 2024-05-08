@@ -25,7 +25,7 @@ const App: React.FC = () => {
       </Menu.Item>
     </Menu>
   );
-  return (
+  return (   
     <Layout>
       <>
         <Header style={{ background: "#fff" }}>
@@ -53,7 +53,6 @@ const App: React.FC = () => {
           </Row>
         </Header>
         <Content style={{ padding: "48px" }}>
-          Welcome to INVESTBANK's Internet Banking
           <div
             style={{
               background: colorBgContainer,
