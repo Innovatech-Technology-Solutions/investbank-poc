@@ -4,6 +4,7 @@ import { Avatar, Col, Dropdown, Layout, Menu, Row, theme } from "antd";
 import MultiStepForm from "./MultiStepForm";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { decodeToken } from "./commonuitils";
+import AppFooter from "./AppFooter";
 const { Header, Content, Footer } = Layout;
 
 // const items = new Array(3).fill(null).map((_, index) => ({
@@ -64,7 +65,7 @@ const App: React.FC = () => {
             <MultiStepForm />
           </div>
         </Content>
-        <Footer
+        {/* <Footer
           style={{
             textAlign: "center",
             color: "white",
@@ -72,7 +73,8 @@ const App: React.FC = () => {
           }}
         >
           Copyright © 2024 INVESTBANK. All rights reserved.
-        </Footer>
+        </Footer> */}
+        <AppFooter />
       </>
     </Layout>
   );

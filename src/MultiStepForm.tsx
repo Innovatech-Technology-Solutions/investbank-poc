@@ -23,6 +23,7 @@ import DatePickerInput from "./DatePickerInput";
 import Select from "./Select";
 import { CaretLeft, CaretRight, CircleNotch, WarningCircle, X } from '@phosphor-icons/react';
 import Button from "./Button";
+import FieldComments from "./FieldComments";
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -31,6 +32,7 @@ const { Option } = Select;
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [activeIndex, setActiveIndex] = useState(1);
+  const [showComments, setShowComments] = useState(0);
 
   const schema = z.object({
     fullNameAr: z.string(),
@@ -493,7 +495,33 @@ const MultiStepForm = () => {
     },
   ];
 
-
+  const comments = [
+    {
+      id: '1',
+      requestId: 'REQ001',
+      fieldId: 'accountOpeningPurpose',
+      comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries',
+      createdBy: 'Rajasekhar',
+      createdDate: '29-02-2023'
+    },
+    {
+      id: '2',
+      requestId: 'REQ002',
+      fieldId: 'addressVerification',
+      comment: 'Another sample comment',
+      createdBy: 'John Doe',
+      createdDate: '30-03-2023'
+    },
+    {
+      id: '3',
+      requestId: 'REQ003',
+      fieldId: 'incomeVerification',
+      comment: 'Yet another sample comment',
+      createdBy: 'Jane Doe',
+      createdDate: '15-04-2023'
+    }
+  ];
+  
 
   const handleNext = () => {
     form.validateFields().then(() => {
@@ -524,6 +552,7 @@ const MultiStepForm = () => {
           <Step key={step.title} title={step.title} />
         ))}
       </Steps> */}
+     
       <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
         <Card style={{ width: 350, paddingTop: "1.5rem" }}>
           <Stepper
@@ -1334,6 +1363,7 @@ const MultiStepForm = () => {
       </div>
       </div> */}
         </Card>
+        <FieldComments comments={comments}/>
       </div>
     </ConfigProvider>
   );

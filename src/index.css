@@ -26,6 +26,10 @@
   border-color: #096dd9; /* Change this to your desired hover color */
 }
 
+.comment:hover{
+  background: #f6f6f6;
+}
+
 .ant-btn-primary:active,
 .ant-btn-primary.active {
   color: #fff;
@@ -78,4 +82,9 @@
 
 .ant-form-item .ant-form-item-explain-error {
   font-size: 12px;
+}
+
+.aegov-quote .quote-icon {
+  height: 1.2rem !important;
+  width: 1rem !important;
 }
