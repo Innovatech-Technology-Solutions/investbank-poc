@@ -12,13 +12,14 @@ interface CommentType {
 
 interface FieldCommentsProps {
   comments: CommentType[];
+  viewCommentRef:any;
 }
 
-const FieldComments: React.FC<FieldCommentsProps> = ({ comments }) => {
+const FieldComments: React.FC<FieldCommentsProps> = ({ comments,viewCommentRef }) => {
   return (
     <div className="flex-col" style={{width:'35%', cursor:'pointer'}} >
       {comments.map((comment) => (
-        <Comment key={comment.id} data={comment} />
+        <Comment key={comment.id} data={comment} viewCommentRef={viewCommentRef} />
       ))}
     </div>
   );
@@ -26,11 +27,12 @@ const FieldComments: React.FC<FieldCommentsProps> = ({ comments }) => {
 
 interface CommentProps {
   data: CommentType;
+  viewCommentRef:any;
 }
 
-const Comment: React.FC<CommentProps> = ({ data }) => {
+const Comment: React.FC<CommentProps> = ({ data,viewCommentRef }) => {
   return (
-    <Card className="mb-2 comment" id={data.fieldId}>
+    <Card className="mb-2 comment" id={`comment_${data.fieldId}`} onClick={()=>viewCommentRef(`${data.fieldId}`)}>
       <blockquote className="aegov-quote"
 style={{padding:'5%'}}      >
         <svg

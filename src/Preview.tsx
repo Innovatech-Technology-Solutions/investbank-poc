@@ -54,7 +54,7 @@ const Preview = () => {
       <SectionDetails
         sectionHeader="Employment and Financial Details"
         sectionData={[
-          { key: "Job", value: "Test" },
+          { key: "Job", value: "Test", fieldKey:"accountOpeningPurpose" },
           { key: "Job Location", value: "Test" },
           { key: "Monthly Salary", value: "Test" },
           { key: "Income Source", value: "Test" },

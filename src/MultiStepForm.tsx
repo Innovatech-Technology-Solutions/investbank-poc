@@ -1,14 +1,11 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRef, useState } from "react";
+import { useRef, useState,  forwardRef } from "react";
+import LeaderLine from "react-leader-line";
+
 import {
   Steps,
   Form,
-  Input,
-  DatePicker,
-  Radio,
-  Row,
-  Col,
   ConfigProvider,
   Card,
 } from "antd";
@@ -22,13 +19,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import DatePickerInput from "./DatePickerInput";
 import Select from "./Select";
-import {
-  CaretLeft,
-  CaretRight,
-  CircleNotch,
-  WarningCircle,
-  X,
-} from "@phosphor-icons/react";
 import Button from "./Button";
 import FieldComments from "./FieldComments";
 import { notification, Space } from "antd";
@@ -37,6 +27,12 @@ import Preview from "./Preview";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
+
+// const RectComp = forwardRef(({ children, ...props }, ref) => (
+//   <div ref={ref} {...props}>
+//     {children}
+//   </div>
+// ));
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -581,6 +577,11 @@ const MultiStepForm = () => {
       createdDate: '15-04-2023'
     }
   ];
+
+  const viewCommentRef=(commentId:string)=>{
+    new LeaderLine(document.getElementById(commentId), document.getElementById(`comment_${commentId}`), {dash: true});
+
+  }
   
 
   const handleNext = () => {
@@ -1518,7 +1519,7 @@ const MultiStepForm = () => {
       </div>
       </div> */}
         </Card>
-        {showComments == 1 &&   <FieldComments comments={comments}/>}
+        {showComments == 1 &&   <FieldComments comments={comments} viewCommentRef={viewCommentRef}/>}
       </div>
     </ConfigProvider>
   );
