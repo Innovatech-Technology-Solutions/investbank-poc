@@ -8,7 +8,6 @@ import {
   Radio,
   Row,
   Col,
-  Button,
   ConfigProvider,
   Card,
 } from "antd";
@@ -22,6 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import DatePickerInput from "./DatePickerInput";
 import Select from "./Select";
+import { CaretLeft, CaretRight, CircleNotch, WarningCircle, X } from '@phosphor-icons/react';
+import Button from "./Button";
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -998,12 +999,14 @@ const MultiStepForm = () => {
         <Card style={{ width: "100%" }}>
           <Accordion
             defaultIndex={activeIndex}
+            showFooterButtons={true}
             clickedAccordion={(e: any) => setActiveIndex(e)}
             accordionItems={[
               {
                 title: "Applicant Details",
                 accordianIndex: 1,
                 content: (
+                  <>
                   <div
                     id="stepidx-1"
                     className={
@@ -1117,13 +1120,24 @@ const MultiStepForm = () => {
                             </>
                           ) : null
                       )}
+                      
                   </div>
+                    {/* <div
+                    className={
+                      'flex justify-between   flex-col  lg:flex-row gap-2 pb-2'}
+                  >
+                    <Button onClick={() => setActiveIndex(2)}>
+                      {'Next Step'} <CaretRight size={32} />
+                    </Button>
+                  </div> */}
+                  </>
+
                 ),
               },
               {
                 title: "Social Status",
                 accordianIndex: 2,
-                content:    <div
+                content:  <>  <div
                 id="stepidx-1"
                 className={
                   "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
@@ -1236,7 +1250,9 @@ const MultiStepForm = () => {
                         </>
                       ) : null
                   )}
-              </div>,
+              </div>
+            
+              </>,
               },
               {
                 title: "Residence Address",
