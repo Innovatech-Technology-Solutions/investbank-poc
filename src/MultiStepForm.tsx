@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState } from "react";
 import {
@@ -12,7 +13,7 @@ import {
   Card,
 } from "antd";
 import dayjs from "dayjs";
-import axios from 'axios'
+import axios from "axios";
 import Stepper from "./Stepper";
 import Accordion from "./Accordion";
 import InputText from "./InputText";
@@ -21,9 +22,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import DatePickerInput from "./DatePickerInput";
 import Select from "./Select";
-import { CaretLeft, CaretRight, CircleNotch, WarningCircle, X } from '@phosphor-icons/react';
+import {
+  CaretLeft,
+  CaretRight,
+  CircleNotch,
+  WarningCircle,
+  X,
+} from "@phosphor-icons/react";
 import Button from "./Button";
-import { notification, Space } from 'antd';
+import { notification, Space } from "antd";
+import Preview from "./Preview";
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -48,12 +56,15 @@ const MultiStepForm = () => {
         mediaRecorderRef.current.start();
       }
     } catch (error) {
-      console.error('Error accessing camera:', error);
+      console.error("Error accessing camera:", error);
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state !== "inactive"
+    ) {
       mediaRecorderRef.current.stop();
     }
   };
@@ -61,26 +72,25 @@ const MultiStepForm = () => {
   const handleDataAvailable = (event: BlobEvent) => {
     if (event.data.size > 0) {
       recordedChunksRef.current.push(event.data);
-      const recordedBlob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+      const recordedBlob = new Blob(recordedChunksRef.current, {
+        type: "video/webm",
+      });
       const recordedUrl = URL.createObjectURL(recordedBlob);
       if (recordedVideoRef.current) {
         recordedVideoRef.current.src = recordedUrl;
       }
     }
   };
-console.log(videoRef,recordedVideoRef)
+  console.log(videoRef, recordedVideoRef);
 
+  // Function to fetch the bearer token from local storage
+  const getBearerToken = () => {
+    return localStorage.getItem("token");
+  };
 
+  // Define your payload
 
-// Function to fetch the bearer token from local storage
-const getBearerToken = () => {
-  return localStorage.getItem('token');
-};
-
-// Define your payload
-
-
-// Define your API endpoint
+  // Define your API endpoint
 
   const schema = z.object({
     fullNameAr: z.string(),
@@ -328,7 +338,7 @@ const getBearerToken = () => {
       isMandatory: true,
     },
   ];
-  
+
   const residenceAddressControlsConfig = [
     {
       order: 1,
@@ -390,7 +400,7 @@ const getBearerToken = () => {
       show: true,
     },
   ];
-  
+
   const employmentFinancialControlsConfig = [
     {
       order: 1,
@@ -462,7 +472,7 @@ const getBearerToken = () => {
       show: true,
     },
   ];
-  
+
   const customerInformationControlsConfig = [
     {
       order: 1,
@@ -499,7 +509,7 @@ const getBearerToken = () => {
       isMandatory: true,
     },
   ];
-  
+
   const accountInformationControlsConfig = [
     {
       order: 1,
@@ -543,8 +553,6 @@ const getBearerToken = () => {
     },
   ];
 
-
-
   const handleNext = () => {
     form.validateFields().then(() => {
       setCurrentStep(currentStep + 1);
@@ -559,15 +567,14 @@ const getBearerToken = () => {
     reValidateMode: "onChange",
     resolver: zodResolver(schema),
   });
-  type NotificationType = 'success' | 'info' | 'warning' | 'error';
+  type NotificationType = "success" | "info" | "warning" | "error";
 
   const [api, contextHolder] = notification.useNotification();
 
   const openNotificationWithIcon = (type: NotificationType) => {
     api[type]({
-      message: 'Success',
-      description:
-        'Form Submitted Successfully',
+      message: "Success",
+      description: "Form Submitted Successfully",
     });
   };
   return (
@@ -585,33 +592,38 @@ const getBearerToken = () => {
           <Step key={step.title} title={step.title} />
         ))}
       </Steps> */}
-                    <div  className={('flex justify-end gap-2')}>
-                      <Button onClick={()=>{
-                        console.log(useFormMethods.getValues())
+      <div className={"flex justify-end gap-2"}>
+        <Button
+          onClick={() => {
+            console.log(useFormMethods.getValues());
 
+            const apiUrl = `${
+              import.meta.env.VITE_BASE_URL
+            }/gateway/Investbankpoc/InvestBankPoc`;
 
-                        const apiUrl = `${import.meta.env.VITE_BASE_URL}/gateway/Investbankpoc/InvestBankPoc`;
+            // Define your headers
+            const headers = {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getBearerToken()}`, // Include the Bearer token
+            };
 
-// Define your headers
-const headers = {
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${getBearerToken()}`, // Include the Bearer token
-};
-
-// Make the POST request
-axios.post(apiUrl, useFormMethods.getValues(), { headers })
-  .then((response:any) => {
-    // Handle success
-    console.log('Response:', response.data);
-    openNotificationWithIcon('success')
-  })
-  .catch((error:any) => {
-    // Handle error
-    console.error('Error:', error);
-  });
-                      
-                      }}>Submit</Button>
-                      </div>
+            // Make the POST request
+            axios
+              .post(apiUrl, useFormMethods.getValues(), { headers })
+              .then((response: any) => {
+                // Handle success
+                console.log("Response:", response.data);
+                openNotificationWithIcon("success");
+              })
+              .catch((error: any) => {
+                // Handle error
+                console.error("Error:", error);
+              });
+          }}
+        >
+          Submit
+        </Button>
+      </div>
 
       <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
         <Card style={{ width: 350, paddingTop: "1.5rem" }}>
@@ -670,140 +682,140 @@ axios.post(apiUrl, useFormMethods.getValues(), { headers })
           />
         </Card>
         <Card style={{ width: "100%" }}>
-        <form
-            noValidate
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-                  {contextHolder}
+          {-1 > 0 ? (
+            <form
+              noValidate
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              {contextHolder}
 
-          <Accordion
-            defaultIndex={activeIndex}
-            showFooterButtons={true}
-            clickedAccordion={(e: any) => setActiveIndex(e)}
-            accordionItems={[
-              {
-                title: "Applicant Details",
-                accordianIndex: 1,
-                content: (
-                  <>
-                  <div
-                    id="stepidx-1"
-                    className={
-                      "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                    }
-                  >
-                    {formControlsConfig
-                      .sort((a, b) => a.order - b.order)
-                      .map(
-                        ({
-                          id,
-                          type,
-                          name,
-                          placeholder,
-                          show = true,
-                          isMandatory = false,
-                          isNumeric,
-                          options = [],
-                        }) =>
-                          show ? (
-                            <>
-                              {type === "text" ? (
-                                <div key={id}>
-                                  <Controller
-                                    name={name as any}
-                                    control={useFormMethods.control}
-                                    render={({
-                                      field: { onChange, value },
-                                      fieldState: { error },
-                                    }) => (
-                                      <InputText
-                                        label={placeholder}
-                                        isError={!!error}
-                                        name={name}
-                                        id={id}
-                                        placeholder={placeholder}
-                                        isMandatory={isMandatory}
-                                        disabled={false}
-                                        onlyNumeric={isNumeric}
-                                        type={type}
-                                        onInputChange={onChange}
-                                        value={value}
-                                        errorMessage={
-                                          error ? error.message : ""
-                                        }
-                                      />
-                                    )}
-                                  />
-                                </div>
-                              ) : null}
-                              {type === "select" ? (
-                                <div>
-                                  <Controller
-                                    name={id as any}
-                                    control={useFormMethods.control}
-                                    render={({
-                                      field: { onChange, value },
-                                      fieldState: { error },
-                                    }) => (
-                                      <Select
-                                        name={id as any}
-                                        id={id}
-                                        label={placeholder}
-                                        size={"sm" as any}
-                                        isMandatory={true}
-                                        disableLabel={false}
-                                        onChange={onChange}
-                                        value={value}
-                                        isError={!!error}
-                                        errorMessage={error?.message}
-                                        showPlaceHolder={true as any}
-                                        options={options}
-                                      />
-                                    )}
-                                  />
-                                </div>
-                              ) : null}
-                              {type === "date" ? (
-                                <div>
-                                  <Controller
-                                    name={name}
-                                    control={useFormMethods.control}
-                                    render={({
-                                      field: { onChange, value },
-                                      fieldState: { error },
-                                    }) => (
-                                      <DatePickerInput
-                                        name={name}
-                                        id={name}
-                                        label={placeholder}
-                                        picker="year"
-                                        onChange={(_date, value) => {
-                                          onChange(value);
-                                        }}
-                                        requiredLabel={true}
-                                        format={"YYYY"}
-                                        value={
-                                          value &&
-                                          dayjs(value, "YYYY").isValid()
-                                            ? dayjs(value)
-                                            : null
-                                        }
-                                        size="large"
-                                        isError={!!error}
-                                        errorMessage={error?.message}
-                                      />
-                                    )}
-                                  />
-                                </div>
-                              ) : null}
-                            </>
-                          ) : null
-                      )}
-                      
-                  </div>
-                    {/* <div
+              <Accordion
+                defaultIndex={activeIndex}
+                showFooterButtons={true}
+                clickedAccordion={(e: any) => setActiveIndex(e)}
+                accordionItems={[
+                  {
+                    title: "Applicant Details",
+                    accordianIndex: 1,
+                    content: (
+                      <>
+                        <div
+                          id="stepidx-1"
+                          className={
+                            "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                          }
+                        >
+                          {formControlsConfig
+                            .sort((a, b) => a.order - b.order)
+                            .map(
+                              ({
+                                id,
+                                type,
+                                name,
+                                placeholder,
+                                show = true,
+                                isMandatory = false,
+                                isNumeric,
+                                options = [],
+                              }) =>
+                                show ? (
+                                  <>
+                                    {type === "text" ? (
+                                      <div key={id}>
+                                        <Controller
+                                          name={name as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <InputText
+                                              label={placeholder}
+                                              isError={!!error}
+                                              name={name}
+                                              id={id}
+                                              placeholder={placeholder}
+                                              isMandatory={isMandatory}
+                                              disabled={false}
+                                              onlyNumeric={isNumeric}
+                                              type={type}
+                                              onInputChange={onChange}
+                                              value={value}
+                                              errorMessage={
+                                                error ? error.message : ""
+                                              }
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "select" ? (
+                                      <div>
+                                        <Controller
+                                          name={id as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <Select
+                                              name={id as any}
+                                              id={id}
+                                              label={placeholder}
+                                              size={"sm" as any}
+                                              isMandatory={true}
+                                              disableLabel={false}
+                                              onChange={onChange}
+                                              value={value}
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                              showPlaceHolder={true as any}
+                                              options={options}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "date" ? (
+                                      <div>
+                                        <Controller
+                                          name={name}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <DatePickerInput
+                                              name={name}
+                                              id={name}
+                                              label={placeholder}
+                                              picker="year"
+                                              onChange={(_date, value) => {
+                                                onChange(value);
+                                              }}
+                                              requiredLabel={true}
+                                              format={"YYYY"}
+                                              value={
+                                                value &&
+                                                dayjs(value, "YYYY").isValid()
+                                                  ? dayjs(value)
+                                                  : null
+                                              }
+                                              size="large"
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </>
+                                ) : null
+                            )}
+                        </div>
+                        {/* <div
                     className={
                       'flex justify-between   flex-col  lg:flex-row gap-2 pb-2'}
                   >
@@ -811,623 +823,641 @@ axios.post(apiUrl, useFormMethods.getValues(), { headers })
                       {'Next Step'} <CaretRight size={32} />
                     </Button>
                   </div> */}
-                  </>
+                      </>
+                    ),
+                  },
+                  {
+                    title: "Social Status",
+                    accordianIndex: 2,
+                    content: (
+                      <>
+                        {" "}
+                        <div
+                          id="stepidx-1"
+                          className={
+                            "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                          }
+                        >
+                          {socialStatusControlsConfig
+                            .sort((a, b) => a.order - b.order)
+                            .map(
+                              ({
+                                id,
+                                type,
+                                name,
+                                placeholder,
+                                show = true,
+                                isMandatory = false,
+                                isNumeric,
+                                options = [],
+                              }) =>
+                                show ? (
+                                  <>
+                                    {type === "text" ? (
+                                      <div key={id}>
+                                        <Controller
+                                          name={name as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <InputText
+                                              label={placeholder}
+                                              isError={!!error}
+                                              name={name}
+                                              id={id}
+                                              placeholder={placeholder}
+                                              isMandatory={isMandatory}
+                                              disabled={false}
+                                              onlyNumeric={isNumeric}
+                                              type={type}
+                                              onInputChange={onChange}
+                                              value={value}
+                                              errorMessage={
+                                                error ? error.message : ""
+                                              }
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "select" ? (
+                                      <div>
+                                        <Controller
+                                          name={id as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <Select
+                                              name={id as any}
+                                              id={id}
+                                              label={placeholder}
+                                              size={"sm" as any}
+                                              isMandatory={true}
+                                              disableLabel={false}
+                                              onChange={onChange}
+                                              value={value}
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                              showPlaceHolder={true as any}
+                                              options={options}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "date" ? (
+                                      <div>
+                                        <Controller
+                                          name={name}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <DatePickerInput
+                                              name={name}
+                                              id={name}
+                                              label={placeholder}
+                                              picker="year"
+                                              onChange={(_date, value) => {
+                                                onChange(value);
+                                              }}
+                                              requiredLabel={true}
+                                              format={"YYYY"}
+                                              value={
+                                                value &&
+                                                dayjs(value, "YYYY").isValid()
+                                                  ? dayjs(value)
+                                                  : null
+                                              }
+                                              size="large"
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </>
+                                ) : null
+                            )}
+                        </div>
+                      </>
+                    ),
+                  },
+                  {
+                    title: "Residence Address",
+                    accordianIndex: 3,
+                    content: (
+                      <div
+                        id="stepidx-1"
+                        className={
+                          "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                        }
+                      >
+                        {residenceAddressControlsConfig
+                          .sort((a, b) => a.order - b.order)
+                          .map(
+                            ({
+                              id,
+                              type,
+                              name,
+                              placeholder,
+                              show = true,
+                              isMandatory = false,
+                              isNumeric,
+                              options = [],
+                            }) =>
+                              show ? (
+                                <>
+                                  {type === "text" ? (
+                                    <div key={id}>
+                                      <Controller
+                                        name={name as any}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <InputText
+                                            label={placeholder}
+                                            isError={!!error}
+                                            name={name}
+                                            id={id}
+                                            placeholder={placeholder}
+                                            isMandatory={isMandatory}
+                                            disabled={false}
+                                            onlyNumeric={isNumeric}
+                                            type={type}
+                                            onInputChange={onChange}
+                                            value={value}
+                                            errorMessage={
+                                              error ? error.message : ""
+                                            }
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                  {type === "select" ? (
+                                    <div>
+                                      <Controller
+                                        name={id as any}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <Select
+                                            name={id as any}
+                                            id={id}
+                                            label={placeholder}
+                                            size={"sm" as any}
+                                            isMandatory={true}
+                                            disableLabel={false}
+                                            onChange={onChange}
+                                            value={value}
+                                            isError={!!error}
+                                            errorMessage={error?.message}
+                                            showPlaceHolder={true as any}
+                                            options={options}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                  {type === "date" ? (
+                                    <div>
+                                      <Controller
+                                        name={name}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <DatePickerInput
+                                            name={name}
+                                            id={name}
+                                            label={placeholder}
+                                            picker="year"
+                                            onChange={(_date, value) => {
+                                              onChange(value);
+                                            }}
+                                            requiredLabel={true}
+                                            format={"YYYY"}
+                                            value={
+                                              value &&
+                                              dayjs(value, "YYYY").isValid()
+                                                ? dayjs(value)
+                                                : null
+                                            }
+                                            size="large"
+                                            isError={!!error}
+                                            errorMessage={error?.message}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                </>
+                              ) : null
+                          )}
+                      </div>
+                    ),
+                  },
+                  {
+                    title: "Employment and Financial Details",
+                    accordianIndex: 4,
+                    content: (
+                      <div
+                        id="stepidx-1"
+                        className={
+                          "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                        }
+                      >
+                        {employmentFinancialControlsConfig
+                          .sort((a, b) => a.order - b.order)
+                          .map(
+                            ({
+                              id,
+                              type,
+                              name,
+                              placeholder,
+                              show = true,
+                              isMandatory = false,
+                              isNumeric,
+                              options = [],
+                            }) =>
+                              show ? (
+                                <>
+                                  {type === "text" ? (
+                                    <div key={id}>
+                                      <Controller
+                                        name={name as any}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <InputText
+                                            label={placeholder}
+                                            isError={!!error}
+                                            name={name}
+                                            id={id}
+                                            placeholder={placeholder}
+                                            isMandatory={isMandatory}
+                                            disabled={false}
+                                            onlyNumeric={isNumeric}
+                                            type={type}
+                                            onInputChange={onChange}
+                                            value={value}
+                                            errorMessage={
+                                              error ? error.message : ""
+                                            }
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                  {type === "select" ? (
+                                    <div>
+                                      <Controller
+                                        name={id as any}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <Select
+                                            name={id as any}
+                                            id={id}
+                                            label={placeholder}
+                                            size={"sm" as any}
+                                            isMandatory={true}
+                                            disableLabel={false}
+                                            onChange={onChange}
+                                            value={value}
+                                            isError={!!error}
+                                            errorMessage={error?.message}
+                                            showPlaceHolder={true as any}
+                                            options={options}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                  {type === "date" ? (
+                                    <div>
+                                      <Controller
+                                        name={name}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <DatePickerInput
+                                            name={name}
+                                            id={name}
+                                            label={placeholder}
+                                            picker="year"
+                                            onChange={(_date, value) => {
+                                              onChange(value);
+                                            }}
+                                            requiredLabel={true}
+                                            format={"YYYY"}
+                                            value={
+                                              value &&
+                                              dayjs(value, "YYYY").isValid()
+                                                ? dayjs(value)
+                                                : null
+                                            }
+                                            size="large"
+                                            isError={!!error}
+                                            errorMessage={error?.message}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                </>
+                              ) : null
+                          )}
+                      </div>
+                    ),
+                  },
+                  {
+                    title: "Customer Information",
+                    accordianIndex: 5,
+                    content: (
+                      <div>
+                        <div>
+                          <div className="flex flex-end gap-2">
+                            <Button onClick={startRecording}>
+                              Start Recording
+                            </Button>
+                            <Button onClick={stopRecording}>
+                              Stop Recording
+                            </Button>
+                            {videoRef !== null && (
+                              <div>
+                                <video ref={videoRef} autoPlay></video>
+                              </div>
+                            )}
+                            {recordedVideoRef !== null && (
+                              <div>
+                                <video ref={recordedVideoRef} controls></video>
+                              </div>
+                            )}
+                          </div>
+                        </div>
 
-                ),
-              },
-              {
-                title: "Social Status",
-                accordianIndex: 2,
-                content:  <>  <div
-                id="stepidx-1"
-                className={
-                  "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                }
-              >
-                {socialStatusControlsConfig
-                  .sort((a, b) => a.order - b.order)
-                  .map(
-                    ({
-                      id,
-                      type,
-                      name,
-                      placeholder,
-                      show = true,
-                      isMandatory = false,
-                      isNumeric,
-                      options = [],
-                    }) =>
-                      show ? (
-                        <>
-                          {type === "text" ? (
-                            <div key={id}>
-                              <Controller
-                                name={name as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <InputText
-                                    label={placeholder}
-                                    isError={!!error}
-                                    name={name}
-                                    id={id}
-                                    placeholder={placeholder}
-                                    isMandatory={isMandatory}
-                                    disabled={false}
-                                    onlyNumeric={isNumeric}
-                                    type={type}
-                                    onInputChange={onChange}
-                                    value={value}
-                                    errorMessage={
-                                      error ? error.message : ""
-                                    }
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "select" ? (
-                            <div>
-                              <Controller
-                                name={id as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <Select
-                                    name={id as any}
-                                    id={id}
-                                    label={placeholder}
-                                    size={"sm" as any}
-                                    isMandatory={true}
-                                    disableLabel={false}
-                                    onChange={onChange}
-                                    value={value}
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                    showPlaceHolder={true as any}
-                                    options={options}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "date" ? (
-                            <div>
-                              <Controller
-                                name={name}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <DatePickerInput
-                                    name={name}
-                                    id={name}
-                                    label={placeholder}
-                                    picker="year"
-                                    onChange={(_date, value) => {
-                                      onChange(value);
-                                    }}
-                                    requiredLabel={true}
-                                    format={"YYYY"}
-                                    value={
-                                      value &&
-                                      dayjs(value, "YYYY").isValid()
-                                        ? dayjs(value)
-                                        : null
-                                    }
-                                    size="large"
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                        </>
-                      ) : null
-                  )}
-              </div>
-            
-              </>,
-              },
-              {
-                title: "Residence Address",
-                accordianIndex: 3,
-                content: <div
-                id="stepidx-1"
-                className={
-                  "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                }
-              >
-                {residenceAddressControlsConfig
-                  .sort((a, b) => a.order - b.order)
-                  .map(
-                    ({
-                      id,
-                      type,
-                      name,
-                      placeholder,
-                      show = true,
-                      isMandatory = false,
-                      isNumeric,
-                      options = [],
-                    }) =>
-                      show ? (
-                        <>
-                          {type === "text" ? (
-                            <div key={id}>
-                              <Controller
-                                name={name as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <InputText
-                                    label={placeholder}
-                                    isError={!!error}
-                                    name={name}
-                                    id={id}
-                                    placeholder={placeholder}
-                                    isMandatory={isMandatory}
-                                    disabled={false}
-                                    onlyNumeric={isNumeric}
-                                    type={type}
-                                    onInputChange={onChange}
-                                    value={value}
-                                    errorMessage={
-                                      error ? error.message : ""
-                                    }
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "select" ? (
-                            <div>
-                              <Controller
-                                name={id as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <Select
-                                    name={id as any}
-                                    id={id}
-                                    label={placeholder}
-                                    size={"sm" as any}
-                                    isMandatory={true}
-                                    disableLabel={false}
-                                    onChange={onChange}
-                                    value={value}
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                    showPlaceHolder={true as any}
-                                    options={options}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "date" ? (
-                            <div>
-                              <Controller
-                                name={name}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <DatePickerInput
-                                    name={name}
-                                    id={name}
-                                    label={placeholder}
-                                    picker="year"
-                                    onChange={(_date, value) => {
-                                      onChange(value);
-                                    }}
-                                    requiredLabel={true}
-                                    format={"YYYY"}
-                                    value={
-                                      value &&
-                                      dayjs(value, "YYYY").isValid()
-                                        ? dayjs(value)
-                                        : null
-                                    }
-                                    size="large"
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                        </>
-                      ) : null
-                  )}
-              </div>,
-              },
-              {
-                title: "Employment and Financial Details",
-                accordianIndex: 4,
-                content: <div
-                id="stepidx-1"
-                className={
-                  "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                }
-              >
-                {employmentFinancialControlsConfig
-                  .sort((a, b) => a.order - b.order)
-                  .map(
-                    ({
-                      id,
-                      type,
-                      name,
-                      placeholder,
-                      show = true,
-                      isMandatory = false,
-                      isNumeric,
-                      options = [],
-                    }) =>
-                      show ? (
-                        <>
-                          {type === "text" ? (
-                            <div key={id}>
-                              <Controller
-                                name={name as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <InputText
-                                    label={placeholder}
-                                    isError={!!error}
-                                    name={name}
-                                    id={id}
-                                    placeholder={placeholder}
-                                    isMandatory={isMandatory}
-                                    disabled={false}
-                                    onlyNumeric={isNumeric}
-                                    type={type}
-                                    onInputChange={onChange}
-                                    value={value}
-                                    errorMessage={
-                                      error ? error.message : ""
-                                    }
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "select" ? (
-                            <div>
-                              <Controller
-                                name={id as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <Select
-                                    name={id as any}
-                                    id={id}
-                                    label={placeholder}
-                                    size={"sm" as any}
-                                    isMandatory={true}
-                                    disableLabel={false}
-                                    onChange={onChange}
-                                    value={value}
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                    showPlaceHolder={true as any}
-                                    options={options}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "date" ? (
-                            <div>
-                              <Controller
-                                name={name}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <DatePickerInput
-                                    name={name}
-                                    id={name}
-                                    label={placeholder}
-                                    picker="year"
-                                    onChange={(_date, value) => {
-                                      onChange(value);
-                                    }}
-                                    requiredLabel={true}
-                                    format={"YYYY"}
-                                    value={
-                                      value &&
-                                      dayjs(value, "YYYY").isValid()
-                                        ? dayjs(value)
-                                        : null
-                                    }
-                                    size="large"
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                        </>
-                      ) : null
-                  )}
-              </div>,
-              },
-              {
-                title: "Customer Information",
-                accordianIndex: 5,
-                content:
-                <div>
-                                                       <div >
-                                                       <div className="flex flex-end gap-2" >
-      <Button onClick={startRecording}>Start Recording</Button>
-      <Button onClick={stopRecording}>Stop Recording</Button>
-      {videoRef!==null&&<div>
-        <video ref={videoRef} autoPlay></video>
-      </div>}
-      {recordedVideoRef!==null&&<div>
-        <video ref={recordedVideoRef} controls></video>
-      </div>}
-    </div>
-    </div>
-               
-                <div
-                id="stepidx-1"
-                className={
-                  "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                }
-              >
-   
-                {customerInformationControlsConfig
-                  .sort((a, b) => a.order - b.order)
-                  .map(
-                    ({
-                      id,
-                      type,
-                      name,
-                      placeholder,
-                      show = true,
-                      isMandatory = false,
-                      isNumeric,
-                      options = [],
-                    }) =>
-                      show ? (
-                        <>
-                          {type === "text" ? (
-                            <div key={id}>
-                              <Controller
-                                name={name as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <InputText
-                                    label={placeholder}
-                                    isError={!!error}
-                                    name={name}
-                                    id={id}
-                                    placeholder={placeholder}
-                                    isMandatory={isMandatory}
-                                    disabled={false}
-                                    onlyNumeric={isNumeric}
-                                    type={type}
-                                    onInputChange={onChange}
-                                    value={value}
-                                    errorMessage={
-                                      error ? error.message : ""
-                                    }
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "select" ? (
-                            <div>
-                              <Controller
-                                name={id as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <Select
-                                    name={id as any}
-                                    id={id}
-                                    label={placeholder}
-                                    size={"sm" as any}
-                                    isMandatory={true}
-                                    disableLabel={false}
-                                    onChange={onChange}
-                                    value={value}
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                    showPlaceHolder={true as any}
-                                    options={options}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "date" ? (
-                            <div>
-                              <Controller
-                                name={name}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <DatePickerInput
-                                    name={name}
-                                    id={name}
-                                    label={placeholder}
-                                    picker="year"
-                                    onChange={(_date, value) => {
-                                      onChange(value);
-                                    }}
-                                    requiredLabel={true}
-                                    format={"YYYY"}
-                                    value={
-                                      value &&
-                                      dayjs(value, "YYYY").isValid()
-                                        ? dayjs(value)
-                                        : null
-                                    }
-                                    size="large"
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-   
-                        </>
-                      ) : null
-                  )}
-              </div>
-              </div>,
-              },
-              {
-                title: "Account Information",
-                accordianIndex: 6,
-                content: <div
-                id="stepidx-1"
-                className={
-                  "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                }
-              >
-                {accountInformationControlsConfig
-                  .sort((a, b) => a.order - b.order)
-                  .map(
-                    ({
-                      id,
-                      type,
-                      name,
-                      placeholder,
-                      show = true,
-                      isMandatory = false,
-                      isNumeric,
-                      options = [],
-                    }) =>
-                      show ? (
-                        <>
-                          {type === "text" ? (
-                            <div key={id}>
-                              <Controller
-                                name={name as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <InputText
-                                    label={placeholder}
-                                    isError={!!error}
-                                    name={name}
-                                    id={id}
-                                    placeholder={placeholder}
-                                    isMandatory={isMandatory}
-                                    disabled={false}
-                                    onlyNumeric={isNumeric}
-                                    type={type}
-                                    onInputChange={onChange}
-                                    value={value}
-                                    errorMessage={
-                                      error ? error.message : ""
-                                    }
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "select" ? (
-                            <div>
-                              <Controller
-                                name={id as any}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <Select
-                                    name={id as any}
-                                    id={id}
-                                    label={placeholder}
-                                    size={"sm" as any}
-                                    isMandatory={true}
-                                    disableLabel={false}
-                                    onChange={onChange}
-                                    value={value}
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                    showPlaceHolder={true as any}
-                                    options={options}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                          {type === "date" ? (
-                            <div>
-                              <Controller
-                                name={name}
-                                control={useFormMethods.control}
-                                render={({
-                                  field: { onChange, value },
-                                  fieldState: { error },
-                                }) => (
-                                  <DatePickerInput
-                                    name={name}
-                                    id={name}
-                                    label={placeholder}
-                                    picker="year"
-                                    onChange={(_date, value) => {
-                                      onChange(value);
-                                    }}
-                                    requiredLabel={true}
-                                    format={"YYYY"}
-                                    value={
-                                      value &&
-                                      dayjs(value, "YYYY").isValid()
-                                        ? dayjs(value)
-                                        : null
-                                    }
-                                    size="large"
-                                    isError={!!error}
-                                    errorMessage={error?.message}
-                                  />
-                                )}
-                              />
-                            </div>
-                          ) : null}
-                        </>
-                      ) : null
-                  )}
-              </div>,
-              },
-            ]}
-          />
-          </form>
+                        <div
+                          id="stepidx-1"
+                          className={
+                            "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                          }
+                        >
+                          {customerInformationControlsConfig
+                            .sort((a, b) => a.order - b.order)
+                            .map(
+                              ({
+                                id,
+                                type,
+                                name,
+                                placeholder,
+                                show = true,
+                                isMandatory = false,
+                                isNumeric,
+                                options = [],
+                              }) =>
+                                show ? (
+                                  <>
+                                    {type === "text" ? (
+                                      <div key={id}>
+                                        <Controller
+                                          name={name as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <InputText
+                                              label={placeholder}
+                                              isError={!!error}
+                                              name={name}
+                                              id={id}
+                                              placeholder={placeholder}
+                                              isMandatory={isMandatory}
+                                              disabled={false}
+                                              onlyNumeric={isNumeric}
+                                              type={type}
+                                              onInputChange={onChange}
+                                              value={value}
+                                              errorMessage={
+                                                error ? error.message : ""
+                                              }
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "select" ? (
+                                      <div>
+                                        <Controller
+                                          name={id as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <Select
+                                              name={id as any}
+                                              id={id}
+                                              label={placeholder}
+                                              size={"sm" as any}
+                                              isMandatory={true}
+                                              disableLabel={false}
+                                              onChange={onChange}
+                                              value={value}
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                              showPlaceHolder={true as any}
+                                              options={options}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "date" ? (
+                                      <div>
+                                        <Controller
+                                          name={name}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <DatePickerInput
+                                              name={name}
+                                              id={name}
+                                              label={placeholder}
+                                              picker="year"
+                                              onChange={(_date, value) => {
+                                                onChange(value);
+                                              }}
+                                              requiredLabel={true}
+                                              format={"YYYY"}
+                                              value={
+                                                value &&
+                                                dayjs(value, "YYYY").isValid()
+                                                  ? dayjs(value)
+                                                  : null
+                                              }
+                                              size="large"
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </>
+                                ) : null
+                            )}
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    title: "Account Information",
+                    accordianIndex: 6,
+                    content: (
+                      <div
+                        id="stepidx-1"
+                        className={
+                          "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                        }
+                      >
+                        {accountInformationControlsConfig
+                          .sort((a, b) => a.order - b.order)
+                          .map(
+                            ({
+                              id,
+                              type,
+                              name,
+                              placeholder,
+                              show = true,
+                              isMandatory = false,
+                              isNumeric,
+                              options = [],
+                            }) =>
+                              show ? (
+                                <>
+                                  {type === "text" ? (
+                                    <div key={id}>
+                                      <Controller
+                                        name={name as any}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <InputText
+                                            label={placeholder}
+                                            isError={!!error}
+                                            name={name}
+                                            id={id}
+                                            placeholder={placeholder}
+                                            isMandatory={isMandatory}
+                                            disabled={false}
+                                            onlyNumeric={isNumeric}
+                                            type={type}
+                                            onInputChange={onChange}
+                                            value={value}
+                                            errorMessage={
+                                              error ? error.message : ""
+                                            }
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                  {type === "select" ? (
+                                    <div>
+                                      <Controller
+                                        name={id as any}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <Select
+                                            name={id as any}
+                                            id={id}
+                                            label={placeholder}
+                                            size={"sm" as any}
+                                            isMandatory={true}
+                                            disableLabel={false}
+                                            onChange={onChange}
+                                            value={value}
+                                            isError={!!error}
+                                            errorMessage={error?.message}
+                                            showPlaceHolder={true as any}
+                                            options={options}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                  {type === "date" ? (
+                                    <div>
+                                      <Controller
+                                        name={name}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <DatePickerInput
+                                            name={name}
+                                            id={name}
+                                            label={placeholder}
+                                            picker="year"
+                                            onChange={(_date, value) => {
+                                              onChange(value);
+                                            }}
+                                            requiredLabel={true}
+                                            format={"YYYY"}
+                                            value={
+                                              value &&
+                                              dayjs(value, "YYYY").isValid()
+                                                ? dayjs(value)
+                                                : null
+                                            }
+                                            size="large"
+                                            isError={!!error}
+                                            errorMessage={error?.message}
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
+                                </>
+                              ) : null
+                          )}
+                      </div>
+                    ),
+                  },
+                ]}
+              />
+            </form>
+          ) : (
+            <Preview />
+          )}
 
           {/* <div>
       <div className="steps-content p-2">{steps[currentStep].content}</div>
