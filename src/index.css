@@ -13,3 +13,69 @@
   justify-content: start;
   align-items: center;
 }
+
+.ant-btn-primary {
+  background-color: #8c9368; /* Change this to your desired primary color */
+  border-color: #1890ff; /* Change this to your desired primary color */
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  color: #fff;
+  background-color: #096dd9; /* Change this to your desired hover color */
+  border-color: #096dd9; /* Change this to your desired hover color */
+}
+
+.ant-btn-primary:active,
+.ant-btn-primary.active {
+  color: #fff;
+  background-color: #0050b3; /* Change this to your desired active color */
+  border-color: #0050b3; /* Change this to your desired active color */
+}
+
+/* .accordion-active{
+  border-bottom: 1px solid #ebebeb !important;
+} */
+
+.accordion-content {
+  border: 1px solid #f4f4f4;
+  border-radius: 7px;
+  margin-bottom: 2%;
+}
+
+.ant-input-affix-wrapper-lg {
+  padding: 7px 11px;
+  font-size: 16px;
+  line-height: 1.5;
+  border-radius: 4px;
+  border-color: #626262;
+  background: #212020;
+}
+
+.ant-input-outlined:hover,.ant-input-outlined:focus, .ant-input-outlined:focus-within {
+  border-color: #626262;
+  box-shadow: 0 0 0 0.5px rgb(183 143 1);
+  outline: 0;
+  background-color: #212020;
+}
+
+.ant-input-affix-wrapper >input.ant-input, .ant-input-affix-wrapper >textarea.ant-input{
+  background: #212020 !important;
+  color: white !important;
+}
+
+.ant-input-outlined.ant-input-status-error:not(.ant-input-disabled){
+  background-color: #212020 !important;
+}
+
+.ant-btn-primary {
+  border-color: #188fff00 !important;
+}
+
+.ant-input-affix-wrapper .anticon.ant-input-password-icon {
+  color: rgb(157 162 168) !important;
+}
+
+.ant-form-item .ant-form-item-explain-error {
+  font-size: 12px;
+}

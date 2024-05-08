@@ -27,23 +27,25 @@ const App: React.FC = () => {
   return (
     <Layout>
       <>
-        <Header style={{ background: "#fff", padding: 0 }}>
-          <Row justify="space-between" align="middle">
+        <Header style={{ background: "#fff" }}>
+          <Row justify="space-between" align="middle" >
             <Col>
               <img
-                style={{ width: 120 }}
-                src="https://www.investbank.jo/sites/all/themes/investbank_subtheme/logo.png?v1"
+                style={{ width: '25%' }}
+                src="https://jordanfinancialservices.com/2020/sites/default/files/images/logos/investbank-01.png"
                 alt="Home"
               />
             </Col>
-            <Col style={{ paddingRight: "3rem" }}>
+            <Col >
               <Dropdown menu={UserMenu as any}>
                 <a
                   className="ant-dropdown-link"
                   onClick={(e) => e.preventDefault()}
                 >
-                  <Avatar size="small" icon={<UserOutlined />} />
-                  {user?.fullNameEn}
+                  <Avatar style={{fontSize:'16px', color: 'white',
+    background: '#b28708'
+                }} icon={<UserOutlined />} />
+                  <span className="px-2">{user?.fullNameEn}</span>
                 </a>
               </Dropdown>
             </Col>
