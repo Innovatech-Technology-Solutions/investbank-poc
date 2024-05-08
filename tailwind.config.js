@@ -1,11 +1,17 @@
 /* eslint-disable no-undef */
-/** @type {import('tailwindcss').Config} */
+/* your tailwind.config.js file */
+
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  future: {
+    hoverOnlyWhenSupported: false,
+  },
   theme: {
     extend: {},
   },
-  plugins: [],
-}
+  plugins: [
+    require('@aegov/design-system'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+  ],
+};

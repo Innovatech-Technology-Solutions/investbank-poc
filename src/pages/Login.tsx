@@ -57,14 +57,14 @@ const Login = () => {
   return (
     <section className="grid grid-cols-[1fr_530px] h-[100vh] max-lg:grid-cols-1">
       <div className="background-container max-lg:hidden">
-        <div className="text-center ml-20 flex flex-col gap-1 items-start font-[400] text-[40px] text-[#BD982E] mb-36">
+        <div className="text-center ml-20 flex flex-col gap-6 items-start font-[400] text-[40px] text-[#BD982E] mb-36">
           <div className="font-[400] text-[40px] text-[#BD982E]">
             Welcome to  <span className="font-[500] text-[48px] text-[#BD982E]">
               INVESTBANK!
             </span>
           </div>
           <div className="font-[400] text-[40px] text-[#BD982E]">
-            <span className="font-[500] text-[26px] text-gray-600">
+            <span className="font-[500] text-[26px] text-[#808080]">
             Empower your finances, empower your future. Invest with purpose.
             </span>
           </div>
