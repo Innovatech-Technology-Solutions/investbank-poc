@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Steps,
   Form,
@@ -12,7 +12,7 @@ import {
   Card,
 } from "antd";
 import dayjs from "dayjs";
-
+import axios from 'axios'
 import Stepper from "./Stepper";
 import Accordion from "./Accordion";
 import InputText from "./InputText";
@@ -23,6 +23,7 @@ import DatePickerInput from "./DatePickerInput";
 import Select from "./Select";
 import { CaretLeft, CaretRight, CircleNotch, WarningCircle, X } from '@phosphor-icons/react';
 import Button from "./Button";
+import { notification, Space } from 'antd';
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -31,6 +32,55 @@ const { Option } = Select;
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [activeIndex, setActiveIndex] = useState(1);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const recordedVideoRef = useRef<HTMLVideoElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordedChunksRef = useRef<Blob[]>([]);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        mediaRecorderRef.current = new MediaRecorder(stream);
+        mediaRecorderRef.current.ondataavailable = handleDataAvailable;
+        mediaRecorderRef.current.start();
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+  };
+
+  const handleDataAvailable = (event: BlobEvent) => {
+    if (event.data.size > 0) {
+      recordedChunksRef.current.push(event.data);
+      const recordedBlob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+      const recordedUrl = URL.createObjectURL(recordedBlob);
+      if (recordedVideoRef.current) {
+        recordedVideoRef.current.src = recordedUrl;
+      }
+    }
+  };
+console.log(videoRef,recordedVideoRef)
+
+
+
+// Function to fetch the bearer token from local storage
+const getBearerToken = () => {
+  return localStorage.getItem('token');
+};
+
+// Define your payload
+
+
+// Define your API endpoint
 
   const schema = z.object({
     fullNameAr: z.string(),
@@ -509,6 +559,17 @@ const MultiStepForm = () => {
     reValidateMode: "onChange",
     resolver: zodResolver(schema),
   });
+  type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotificationWithIcon = (type: NotificationType) => {
+    api[type]({
+      message: 'Success',
+      description:
+        'Form Submitted Successfully',
+    });
+  };
   return (
     <ConfigProvider
       theme={{
@@ -524,6 +585,34 @@ const MultiStepForm = () => {
           <Step key={step.title} title={step.title} />
         ))}
       </Steps> */}
+                    <div  className={('flex justify-end gap-2')}>
+                      <Button onClick={()=>{
+                        console.log(useFormMethods.getValues())
+
+
+                        const apiUrl = `${import.meta.env.VITE_BASE_URL}/gateway/Investbankpoc/InvestBankPoc`;
+
+// Define your headers
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${getBearerToken()}`, // Include the Bearer token
+};
+
+// Make the POST request
+axios.post(apiUrl, useFormMethods.getValues(), { headers })
+  .then((response:any) => {
+    // Handle success
+    console.log('Response:', response.data);
+    openNotificationWithIcon('success')
+  })
+  .catch((error:any) => {
+    // Handle error
+    console.error('Error:', error);
+  });
+                      
+                      }}>Submit</Button>
+                      </div>
+
       <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
         <Card style={{ width: 350, paddingTop: "1.5rem" }}>
           <Stepper
@@ -581,6 +670,14 @@ const MultiStepForm = () => {
           />
         </Card>
         <Card style={{ width: "100%" }}>
+        <form
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+                  {contextHolder}
+
           <Accordion
             defaultIndex={activeIndex}
             showFooterButtons={true}
@@ -1077,12 +1174,28 @@ const MultiStepForm = () => {
               {
                 title: "Customer Information",
                 accordianIndex: 5,
-                content: <div
+                content:
+                <div>
+                                                       <div >
+                                                       <div className="flex flex-end gap-2" >
+      <Button onClick={startRecording}>Start Recording</Button>
+      <Button onClick={stopRecording}>Stop Recording</Button>
+      {videoRef!==null&&<div>
+        <video ref={videoRef} autoPlay></video>
+      </div>}
+      {recordedVideoRef!==null&&<div>
+        <video ref={recordedVideoRef} controls></video>
+      </div>}
+    </div>
+    </div>
+               
+                <div
                 id="stepidx-1"
                 className={
                   "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                 }
               >
+   
                 {customerInformationControlsConfig
                   .sort((a, b) => a.order - b.order)
                   .map(
@@ -1187,9 +1300,11 @@ const MultiStepForm = () => {
                               />
                             </div>
                           ) : null}
+   
                         </>
                       ) : null
                   )}
+              </div>
               </div>,
               },
               {
@@ -1312,6 +1427,7 @@ const MultiStepForm = () => {
               },
             ]}
           />
+          </form>
 
           {/* <div>
       <div className="steps-content p-2">{steps[currentStep].content}</div>
