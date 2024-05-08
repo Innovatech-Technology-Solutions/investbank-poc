@@ -42,7 +42,7 @@ const Login = () => {
       console.log("Logged In successfully:", response);
       if (response.data?.output?.jwtToken) {
         localStorage.setItem("token", response.data?.output?.jwtToken);
-        navigate("/new-request")
+        navigate("/investbank/applications")
   
       }
     } catch (error) {
@@ -91,17 +91,15 @@ const Login = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-          >
+                    >
             <Form.Item<FieldType>
               name="username"
               rules={[
                 { required: true, message: "Please input your username!" },
               ]}
-             
             >
               <Input
                 placeholder="Username"
-                autoComplete="off"
                 size="large"
                 prefix={
                   <svg

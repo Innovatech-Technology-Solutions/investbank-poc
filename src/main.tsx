@@ -7,7 +7,32 @@ import {
 } from "react-router-dom";
 import Login from './pages/Login.tsx';
 import App from './App.tsx';
+import Applications from './pages/Applications.tsx';
+import { Provider } from 'react-redux';
+import { setupStore } from './store.ts';
+import ShellLayout from './ShellLayout.tsx';
+import axiosInterceptor from './services/axiosInterceptor.ts';
+import axios from 'axios'
+import NotFound from './NotFound.tsx';
 const router = createBrowserRouter([
+  {
+    path: "/investbank",
+    element:<ShellLayout/>,
+    children:[
+      {
+        path: "applications",
+        element:<Applications/>,
+      },
+      {
+        path: "account-request",
+        element:<App/>,
+      },
+      {
+        path: "account-request/:requestIDSlug",
+        element:<App/>,
+      },
+    ]
+  },
   {
     path: "/login",
     element:<Login/>,
@@ -16,14 +41,18 @@ const router = createBrowserRouter([
     path: "/",
     element:<Login/>,
   },
-  {
-    path: "/new-request",
-    element:<App/>,
-  },
+  { path: '*', element: <NotFound /> },
+
+ 
  
 ]);
+axiosInterceptor(axios);
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+            <Provider store={setupStore()}>
+
     <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 )

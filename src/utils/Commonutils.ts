@@ -1,4 +1,10 @@
 
+export const getEnv = () => {
+  /*Needs modification for cases where env variables are injected at build runtime i.e to window obj */
+  return import.meta.env;
+};
+
+export const getBaseURL = () => getEnv()?.VITE_BASE_URL;
 
 
 export const isValidResponse = (res: any) => {
