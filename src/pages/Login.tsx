@@ -1,33 +1,71 @@
 import "../index.css";
 import Logo from "../assets/Logo.png";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, Spin } from "antd";
+import axios from "axios";
+import { useState } from "react";
+import { LoadingOutlined } from '@ant-design/icons';
+import {useNavigate} from 'react-router-dom'
 
-type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
-};
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
 const Login = () => {
+  const[spin,setSpin]=useState(false)
+  const navigate=useNavigate()
+
+  type FieldType = {
+    username?: string;
+    password?: string;
+    remember?: string;
+  };
+  
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    console.log("Success:", values);
+    if (values.username && values.password)
+      login(values.username, values.password);
+  };
+  
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+  
+  const login = async (username: string, password: string) => {
+    setSpin(true)
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/usermgmt/usermgmtsupport/Login`,
+        {
+          headers: {
+            Authorization: `Basic ${btoa(username + ":" + password)}`,
+          },
+        }
+      );
+      console.log("Logged In successfully:", response);
+      if (response.data?.output?.jwtToken) {
+        localStorage.setItem("token", response.data?.output?.jwtToken);
+        navigate("/new-request")
+  
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+    finally
+    {
+      setSpin(false)
+    }
+  };
+
   return (
-    <section className="grid grid-cols-[1fr_500px] h-[100vh] max-lg:grid-cols-1">
+    <section className="grid grid-cols-[1fr_530px] h-[100vh] max-lg:grid-cols-1">
       <div className="background-container max-lg:hidden">
-        <div className="text-center ml-20 flex flex-col gap-1 items-start font-[400] text-[40px] text-[#BD982E]">
+        <div className="text-center ml-20 flex flex-col gap-1 items-start font-[400] text-[40px] text-[#BD982E] mb-36">
           <div className="font-[400] text-[40px] text-[#BD982E]">
-            Welcome...
+            Welcome to  <span className="font-[500] text-[48px] text-[#BD982E]">
+              INVESTBANK!
+            </span>
           </div>
           <div className="font-[400] text-[40px] text-[#BD982E]">
-            to{" "}
-            <span className="font-[500] text-[48px] text-[#BD982E]">
-              Investbank!
+            <span className="font-[500] text-[26px] text-gray-600">
+            Empower your finances, empower your future. Invest with purpose.
             </span>
           </div>
         </div>
@@ -42,7 +80,7 @@ const Login = () => {
         <div className="flex flex-col gap-2 mt-[100px] items-center">
           <div className="font-[700] text-[24px] text-[#ffffff]">Sign In</div>
           <div className="font-[400] text-[12px] text-[#ffffff]">
-            Welcome, please login with your credentails
+            Welcome, please login with your credentials
           </div>
           <Form
             name="basic"
@@ -62,6 +100,7 @@ const Login = () => {
             >
               <Input
                 placeholder="Username"
+                autoComplete="no"
                 size="large"
                 prefix={
                   <svg
@@ -105,7 +144,7 @@ const Login = () => {
               valuePropName="checked"
               wrapperCol={{ offset: 0, span: 24 }}
             >
-              <Checkbox className="!text-[#ffffff]">Remember me</Checkbox>
+              <Checkbox className="!text-[#ffffff]">Remember Password</Checkbox>
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
@@ -115,10 +154,13 @@ const Login = () => {
                 className="w-full !bg-[#B78F01]"
                 size="large"
               >
-                Submit
+                {!spin?"Login":<Spin indicator={<LoadingOutlined style={{ fontSize: 24,color:'white' }} spin />} />}
               </Button>
             </Form.Item>
           </Form>
+          <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
+            <label className="text-[#B78F01]">Forgot Password?</label>
+          </Form.Item>
         </div>
       </div>
     </section>
