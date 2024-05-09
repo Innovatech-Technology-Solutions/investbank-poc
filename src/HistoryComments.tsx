@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import CommentsSection from './CommentsSection';
 import useLanguage from './hooks/useLanguage';
 import { useGetInterfaceByIDQuery } from './services/hostApiServices';
@@ -15,7 +15,7 @@ const HistoryComments = ({ requestId, allActivities }: IProps) => {
   const uiConfiguration = uiData?.[language];
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Card sx={{ width: '100%' }} className='p-2 mt-2 px-6'>
       <Tabs
         className = 'p-0 py-1'
         tabs={[
@@ -36,7 +36,7 @@ const HistoryComments = ({ requestId, allActivities }: IProps) => {
           },
         ]}
       />
-    </Box>
+    </Card>
   );
 };
 
