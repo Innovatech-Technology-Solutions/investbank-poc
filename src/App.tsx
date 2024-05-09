@@ -30,7 +30,7 @@ const App: React.FC = () => {
                 path: "#",
               },
             ]}
-            homePath={"#"}
+            homePath={'/investbank/dashboard'}
           />
         </div>
       </div>

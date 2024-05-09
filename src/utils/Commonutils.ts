@@ -398,3 +398,82 @@ export const listToTree = (list1: any[]) => {
     emitMessage(err, 'error');
   }
 };
+export const alertWithIcon = async (
+  icon: 'success' | 'error' | 'warning' | 'info' | 'question',
+  title?: string,
+  message?: string,
+  showConfirmButton: boolean = false,
+  showCancelButton: boolean = false,
+  confirmButtonText?: string,
+  cancelButtonText?: string,
+): Promise<SweetAlertModel> => {
+  const result = await Swal.fire({
+    title: title,
+    text: message,
+    icon: icon,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: showConfirmButton,
+    showCancelButton: showCancelButton,
+    confirmButtonText: confirmButtonText,
+    cancelButtonText: cancelButtonText,
+    customClass: {
+      confirmButton: 'btn btn-primary mx-1 my-0',
+      cancelButton: 'btn btn-secondary mx-1 my-0',
+    },
+  }).then((result: any) => result as SweetAlertModel);
+  return result as SweetAlertModel;
+};
+// ******************* END for Atert message and conifirmations popup *******************
+
+export const getBase64 = (file: File) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+};
+
+export const base64Download = (content: any, fileName: any) => {
+  const blob = dataURLtoBlob(content);
+  const objUrl = URL.createObjectURL(blob);
+  const downloadLink = document.createElement('a');
+  downloadLink.href = objUrl;
+  downloadLink.download = fileName;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+};
+
+export const dataURLtoBlob = (dataurl: any): Blob => {
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+};
+
+export const commoncode_download = (
+  content: any,
+  fileName: any,
+  onSuccess: any = () => {},
+  onFailure: any = () => {},
+) => {
+  try {
+    const blob = dataURLtoBlob(content);
+    const objUrl = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = objUrl;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    onSuccess();
+  } catch (error) {
+    onFailure();
+  }
+};
