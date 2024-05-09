@@ -46,7 +46,7 @@ const MultiStepForm = () => {
   const [showComments, setShowComments] = useState(0);
   const{requestIDSlug}=useParams();
   const {data:appData,isLoading,isFetching,isSuccess}=useGetApplicationByReqIDQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
-const{data:fieldcomments}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
+const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
   const navigate=useNavigate()
   const videoRef = useRef<HTMLVideoElement>(null);
   const recordedVideoRef = useRef<HTMLVideoElement>(null);
@@ -844,7 +844,7 @@ const{data:fieldcomments}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[n
         >
           Show Reviewer Comments
         </Button>:null}
-        <Button sizeVariant="xs"
+        {isSales()&&<Button sizeVariant="xs"
           onClick={() => {
             console.log(useFormMethods.getValues());
 
@@ -877,7 +877,7 @@ payload["status"]='submitted'
           }}
         >
           Submit
-        </Button>
+        </Button>}
       </div>
 
       <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
@@ -1756,7 +1756,7 @@ payload["status"]='submitted'
       </div>
       </div> */}
         </Card>
-        {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output || []} viewCommentRef={viewCommentRef}/>}
+        {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output||[]} viewCommentRef={viewCommentRef}/>}
       </div>
     </ConfigProvider>
   );

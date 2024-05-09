@@ -6,10 +6,12 @@ import Modal from "../Modal";
 import Button from "../Button";
 import TextArea from "../TextArea";
 import SectionHeader from "./SectionHeader";
-import { usePostFieldCommentMutation } from "../services/hostApiServices";
+import { useGetFieldCommentsQuery, usePostFieldCommentMutation } from "../services/hostApiServices";
 import { useParams } from "react-router";
-import { isValidApiResponse } from "../utils/Commonutils";
+import { isValidApiResponse, isValidResponse } from "../utils/Commonutils";
 import emitMessage from "../services/emitMessage";
+import { isOperation } from "../commonuitils";
+import React from "react";
 const RenderLabelAndValue = ({
   label,
   value,
@@ -28,27 +30,30 @@ const RenderLabelAndValue = ({
   const [showCommentIcon, setShowCommentIcon] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [comment, setComment] = useState("");
-
+  
   const [field, setField] = useState("");
+  const{requestIDSlug}=useParams()
 
-  const [postFieldComment] = usePostFieldCommentMutation();
+  const{refetch}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
+
+const[postFieldComment]=usePostFieldCommentMutation()
   const handleChange = (e: any) => {
     setComment(e.target.value);
   };
-  const { requestIDSlug } = useParams();
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setComment("");
     setShowModal(false);
     setShowCommentIcon(false);
-    setField("");
+    setField('')
   };
 
   const handleCancel = () => {
     setComment("");
     setShowModal(false);
     setShowCommentIcon(false);
-    setField("");
+    setField('')
+
   };
 
   return (
@@ -77,34 +82,40 @@ const RenderLabelAndValue = ({
                 <Button type="button" onClick={handleCancel}>
                   Close
                 </Button>
-                <Button
-                  type="submit"
-                  onClick={async () => {
-                    try {
-                      const res = postFieldComment({
-                        requestId: requestIDSlug,
+                <Button type="submit" onClick={async()=>
+                {
 
-                        comment: comment,
+                  try{
+                    const res=await postFieldComment(
 
-                        fieldId: fieldKey,
-                      });
-                      if (isValidApiResponse(res)) {
-                        emitMessage("Addedd Comment Successfully", "success");
-                      }
-                    } catch (e) {
-                      //
+                    {
+                     
+                      "requestId": requestIDSlug,
+                     
+                      "comment": comment,
+                     
+                      "fieldId":fieldKey||field ,
                     }
-                  }}
-                >
-                  Save
-                </Button>
+                  ).unwrap()
+                  console.log("tt",res)
+                  if(isValidResponse(res))
+                  {
+                    emitMessage("Addedd Comment Successfully",'success')
+                    refetch()
+                  }
+                  }
+                  catch(e)
+                  {
+                    //
+                  }
+                }}>Save</Button>
               </div>
             </form>
           }
         />
       ) : null}
 
-      <div
+      <div 
         onMouseEnter={() => setShowCommentIcon(true)}
         onMouseLeave={() => setShowCommentIcon(false)}
         className={`flex flex-col justify-start gap-1 ${fieldKey} ${className}`}
@@ -112,11 +123,11 @@ const RenderLabelAndValue = ({
         <div className="font-medium font-size-responsive text-[#8D8E90] font-roboto line-height-[16.41px]">
           <div className="flex gap-1">
             {label}
-            {showCommentIcon ? (
+            {showCommentIcon&&isOperation() ? (
               <ChatCircleText
                 onClick={() => {
                   setShowModal(true);
-                  setField(fieldKey as any);
+                  setField(fieldKey as any)
                 }}
                 color="#BD982E"
                 size={16}
@@ -132,7 +143,7 @@ const RenderLabelAndValue = ({
                 valueStyles ? valueStyles : "text-justify"
               }`}
             >
-              <span id={`${fieldKey}`}>{value}</span>
+              {value}
             </div>
           </Tooltip>
         ) : (
@@ -141,8 +152,7 @@ const RenderLabelAndValue = ({
               valueStyles ? valueStyles : "text-justify"
             }`}
           >
-            <span id={`${fieldKey}`}>{value}</span>
-          </div>
+<span id={`${fieldKey}`}>{value}</span>          </div>
         )}
       </div>
     </>
