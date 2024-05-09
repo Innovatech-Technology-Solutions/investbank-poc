@@ -36,7 +36,7 @@ const[postFieldComment]=usePostFieldCommentMutation()
   const handleChange = (e: any) => {
     setComment(e.target.value);
   };
-const{requestIdSlug}=useParams()
+const{requestIDSlug}=useParams()
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setComment("");
@@ -87,7 +87,7 @@ const{requestIdSlug}=useParams()
 
                     {
                      
-                      "requestId": requestIdSlug,
+                      "requestId": requestIDSlug,
                      
                       "comment": comment,
                      

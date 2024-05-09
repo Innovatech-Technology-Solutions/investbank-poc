@@ -385,6 +385,12 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
         data,
       }),
     }),
+    getFieldComments: builder.query<any, string>({
+      query: (id) => ({
+        url: `/adminmgmt/fieldcomments/FieldComments?requestId=${id}`,
+        method: 'GET',
+      }),
+    }),
     getApplicationByReqID: builder.query<any, string>({
       query: (reqId) => ({
         url: `/gateway/Investbankpoc/InvestBankPoc/${reqId}`,
@@ -445,5 +451,6 @@ export const {
   useLazySearchUsersQuery,
   useGetMyApplicationsQuery,
   useGetApplicationByReqIDQuery,
-  usePostFieldCommentMutation
+  usePostFieldCommentMutation,
+  useGetFieldCommentsQuery
 } = hostApiServices;

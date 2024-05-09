@@ -28,7 +28,7 @@ import { decodeToken, isSales } from "./commonuitils";
 import React from "react";
 import { isValidResponse } from "./utils/Commonutils";
 import emitMessage from "./services/emitMessage";
-import { useGetApplicationByReqIDQuery } from "./services/hostApiServices";
+import { useGetApplicationByReqIDQuery, useGetFieldCommentsQuery } from "./services/hostApiServices";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -46,7 +46,7 @@ const MultiStepForm = () => {
   const [showComments, setShowComments] = useState(0);
   const{requestIDSlug}=useParams();
   const {data:appData,isLoading,isFetching,isSuccess}=useGetApplicationByReqIDQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
-
+const{data:fieldcomments}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
   const navigate=useNavigate()
   const videoRef = useRef<HTMLVideoElement>(null);
   const recordedVideoRef = useRef<HTMLVideoElement>(null);
