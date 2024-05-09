@@ -79,10 +79,10 @@ const[postFieldComment]=usePostFieldCommentMutation()
                 isError={false}
               />
               <div className="flex gap-2  justify-end pt-2">
-                <Button type="button" onClick={handleCancel}>
+                <Button sizeVariant='xs' styleVariant="outline"  type="button" onClick={handleCancel}>
                   Close
                 </Button>
-                <Button type="submit" onClick={async()=>
+                <Button sizeVariant='xs'  type="submit" onClick={async()=>
                 {
 
                   try{

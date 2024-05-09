@@ -231,12 +231,13 @@ const CommentBox = ({
         <Button
           type='reset'
           styleVariant='outline'
+          className='btn-xs'
           onClick={() => setIsCommentBox && setIsCommentBox(false)}
         >
           {uiConfiguration?.UI_LABELS?.CANCEL || 'Cancel'}
         </Button>
         <Button
-          className='btn btn-primary'
+          className='btn btn-primary btn-xs'
           disabled={loading || !useFormMethods?.formState?.isValid}
           onClick={useFormMethods.handleSubmit(onSubmit)}
         >
