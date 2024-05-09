@@ -6,9 +6,9 @@ import Modal from "../Modal";
 import Button from "../Button";
 import TextArea from "../TextArea";
 import SectionHeader from "./SectionHeader";
-import { usePostFieldCommentMutation } from "../services/hostApiServices";
+import { useGetFieldCommentsQuery, usePostFieldCommentMutation } from "../services/hostApiServices";
 import { useParams } from "react-router";
-import { isValidApiResponse } from "../utils/Commonutils";
+import { isValidApiResponse, isValidResponse } from "../utils/Commonutils";
 import emitMessage from "../services/emitMessage";
 const RenderLabelAndValue = ({
   label,
@@ -30,13 +30,14 @@ const RenderLabelAndValue = ({
   const [comment, setComment] = useState("");
   
   const [field, setField] = useState("");
+  const{requestIDSlug}=useParams()
 
+  const{refetch}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
 
 const[postFieldComment]=usePostFieldCommentMutation()
   const handleChange = (e: any) => {
     setComment(e.target.value);
   };
-const{requestIDSlug}=useParams()
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setComment("");
@@ -83,7 +84,7 @@ const{requestIDSlug}=useParams()
                 {
 
                   try{
-                    const res=postFieldComment(
+                    const res=await postFieldComment(
 
                     {
                      
@@ -91,12 +92,14 @@ const{requestIDSlug}=useParams()
                      
                       "comment": comment,
                      
-                      "fieldId":fieldKey ,
+                      "fieldId":fieldKey||field ,
                     }
-                  )
-                  if(isValidApiResponse(res))
+                  ).unwrap()
+                  console.log("tt",res)
+                  if(isValidResponse(res))
                   {
                     emitMessage("Addedd Comment Successfully",'success')
+                    refetch()
                   }
                   }
                   catch(e)

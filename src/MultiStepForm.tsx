@@ -46,7 +46,7 @@ const MultiStepForm = () => {
   const [showComments, setShowComments] = useState(0);
   const{requestIDSlug}=useParams();
   const {data:appData,isLoading,isFetching,isSuccess}=useGetApplicationByReqIDQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
-const{data:fieldcomments}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
+const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
   const navigate=useNavigate()
   const videoRef = useRef<HTMLVideoElement>(null);
   const recordedVideoRef = useRef<HTMLVideoElement>(null);
@@ -1753,7 +1753,7 @@ payload["status"]='submitted'
       </div>
       </div> */}
         </Card>
-        {showComments == 1 &&   <FieldComments comments={comments} viewCommentRef={viewCommentRef}/>}
+        {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output||[]} viewCommentRef={viewCommentRef}/>}
       </div>
     </ConfigProvider>
   );
