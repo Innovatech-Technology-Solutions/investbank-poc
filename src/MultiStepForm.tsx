@@ -23,9 +23,11 @@ import Button from "./Button";
 import FieldComments from "./FieldComments";
 import { notification, Space } from "antd";
 import Preview from "./Preview";
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import { decodeToken, isSales } from "./commonuitils";
 import React from "react";
+import { isValidResponse } from "./utils/Commonutils";
+import emitMessage from "./services/emitMessage";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -42,6 +44,7 @@ const MultiStepForm = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [showComments, setShowComments] = useState(0);
   const{requestIDSlug}=useParams();
+  const navigate=useNavigate()
   const videoRef = useRef<HTMLVideoElement>(null);
   const recordedVideoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -626,7 +629,7 @@ const MultiStepForm = () => {
       name: "monthlySalary",
       id: "monthlySalary",
       placeholder: "Monthly Salary",
-      type: "text",
+      type: "number",
       show: true,
       isMandatory: true,
       isNumeric: true,
@@ -656,7 +659,7 @@ const MultiStepForm = () => {
       name: "transactionSizePerAccount",
       id: "transactionSizePerAccount",
       placeholder: "Transaction Size Per Account",
-      type: "text",
+      type: "number",
       show: true,
       isNumeric: true,
     },
@@ -838,7 +841,7 @@ const MultiStepForm = () => {
 
             const apiUrl = `${
               import.meta.env.VITE_BASE_URL
-            }/gateway/Investbankpoc/InvestBankPoc?action=submit`;
+            }/gateway/Investbankpoc/InvestBankPoc?action=SUBMIT`;
 
             // Define your headers
             const headers = {
@@ -852,8 +855,11 @@ payload["status"]='submitted'
               .post(apiUrl, payload, { headers })
               .then((response: any) => {
                 // Handle success
-                console.log("Response:", response.data);
-                openNotificationWithIcon("success");
+              if(isValidResponse(response))
+              {
+                emitMessage("Submitted successfully",'success')
+                navigate("/investbank/applications")
+              }
               })
               .catch((error: any) => {
                 // Handle error
@@ -868,54 +874,57 @@ payload["status"]='submitted'
       <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
       {showComments == 0 &&    <Card style={{ width: 350, paddingTop: "1.5rem" }}>
         <Stepper 
-            clickedIndex={() => {}}
+
+            clickedIndex={(e) => {
+              console.log("ee",e)
+              setActiveIndex(e)}}
             stepperItems={[
               {
                 label: "Applicant Details",
                 path: "#",
-                stage: "current",
+                stage:  activeIndex!==1?"upcoming":"current",
                 stepperIndex: 1,
-                isActive: true,
+                isActive: activeIndex==1,
                 isLastItem: false,
               },
               {
                 label: "Social Status",
                 path: "#",
-                stage: "upcoming",
+                stage: activeIndex!==2?"upcoming":"current",
                 stepperIndex: 2,
-                isActive: false,
+                isActive: activeIndex==2,
                 isLastItem: false,
               },
               {
                 label: "Residence Address",
                 path: "#",
-                stage: "upcoming",
+                stage:  activeIndex!==3?"upcoming":"current",
                 stepperIndex: 3,
-                isActive: false,
+                isActive: activeIndex==3,
                 isLastItem: false,
               },
               {
                 label: "Employment and Financial Details",
                 path: "#",
-                stage: "upcoming",
+                stage:  activeIndex!==4?"upcoming":"current",
                 stepperIndex: 4,
-                isActive: false,
+                isActive: activeIndex==4,
                 isLastItem: false,
               },
               {
                 label: "Customer Information",
                 path: "#",
-                stage: "upcoming",
+                stage:  activeIndex!==5?"upcoming":"current",
                 stepperIndex: 5,
-                isActive: false,
+                isActive: activeIndex==5,
                 isLastItem: false,
               },
               {
                 label: "Account Information",
                 path: "#",
-                stage: "upcoming",
+                stage:  activeIndex!==6?"upcoming":"current",
                 stepperIndex: 6,
-                isActive: false,
+                isActive: activeIndex==6,
                 isLastItem: true,
               },
             ]}
@@ -1036,12 +1045,9 @@ payload["status"]='submitted'
                                                 onChange(value);
                                               }}
                                               requiredLabel={true}
-                                              format={"YYYY"}
+                                              format='YYYY-MM-DD'
                                               value={
-                                                value &&
-                                                dayjs(value, "YYYY").isValid()
-                                                  ? dayjs(value)
-                                                  : null
+                                                value && dayjs(value).isValid() ? dayjs(value) : null
                                               }
                                               size="large"
                                               isError={!!error}
@@ -1167,12 +1173,10 @@ payload["status"]='submitted'
                                                 onChange(value);
                                               }}
                                               requiredLabel={true}
-                                              format={"YYYY"}
+                                              format='YYYY-MM-DD'
+
                                               value={
-                                                value &&
-                                                dayjs(value, "YYYY").isValid()
-                                                  ? dayjs(value)
-                                                  : null
+                                                value && dayjs(value).isValid() ? dayjs(value) : null
                                               }
                                               size="large"
                                               isError={!!error}
@@ -1288,13 +1292,11 @@ payload["status"]='submitted'
                                               onChange(value);
                                             }}
                                             requiredLabel={true}
-                                            format={"YYYY"}
+                                            format='YYYY-MM-DD'
                                             value={
-                                              value &&
-                                              dayjs(value, "YYYY").isValid()
-                                                ? dayjs(value)
-                                                : null
+                                              value && dayjs(value).isValid() ? dayjs(value) : null
                                             }
+                                           
                                             size="large"
                                             isError={!!error}
                                             errorMessage={error?.message}
@@ -1363,6 +1365,37 @@ payload["status"]='submitted'
                                       />
                                     </div>
                                   ) : null}
+                                    {type === "number" ? (
+                                    <div key={id}>
+                                      <Controller
+                                        name={name as any}
+                                        control={useFormMethods.control}
+                                        render={({
+                                          field: { onChange, value },
+                                          fieldState: { error },
+                                        }) => (
+                                          <InputText
+                                            label={placeholder}
+                                            isError={!!error}
+                                            name={name}
+                                            id={id}
+                                            placeholder={placeholder}
+                                            isMandatory={isMandatory}
+                                            disabled={false}
+                                            onlyNumeric={true}
+                                            min={0}
+                                            max={10000000}
+                                            type={type}
+                                            onInputChange={onChange}
+                                            value={value}
+                                            errorMessage={
+                                              error ? error.message : ""
+                                            }
+                                          />
+                                        )}
+                                      />
+                                    </div>
+                                  ) : null}
                                   {type === "select" ? (
                                     <div>
                                       <Controller
@@ -1408,12 +1441,10 @@ payload["status"]='submitted'
                                               onChange(value);
                                             }}
                                             requiredLabel={true}
-                                            format={"YYYY"}
+                                            format='YYYY-MM-DD'
+
                                             value={
-                                              value &&
-                                              dayjs(value, "YYYY").isValid()
-                                                ? dayjs(value)
-                                                : null
+                                              value && dayjs(value).isValid() ? dayjs(value) : null
                                             }
                                             size="large"
                                             isError={!!error}
@@ -1550,12 +1581,10 @@ payload["status"]='submitted'
                                                 onChange(value);
                                               }}
                                               requiredLabel={true}
-                                              format={"YYYY"}
+                                              format='YYYY-MM-DD'
+
                                               value={
-                                                value &&
-                                                dayjs(value, "YYYY").isValid()
-                                                  ? dayjs(value)
-                                                  : null
+                                                value && dayjs(value).isValid() ? dayjs(value) : null
                                               }
                                               size="large"
                                               isError={!!error}
@@ -1671,12 +1700,10 @@ payload["status"]='submitted'
                                               onChange(value);
                                             }}
                                             requiredLabel={true}
-                                            format={"YYYY"}
+                                            format='YYYY-MM-DD'
+
                                             value={
-                                              value &&
-                                              dayjs(value, "YYYY").isValid()
-                                                ? dayjs(value)
-                                                : null
+                                              value && dayjs(value).isValid() ? dayjs(value) : null
                                             }
                                             size="large"
                                             isError={!!error}

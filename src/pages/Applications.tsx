@@ -9,6 +9,7 @@ import Button from '../Button';
 import {useNavigate} from "react-router-dom"
 import React from 'react';
 import { isSales } from '../commonuitils';
+import BreadCrumbs from '../BreadCrumbs';
 // import { isValidApiResponse } from '../utils/Commonutils';
 // import emitMessage from '../services/emitMessage';
 
@@ -51,18 +52,41 @@ const Applications = () => {
     {
       title: 'Nationality',
       dataIndex: 'nationality',
+      render:(item)=><span className='capitalize'>{item}</span>
+
     },
     {
       title: 'Prime Customer',
       dataIndex: 'primeCustomer',
+      render:(item)=><span className='capitalize'>{item}</span>
     },
     {
       title: 'Status',
-      dataIndex: 'taskName',
+      dataIndex: 'status',
+      render:(item)=><span className='capitalize'>{item}</span>
+
     },
   ];
 
-  return data?.data?.output?.length>0&&isSuccess?<div className='flex flex-col gap-2 '>
+  return <>
+  <div className='flex flex-col items-start md:flex-row md:items-center justify-between py-3'>
+      <div className='flex gap-2 items-center'>
+        
+        <h2 className='text-lg text-blue-600 text-primary-600'>{"Applications"}</h2>
+      </div>  <div className='flex items-center space-x-2'>
+
+    <BreadCrumbs itemFeed={[
+      {
+        label:"Applications",
+        path:"#"
+      },
+     
+
+    ]} homePath={'#'}/>
+    </div>
+  </div>
+  {data?.data?.output?.length>0&&isSuccess?
+  <div className='flex flex-col gap-2 '>
        {isSales()?<div className='flex justify-end '>
        <Button onClick={()=>
     {
@@ -96,8 +120,11 @@ const Applications = () => {
   </div>:null}
     </div>
   }
-/>
+/>}
+</>
+
   
+
 };
 
 export default Applications;

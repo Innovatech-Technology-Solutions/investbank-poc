@@ -105,7 +105,7 @@ const ShellLayout: React.FC = () => {
                     <ul className="menu nav-menu lg:flex lg:items-center lg:gap-1 xl:gap-2">
                       <li className="menu-item lg:inline-flex lg:items-center has-link-icon">
                         <Link
-                          to="/udp/services"
+                          to="/investbank/applications"
                           className="hover:!text-primary-800 hover:!border-primary-800"
                         >
                           <svg
@@ -126,22 +126,14 @@ const ShellLayout: React.FC = () => {
                           <span>{"Home"}</span>
                         </Link>
                       </li>
+                   
                       <li className="menu-item lg:inline-flex lg:items-center">
                         {" "}
                         <Link
-                          to="/udp/szhp/housing-dashboard"
+                          to="/investbank/applications"
                           className="hover:!text-primary-800 hover:!border-primary-800"
                         >
-                          {"Dashboard"}
-                        </Link>{" "}
-                      </li>
-                      <li className="menu-item lg:inline-flex lg:items-center">
-                        {" "}
-                        <Link
-                          to="/udp/szhp/my-applications"
-                          className="hover:!text-primary-800 hover:!border-primary-800"
-                        >
-                          {"My Applications"}
+                          { "Applications"}
                         </Link>{" "}
                       </li>
                     </ul>
