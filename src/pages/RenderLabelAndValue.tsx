@@ -28,29 +28,27 @@ const RenderLabelAndValue = ({
   const [showCommentIcon, setShowCommentIcon] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [comment, setComment] = useState("");
-  
+
   const [field, setField] = useState("");
 
-
-const[postFieldComment]=usePostFieldCommentMutation()
+  const [postFieldComment] = usePostFieldCommentMutation();
   const handleChange = (e: any) => {
     setComment(e.target.value);
   };
-const{requestIDSlug}=useParams()
+  const { requestIDSlug } = useParams();
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setComment("");
     setShowModal(false);
     setShowCommentIcon(false);
-    setField('')
+    setField("");
   };
 
   const handleCancel = () => {
     setComment("");
     setShowModal(false);
     setShowCommentIcon(false);
-    setField('')
-
+    setField("");
   };
 
   return (
@@ -79,38 +77,34 @@ const{requestIDSlug}=useParams()
                 <Button type="button" onClick={handleCancel}>
                   Close
                 </Button>
-                <Button type="submit" onClick={async()=>
-                {
+                <Button
+                  type="submit"
+                  onClick={async () => {
+                    try {
+                      const res = postFieldComment({
+                        requestId: requestIDSlug,
 
-                  try{
-                    const res=postFieldComment(
+                        comment: comment,
 
-                    {
-                     
-                      "requestId": requestIDSlug,
-                     
-                      "comment": comment,
-                     
-                      "fieldId":fieldKey ,
+                        fieldId: fieldKey,
+                      });
+                      if (isValidApiResponse(res)) {
+                        emitMessage("Addedd Comment Successfully", "success");
+                      }
+                    } catch (e) {
+                      //
                     }
-                  )
-                  if(isValidApiResponse(res))
-                  {
-                    emitMessage("Addedd Comment Successfully",'success')
-                  }
-                  }
-                  catch(e)
-                  {
-                    //
-                  }
-                }}>Save</Button>
+                  }}
+                >
+                  Save
+                </Button>
               </div>
             </form>
           }
         />
       ) : null}
 
-      <div id={`${fieldKey}`}
+      <div
         onMouseEnter={() => setShowCommentIcon(true)}
         onMouseLeave={() => setShowCommentIcon(false)}
         className={`flex flex-col justify-start gap-1 ${fieldKey} ${className}`}
@@ -122,7 +116,7 @@ const{requestIDSlug}=useParams()
               <ChatCircleText
                 onClick={() => {
                   setShowModal(true);
-                  setField(fieldKey as any)
+                  setField(fieldKey as any);
                 }}
                 color="#BD982E"
                 size={16}
@@ -138,7 +132,7 @@ const{requestIDSlug}=useParams()
                 valueStyles ? valueStyles : "text-justify"
               }`}
             >
-              {value}
+              <span id={`${fieldKey}`}>{value}</span>
             </div>
           </Tooltip>
         ) : (
@@ -147,7 +141,7 @@ const{requestIDSlug}=useParams()
               valueStyles ? valueStyles : "text-justify"
             }`}
           >
-            {value}
+            <span id={`${fieldKey}`}>{value}</span>
           </div>
         )}
       </div>

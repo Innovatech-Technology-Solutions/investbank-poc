@@ -786,10 +786,13 @@ const{data:fieldcomments}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[n
   ];
 
   const viewCommentRef=(commentId:string)=>{
-    console.log(commentId, document.getElementById(`comment_${commentId}`), document.getElementById(commentId))
+    // console.log(commentId, document.getElementById(`comment_${commentId}`), document.getElementById(commentId))
   let line =
     new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true});
-  console.log(line)
+  // console.log(line)
+  scrollableBox.addEventListener('scroll', AnimEvent.add(function() {
+    line.position();
+  }), false);
   }
   
 
@@ -1753,7 +1756,7 @@ payload["status"]='submitted'
       </div>
       </div> */}
         </Card>
-        {showComments == 1 &&   <FieldComments comments={comments} viewCommentRef={viewCommentRef}/>}
+        {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output || []} viewCommentRef={viewCommentRef}/>}
       </div>
     </ConfigProvider>
   );
