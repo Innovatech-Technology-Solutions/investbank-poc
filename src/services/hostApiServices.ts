@@ -384,18 +384,22 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
         method: 'POST',
         data,
       }),
+
     }),
     getFieldComments: builder.query<any, string>({
       query: (id) => ({
         url: `/adminmgmt/fieldcomments/FieldComments?requestId=${id}`,
         method: 'GET',
       }),
+      keepUnusedDataFor:0
+
     }),
     getApplicationByReqID: builder.query<any, string>({
       query: (reqId) => ({
         url: `/gateway/Investbankpoc/InvestBankPoc/${reqId}`,
         method: 'GET',
       }),
+      keepUnusedDataFor:0
     }),
     updateApplicantProfile: builder.mutation({
       query: ({ id, data }) => ({

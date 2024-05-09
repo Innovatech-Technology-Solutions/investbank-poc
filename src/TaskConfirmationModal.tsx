@@ -37,7 +37,7 @@ const TaskConfirmationModal = ({
     }
     return e;
   };
-
+console.log(uiConfiguration)
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
@@ -94,7 +94,7 @@ const TaskConfirmationModal = ({
               )}
               {(action === 'MORE_INFO' || action === 'MORE_INFO_INT') && (
                 <p>
-                  {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
+                  {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_||'You are about to'}{' '}
                   <span className='text-primary'>
                     {uiConfiguration?.UI_LABELS[action] || action}
                   </span>{' '}

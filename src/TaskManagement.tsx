@@ -54,7 +54,8 @@ const TaskManagement = ({
 }: IProps) => {
   const { data: uiData } = useGetInterfaceByIDQuery('803');
   const { language } = useLanguage();
-  const uiConfiguration = uiData?.[language];
+  const uiConfiguration = uiData?.[language||'EN'];
+  console.log("bb",uiConfiguration)
 
   const navigate = useNavigate();
   const id = taskIdString?.split(',')?.[0]?.split('/')?.[0] as string;

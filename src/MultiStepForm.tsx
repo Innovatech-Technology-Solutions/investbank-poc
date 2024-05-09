@@ -807,6 +807,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
     mode: "all",
     reValidateMode: "onChange",
     resolver: zodResolver(schema),
+    values:requestIDSlug?appData?.data?.output:{}
   });
   type NotificationType = "success" | "info" | "warning" | "error";
 
@@ -835,7 +836,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
       </Steps> */}
      
       <div className={"flex justify-end gap-2"}>
-        {appData?.data?.output?.taskId&&<TaskManagement taskIdString={appData?.data?.output?.taskId} backURL={""}/>}
+        {appData?.data?.output?.taskId&&<TaskManagement taskIdString={appData?.data?.output?.taskId} backURL={"/investbank/applications"}/>}
       {requestIDSlug?<Button sizeVariant="xs"
           onClick={() => {
             setShowComments(showComments==1 ? 0 : 1)
@@ -939,7 +940,7 @@ payload["status"]='submitted'
           /> 
         </Card> }
         <Card style={{ width: "100%" }}>
-          {!requestIDSlug&&isSales() ? (
+          {(!requestIDSlug&&isSales()) || (isSales()&&appData?.data?.output?.taskId) ? (
             <form
               noValidate
               onSubmit={(e) => {
