@@ -88,3 +88,13 @@
   height: 1.2rem !important;
   width: 1rem !important;
 }
+
+.main-navigation .nav-menu > .menu-item > a{
+  color: white !important;
+  font-size: 14px !important;
+}
+
+.aegov-footer a {
+  font-size: 0.9rem !important;
+   line-height: 0rem !important; 
+}
