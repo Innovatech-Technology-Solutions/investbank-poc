@@ -84,18 +84,18 @@ console.log(uiConfiguration)
                 action === 'RESUBMITTED' ||
                 action === 'RESUBMMIT' ||
                 action === 'ADD_ADJUSTMENTS') && (
-                <p>
+                <p className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
-                  <span className='text-primary'>
+                  <span className='text-aeblack-100'>
                     {uiConfiguration?.UI_LABELS[action] || action}
                   </span>{' '}
                   {uiConfiguration?.UI_LABELS?.CLICK_OK_TO_PROCEED}
                 </p>
               )}
               {(action === 'MORE_INFO' || action === 'MORE_INFO_INT') && (
-                <p>
+                <p className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_||'You are about to'}{' '}
-                  <span className='text-primary'>
+                  <span className='text-aeblack-100'>
                     {uiConfiguration?.UI_LABELS[action] || action}
                   </span>{' '}
                   {uiConfiguration?.UI_LABELS?.FOR_THIS_REQUEST_PLEASE_COMPOSE_MSG_TO_CONTINUE}
@@ -105,11 +105,11 @@ console.log(uiConfiguration)
                 <span>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
                   {buttonName === 'CANCEL_APPLICATION' ? (
-                    <span className='text-primary'>
+                    <span className='text-aeblack-100'>
                       {uiConfiguration?.UI_LABELS['CANCEL_APPLICATION_INFO'] || action}
                     </span>
                   ) : (
-                    <span className='text-primary'>
+                    <span className='text-aeblack-100'>
                       {uiConfiguration?.UI_LABELS[action] || action}
                     </span>
                   )}{' '}
@@ -118,14 +118,14 @@ console.log(uiConfiguration)
                 </span>
               )}
               {(action === 'REJECT' || action === 'REJECTED') && (
-                <p>
+                <p className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
                   {buttonName === 'REMOVE_FROM_CACELLATION' ? (
-                    <span className='text-primary'>
+                    <span className='text-aeblack-100'>
                       {uiConfiguration?.UI_LABELS['REMOVE_FROM_CANCELLATION_INFO'] || action}
                     </span>
                   ) : (
-                    <span className='text-primary'>
+                    <span className='text-aeblack-100'>
                       {uiConfiguration?.UI_LABELS[action] || action}
                     </span>
                   )}{' '}
@@ -133,18 +133,18 @@ console.log(uiConfiguration)
                 </p>
               )}
               {(action === 'SUBMIT' || action === 'SUBMITED') && (
-                <p>
+                <p className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
-                  <span className='text-primary'>
+                  <span className='text-aeblack-100'>
                     {uiConfiguration?.UI_LABELS[action] || action}
                   </span>{' '}
                   {uiConfiguration?.UI_LABELS?.CLICK_OK_TO_PROCEED}
                 </p>
               )}
               {(action === 'CANCEL' || action === 'CANCELLED') && (
-                <p>
+                <p className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
-                  <span className='text-primary'>
+                  <span className='text-aeblack-100'>
                     {uiConfiguration?.UI_LABELS[action] || action}
                   </span>{' '}
                   {uiConfiguration?.UI_LABELS?.CLICK_OK_TO_PROCEED}
@@ -154,10 +154,10 @@ console.log(uiConfiguration)
               {(action === 'SOCIAL' || action === 'TECHNICAL' || action === 'EXTEND') && (
                 <p>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
-                  <span className='text-primary'>
+                  <span className='text-aeblack-100'>
                     {uiConfiguration?.UI_LABELS[action] || action}
                   </span>{' '}
-                  <span className='text-primary'>
+                  <span className='text-aeblack-100'>
                     {uiConfiguration?.UI_LABELS[action] || action}
                   </span>{' '}
                   {uiConfiguration?.UI_LABELS?.CLICK_OK_TO_PROCEED}
@@ -166,7 +166,7 @@ console.log(uiConfiguration)
               {CustomComponent}
               {customComponentByAction && customComponentByAction(action)}
               <div className='mt-5'>
-                <span className='font-bold !text-black'>
+                <span className='font-bold text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.COMMENTS || 'Comments'}
                 </span>
                 <Controller
@@ -179,12 +179,13 @@ console.log(uiConfiguration)
                   })}
                   render={({ field: { onChange } }) => (
                     <ReactQuill
+
                       ref={editor as unknown as any}
                       id='message'
                       onChange={(e: any) => {
                         onChange(onRectQuillChange(e));
                       }}
-                      className={`${methods.formState.errors['message'] ? '' : ''}`}
+                      className={`${methods.formState.errors['message'] ? 'text-aeblack-100' : 'text-aeblack-100'}`}
                       modules={modules}
                       formats={formats}
                     />

@@ -7,6 +7,8 @@ const Preview = ({data}:any) => {
     <div>
       {/* Applicant Details */}
       <SectionDetails
+                          stepId="stepidx-1"
+
         sectionHeader="Applicant Details"
         sectionData={[
           { key: "Full Name in Arabic", fieldKey: 'fullNameAr', value: data?.fullNameAr },
@@ -27,7 +29,19 @@ const Preview = ({data}:any) => {
       />
 
  {/* Residence Address */}
+ <SectionDetails
+                          stepId="stepidx-2"
+
+  sectionHeader="Social Status"
+  sectionData={[
+    { key: "Marital Status", fieldKey: 'maritalStatus', value: data?.maritalStatus },
+    { key: "Residence Status", fieldKey: 'residenceStatus', value: data?.residenceStatus },
+    { key: "Personal Identity Issuance Location", fieldKey: 'personalIdentityIssuanceLocation', value: data?.personalIdentityIssuanceLocation },
+    { key: "Personal Identity Type", fieldKey: 'personalIdentityType', value: data?.personalIdentityType },
+  ]}></SectionDetails>
 <SectionDetails
+                          stepId="stepidx-3"
+
   sectionHeader="Residence Address"
   sectionData={[
     { key: "City Name", fieldKey: 'cityName', value: data?.cityName },
@@ -39,8 +53,11 @@ const Preview = ({data}:any) => {
   ]}
 />
 
+
 {/* Employment and Financial Details */}
 <SectionDetails
+                          stepId="stepidx-4"
+
   sectionHeader="Employment and Financial Details"
   sectionData={[
     { key: "Job", fieldKey: 'job', value: data?.job },
@@ -55,6 +72,8 @@ const Preview = ({data}:any) => {
 
 {/* Customer Information */}
 <SectionDetails
+                          stepId="stepidx-5"
+
   sectionHeader="Customer Information"
   sectionData={[
     { key: "Prime Customer (Yes or No)", fieldKey: 'primeCustomer', value: data?.primeCustomer },
@@ -65,6 +84,8 @@ const Preview = ({data}:any) => {
 
 {/* Account Information */}
 <SectionDetails
+                          stepId="stepidx-6"
+
   sectionHeader="Account Information"
   sectionData={[
     { key: "Account Type", fieldKey: 'accountType', value: data?.accountType },
