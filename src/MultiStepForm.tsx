@@ -841,7 +841,7 @@ const MultiStepForm = () => {
 
             const apiUrl = `${
               import.meta.env.VITE_BASE_URL
-            }/gateway/Investbankpoc/InvestBankPoc?action=submit`;
+            }/gateway/Investbankpoc/InvestBankPoc?action=SUBMIT`;
 
             // Define your headers
             const headers = {
