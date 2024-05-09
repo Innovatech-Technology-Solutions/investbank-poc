@@ -15,6 +15,7 @@ import NotFound from "./NotFound.tsx";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./context/AuthProvider";
 import LanguageProvider from "./context/LanguageProvider.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "account-request/:requestIDSlug",
         element: <App />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
       },
     ],
   },
