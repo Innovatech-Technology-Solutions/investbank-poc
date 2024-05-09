@@ -3,34 +3,35 @@ import Logo from "../assets/Logo.png";
 import type { FormProps } from "antd";
 import { Button, Checkbox, Form, Input, Spin } from "antd";
 import axios from "axios";
-import { useState } from "react";
-import { LoadingOutlined } from '@ant-design/icons';
-import {useNavigate} from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import React from "react";
 
-
 const Login = () => {
-  const[spin,setSpin]=useState(false)
-  const navigate=useNavigate()
+  const [spin, setSpin] = useState(false);
+  const navigate = useNavigate();
 
   type FieldType = {
     username?: string;
     password?: string;
     remember?: string;
   };
-  
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     console.log("Success:", values);
     if (values.username && values.password)
       login(values.username, values.password);
   };
-  
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo
+  ) => {
     console.log("Failed:", errorInfo);
   };
-  
+
   const login = async (username: string, password: string) => {
-    setSpin(true)
+    setSpin(true);
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/usermgmt/usermgmtsupport/Login`,
@@ -43,30 +44,31 @@ const Login = () => {
       console.log("Logged In successfully:", response);
       if (response.data?.output?.jwtToken) {
         localStorage.setItem("token", response.data?.output?.jwtToken);
-        navigate("/investbank/applications")
-  
+        navigate("/investbank/dashboard");
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
-    }
-    finally
-    {
-      setSpin(false)
+    } finally {
+      setSpin(false);
     }
   };
+  useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/investbank/dashboard");
+  });
 
   return (
     <section className="grid grid-cols-[1fr_530px] h-[100vh] max-lg:grid-cols-1">
       <div className="background-container max-lg:hidden">
         <div className="text-center ml-20 flex flex-col gap-6 items-start font-[400] text-[40px] text-[#BD982E] mb-36">
           <div className="font-[400] text-[40px] text-[#BD982E]">
-            Welcome to  <span className="font-[500] text-[46px] text-[#BD982E]">
+            Welcome to{" "}
+            <span className="font-[500] text-[46px] text-[#BD982E]">
               INVESTBANK!
             </span>
           </div>
           <div className="font-[400] text-[40px] text-[#BD982E]">
             <span className="font-[500] text-[26px] text-[#808080]">
-            Empower your finances, empower your future. Invest with purpose.
+              Empower your finances, empower your future. Invest with purpose.
             </span>
           </div>
         </div>
@@ -92,7 +94,7 @@ const Login = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-                    >
+          >
             <Form.Item<FieldType>
               name="username"
               rules={[
@@ -127,7 +129,6 @@ const Login = () => {
                 size="large"
                 placeholder="Password"
                 autoComplete="new-password"
-
                 prefix={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +158,18 @@ const Login = () => {
                 className="w-full !bg-[#B78F01]"
                 size="large"
               >
-                {!spin?"Login":<Spin indicator={<LoadingOutlined style={{ fontSize: 24,color:'white' }} spin />} />}
+                {!spin ? (
+                  "Login"
+                ) : (
+                  <Spin
+                    indicator={
+                      <LoadingOutlined
+                        style={{ fontSize: 24, color: "white" }}
+                        spin
+                      />
+                    }
+                  />
+                )}
               </Button>
             </Form.Item>
           </Form>

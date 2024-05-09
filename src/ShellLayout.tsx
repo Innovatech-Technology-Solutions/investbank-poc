@@ -54,58 +54,74 @@ const ShellLayout: React.FC = () => {
             </Col>
             <Col>
               <div className="header-navs-right">
-                <ul className="flex items-center">
-                  <li className="flex gap-2 item-center justify-center ">
-                    <a className="lg:h-12 xl:h-14  gap-2 lg:px-2 xl:px-3 flex items-center justify-center flex-shrink-0 no-underline !text-lg !font-normal cursor-pointer">
-                      <Popover
-                        interaction="click"
-                        trigger={
-                          <div className="flex gap-2">
-                            <Avatar style={{ backgroundColor: "#b28708" }}>
-                              {getShortName(user?.fullNameEn)}
-                            </Avatar>
+                <div className="flex gap-4 items-center">
+                  <div className="cursor-pointer relative">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="#a1810c"
+                      viewBox="0 0 256 256"
+                    >
+                      <path d="M225.29,165.93C216.61,151,212,129.57,212,104a84,84,0,0,0-168,0c0,25.58-4.59,47-13.27,61.93A20.08,20.08,0,0,0,30.66,186,19.77,19.77,0,0,0,48,196H84.18a44,44,0,0,0,87.64,0H208a19.77,19.77,0,0,0,17.31-10A20.08,20.08,0,0,0,225.29,165.93ZM128,212a20,20,0,0,1-19.6-16h39.2A20,20,0,0,1,128,212ZM54.66,172C63.51,154,68,131.14,68,104a60,60,0,0,1,120,0c0,27.13,4.48,50,13.33,68Z"></path>
+                    </svg>
+                    <div className="absolute top-[-5px] right-[-2px] h-4 w-4 rounded-full bg-[#ff4D4F] flex justify-center items-center text-[#ffffff] text-[10px]">
+                      8
+                    </div>
+                  </div>
+                  <ul className="flex items-center">
+                    <li className="flex gap-2 item-center justify-center ">
+                      <a className="lg:h-12 xl:h-14  gap-2 lg:px-2 xl:px-3 flex items-center justify-center flex-shrink-0 no-underline !text-lg !font-normal cursor-pointer">
+                        <Popover
+                          interaction="click"
+                          trigger={
+                            <div className="flex gap-2">
+                              <Avatar style={{ backgroundColor: "#b28708" }}>
+                                {getShortName(user?.fullNameEn)}
+                              </Avatar>
 
-                            <span className="flex text-sm text-slate-950 items-center justify-center">
-                              {user?.fullNameEn}
-                            </span>
-                          </div>
-                        }
-                        content={
-                          <div className="p-3  w-max flex flex-col justify-center items-center">
-                            <Button
-                              onClick={() => {
-                                localStorage.clear();
-                                navigate("/login");
-                              }}
-                              styleVariant="link"
-                              className="!px-[0.5rem]"
-                            >
-                              <>
-                                <SignOut size={16} />
-                                {"Logout"}
-                              </>
-                            </Button>
-                          </div>
-                        }
-                        offset={[0, 14]} // Example offset values
-                      />
-                    </a>
-                  </li>
-                </ul>
+                              <span className="flex text-sm text-slate-950 items-center justify-center">
+                                {user?.fullNameEn}
+                              </span>
+                            </div>
+                          }
+                          content={
+                            <div className="p-3  w-max flex flex-col justify-center items-center">
+                              <Button
+                                onClick={() => {
+                                  localStorage.clear();
+                                  navigate("/login");
+                                }}
+                                styleVariant="link"
+                                className="!px-[0.5rem]"
+                              >
+                                <>
+                                  <SignOut size={16} />
+                                  {"Logout"}
+                                </>
+                              </Button>
+                            </div>
+                          }
+                          offset={[0, 14]} // Example offset values
+                        />
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </Col>
           </Row>
         </Header>
-        <Row className="px-6" style={{background:'#514a43'}}>
+        <Row className="px-6" style={{ background: "#514a43" }}>
           <div className="header-navs  ">
-            <div className="container" style={{background:'#514a43'}}>
+            <div className="container" style={{ background: "#514a43" }}>
               <div className="flex content-between flex-wrap lg:flex-nowrap lg:justify-between lg:items-center">
                 <nav className="main-navigation" aria-label="Main navigation">
                   <div className="menu-main-menu-container">
                     <ul className="menu nav-menu lg:flex lg:items-center lg:gap-1 xl:gap-2">
                       <li className="menu-item lg:inline-flex lg:items-center has-link-icon">
                         <Link
-                          to="/investbank/applications"
+                          to="/investbank/dashboard"
                           className="hover:!text-primary-800 hover:!border-primary-800"
                         >
                           <svg
@@ -126,14 +142,14 @@ const ShellLayout: React.FC = () => {
                           <span>{"Home"}</span>
                         </Link>
                       </li>
-                   
+
                       <li className="menu-item lg:inline-flex lg:items-center">
                         {" "}
                         <Link
                           to="/investbank/applications"
                           className="hover:!text-primary-800 hover:!border-primary-800"
                         >
-                          { "Applications"}
+                          {"Applications"}
                         </Link>{" "}
                       </li>
                     </ul>
@@ -146,7 +162,7 @@ const ShellLayout: React.FC = () => {
         <Content style={{ padding: "10px 48px" }}>
           <div
             style={{
-              background: '#ffffff00',
+              background: "#ffffff00",
               minHeight: 280,
               padding: "0px 20px",
               borderRadius: borderRadiusLG,
