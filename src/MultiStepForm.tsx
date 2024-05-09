@@ -29,6 +29,7 @@ import React from "react";
 import { isValidResponse } from "./utils/Commonutils";
 import emitMessage from "./services/emitMessage";
 import { useGetApplicationByReqIDQuery, useGetFieldCommentsQuery } from "./services/hostApiServices";
+import TaskManagement from "./TaskManagement";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -834,6 +835,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
       </Steps> */}
      
       <div className={"flex justify-end gap-2"}>
+        {appData?.data?.output?.taskId&&<TaskManagement taskIdString={appData?.data?.output?.taskId} backURL={""}/>}
       {requestIDSlug?<Button sizeVariant="xs"
           onClick={() => {
             setShowComments(showComments==1 ? 0 : 1)
@@ -841,7 +843,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
         >
           Show Reviewer Comments
         </Button>:null}
-        {isSales()&&<Button sizeVariant="xs"
+        {!requestIDSlug&&isSales()&&<Button sizeVariant="xs"
           onClick={() => {
             console.log(useFormMethods.getValues());
 

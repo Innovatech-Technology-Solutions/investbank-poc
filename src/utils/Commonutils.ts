@@ -1,3 +1,5 @@
+import { TASK_BUTTONS } from "../constants/taskConstants";
+import emitMessage from "../services/emitMessage";
 
 export const getEnv = () => {
   /*Needs modification for cases where env variables are injected at build runtime i.e to window obj */
@@ -290,3 +292,108 @@ export const footerData = [
   // }
   // Add more items as needed
 ];
+export const getResponseMessage = (res: any, uiConfiguration?: any) => {
+  return (
+    res?.data?.errors &&
+    res?.status != 401 &&
+    (uiConfiguration?.BUSINESS_MESSAGES?.[
+      res?.data?.errors?.[0]?.description ||
+        res?.data?.errors?.[0]?.detail ||
+        res?.data?.errors?.[0]?.message ||
+        res?.data?.errors?.[0]?.title
+    ] ||
+      res?.data?.errors?.[0]?.description ||
+      res?.data?.errors?.[0]?.detail ||
+      res?.data?.errors?.[0]?.message ||
+      res?.data?.errors?.[0]?.title)
+  );
+};
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export const getButtonTaskBtnType = (taskStats: string) => {
+  console.log(taskStats);
+  switch (taskStats) {
+    case TASK_BUTTONS.REJECT:
+    case TASK_BUTTONS.REJECTED:
+      return 'outline';
+
+    case TASK_BUTTONS.MORE_INFO:
+
+    case TASK_BUTTONS.NEED_MORE_INFORMATION:
+    case TASK_BUTTONS.CHANGE_REQ:
+      return 'soft';
+
+    default:
+      return '';
+  }
+};
+export const getButtonTaskBtnClasses = (taskStats: string) => {
+  switch (taskStats) {
+    case TASK_BUTTONS.REJECT:
+    case TASK_BUTTONS.REJECTED:
+      return '!border-aered-500 !text-aered-500 hover:!bg-aered-500 hover:!text-whitely-100';
+
+    case TASK_BUTTONS.NEED_MORE_INFORMATION:
+    case TASK_BUTTONS.MORE_INFO:
+
+    case TASK_BUTTONS.CHANGE_REQ:
+      return '!bg-amber-500 !border !border-[#92722a]';
+
+    default:
+      return '';
+  }
+};
+// export const timeAgo = (date: string): string => {
+//   const now = moment();
+//   const inputDate = moment(date);
+
+//   const duration = moment.duration(now.diff(inputDate));
+
+//   const daysAgo = Math.floor(duration.asDays());
+//   const hoursAgo = Math.floor(duration.asHours());
+
+//   if (daysAgo > 1) {
+//     return `${daysAgo} days ago`;
+//   } else if (daysAgo === 1) {
+//     return '1 day ago';
+//   } else if (hoursAgo > 1) {
+//     return `${hoursAgo} hours ago`;
+//   } else if (hoursAgo === 1) {
+//     return '1 hour ago';
+//   } else {
+//     return 'Less than an hour ago';
+//   }
+// };
+export const listToTree = (list1: any[]) => {
+  const list = structuredClone(list1);
+
+  try {
+    const map: any = {};
+    let node: any;
+    const roots: any = [];
+    let i;
+
+    for (i = 0; i < list?.length; i += 1) {
+      map[list[i]?.id] = i; // initialize the map
+      list[i] = Object.assign({}, list?.[i], { children: [] }); // make the object extensible
+    }
+
+    for (i = 0; i < list.length; i += 1) {
+      node = list[i];
+      if (node.parentCommentId && node.parentCommentId !== '0') {
+        if (list[map?.[node?.parentCommentId] as any]?.children) {
+          list[map?.[node?.parentCommentId] as any]?.children.push(node);
+        }
+      } else {
+        roots.push(node);
+      }
+    }
+
+    return roots;
+  } catch (err: any) {
+    emitMessage(err, 'error');
+  }
+};
