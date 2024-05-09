@@ -28,7 +28,7 @@ const onRequest = (
     return config;
   }
 
-  if (isTokenRequired && authToken) {
+  if (isTokenRequired && authToken&&!config?.url?.includes('usermgmt/usermgmtsupport/Login')) {
     config.headers['Authorization'] = `Bearer ${authToken}`;
     return config;
   }
