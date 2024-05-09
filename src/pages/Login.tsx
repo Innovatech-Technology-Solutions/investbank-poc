@@ -6,6 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 import { LoadingOutlined } from '@ant-design/icons';
 import {useNavigate} from 'react-router-dom'
+import React from "react";
 
 
 const Login = () => {
@@ -100,6 +101,7 @@ const Login = () => {
             >
               <Input
                 placeholder="Username"
+                autoComplete="new-password"
                 size="large"
                 prefix={
                   <svg
@@ -124,6 +126,8 @@ const Login = () => {
               <Input.Password
                 size="large"
                 placeholder="Password"
+                autoComplete="new-password"
+
                 prefix={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

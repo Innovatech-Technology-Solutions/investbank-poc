@@ -124,7 +124,7 @@ const MultiStepForm = () => {
     homeLandLine: z.string(),
     job: z.string(),
     jobLocation: z.string(),
-    monthlySalary: z.string(),
+    monthlySalary: z.any(),
     incomeSource: z.string(),
     otherIncomeSources: z.string(),
     transactionSizePerAccount: z.string(),
@@ -838,7 +838,7 @@ const MultiStepForm = () => {
 
             const apiUrl = `${
               import.meta.env.VITE_BASE_URL
-            }/gateway/Investbankpoc/InvestBankPoc`;
+            }/gateway/Investbankpoc/InvestBankPoc?action=submit`;
 
             // Define your headers
             const headers = {
@@ -846,7 +846,7 @@ const MultiStepForm = () => {
               Authorization: `Bearer ${getBearerToken()}`, // Include the Bearer token
             };
 const payload=structuredClone(useFormMethods.getValues())
-payload["action"]='submit'
+payload["status"]='submitted'
             // Make the POST request
             axios
               .post(apiUrl, payload, { headers })
@@ -1031,7 +1031,7 @@ payload["action"]='submit'
                                               name={name}
                                               id={name}
                                               label={placeholder}
-                                              picker="year"
+                                              picker="date"
                                               onChange={(_date, value) => {
                                                 onChange(value);
                                               }}
@@ -1162,7 +1162,7 @@ payload["action"]='submit'
                                               name={name}
                                               id={name}
                                               label={placeholder}
-                                              picker="year"
+                                              picker="date"
                                               onChange={(_date, value) => {
                                                 onChange(value);
                                               }}
@@ -1283,7 +1283,7 @@ payload["action"]='submit'
                                             name={name}
                                             id={name}
                                             label={placeholder}
-                                            picker="year"
+                                            picker="date"
                                             onChange={(_date, value) => {
                                               onChange(value);
                                             }}
@@ -1403,7 +1403,7 @@ payload["action"]='submit'
                                             name={name}
                                             id={name}
                                             label={placeholder}
-                                            picker="year"
+                                            picker="date"
                                             onChange={(_date, value) => {
                                               onChange(value);
                                             }}
@@ -1545,7 +1545,7 @@ payload["action"]='submit'
                                               name={name}
                                               id={name}
                                               label={placeholder}
-                                              picker="year"
+                                              picker="date"
                                               onChange={(_date, value) => {
                                                 onChange(value);
                                               }}
@@ -1666,7 +1666,7 @@ payload["action"]='submit'
                                             name={name}
                                             id={name}
                                             label={placeholder}
-                                            picker="year"
+                                            picker="date"
                                             onChange={(_date, value) => {
                                               onChange(value);
                                             }}

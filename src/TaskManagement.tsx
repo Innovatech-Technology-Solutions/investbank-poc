@@ -3,21 +3,23 @@ import {
   useGetInterfaceByIDQuery,
   useGetTaskActionQuery,
   usePerformActionMutation,
-} from './services/hostApiServices';
+} from '../services/hostApiServices';
 import { UseFormReturn } from 'react-hook-form';
-import { ITasks, TaskConfig, TaskData } from './dto/task.dto';
+import { ITasks, TaskConfig, TaskData } from '../dto/task.dto';
 import {
   getButtonTaskBtnClasses,
   getButtonTaskBtnType,
   getResponseMessage,
   isValidApiResponse,
   isValidResponse,
-} from './utils/Commonutils';
+} from '../utils/Commonutils';
 import TaskConfirmationModal from './TaskConfirmationModal';
+import useLanguage from '../hooks/useLanguage';
 import { UPDATE_REQUEST_DETAILS_TASK_ACTIONS } from '../constants/taskConstants';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { CircleNotch } from '@phosphor-icons/react';
+import emitMessage from '../services/emitMessage';
 type IProps = {
   taskIdString: string;
   isModal?: boolean;
@@ -124,10 +126,10 @@ const TaskManagement = ({
         setShowModal(false);
         navigate(backURL);
       } else {
-        // emitMessage(getResponseMessage(res, uiConfiguration) || 'Something went wrong', 'error');
+        emitMessage(getResponseMessage(res, uiConfiguration) || 'Something went wrong', 'error');
       }
     } catch (err) {
-      // emitMessage(getResponseMessage(err, uiConfiguration) || 'Something went wrong', 'error');
+      emitMessage(getResponseMessage(err, uiConfiguration) || 'Something went wrong', 'error');
     }
   };
 
@@ -168,7 +170,7 @@ const TaskManagement = ({
           }
         })
         .catch((error: any) => {
-          // emitMessage(error, 'error');
+          emitMessage(error, 'error');
         });
     } else {
       perFormAction(input);

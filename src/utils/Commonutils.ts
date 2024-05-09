@@ -5,7 +5,14 @@ export const getEnv = () => {
 };
 
 export const getBaseURL = () => getEnv()?.VITE_BASE_URL;
-
+export const logout = (callback?: () => void) => {
+  localStorage.clear();
+  sessionStorage.clear();
+  if (callback) {
+    callback();
+  }
+  
+};
 
 export const isValidResponse = (res: any) => {
   return res && res?.status === 200 && res?.data?.errors && res?.data?.errors?.[0]?.code === '0'
