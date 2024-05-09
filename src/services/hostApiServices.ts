@@ -378,6 +378,19 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
       keepUnusedDataFor: 0,
     }),
 
+    postFieldComment: builder.mutation({
+      query: (data) => ({
+        url: `/adminmgmt/fieldcomments/FieldComments`,
+        method: 'POST',
+        data,
+      }),
+    }),
+    getApplicationByReqID: builder.query<any, string>({
+      query: (reqId) => ({
+        url: `/gateway/Investbankpoc/InvestBankPoc/${reqId}`,
+        method: 'GET',
+      }),
+    }),
     updateApplicantProfile: builder.mutation({
       query: ({ id, data }) => ({
         url: `/szhp/applicantprofile/ApplicantProfile/${id}`,
@@ -430,5 +443,7 @@ export const {
   useLazyGetSearchInternalUsersQuery,
   useSearchUsersQuery,
   useLazySearchUsersQuery,
-  useGetMyApplicationsQuery
+  useGetMyApplicationsQuery,
+  useGetApplicationByReqIDQuery,
+  usePostFieldCommentMutation
 } = hostApiServices;
