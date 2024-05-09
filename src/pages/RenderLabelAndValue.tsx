@@ -11,6 +11,7 @@ import { useParams } from "react-router";
 import { isValidApiResponse, isValidResponse } from "../utils/Commonutils";
 import emitMessage from "../services/emitMessage";
 import { isOperation } from "../commonuitils";
+import React from "react";
 const RenderLabelAndValue = ({
   label,
   value,
@@ -114,7 +115,7 @@ const[postFieldComment]=usePostFieldCommentMutation()
         />
       ) : null}
 
-      <div id={`${fieldKey}`}
+      <div 
         onMouseEnter={() => setShowCommentIcon(true)}
         onMouseLeave={() => setShowCommentIcon(false)}
         className={`flex flex-col justify-start gap-1 ${fieldKey} ${className}`}
@@ -151,8 +152,7 @@ const[postFieldComment]=usePostFieldCommentMutation()
               valueStyles ? valueStyles : "text-justify"
             }`}
           >
-            {value}
-          </div>
+<span id={`${fieldKey}`}>{value}</span>          </div>
         )}
       </div>
     </>
