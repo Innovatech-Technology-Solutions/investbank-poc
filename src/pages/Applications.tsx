@@ -22,7 +22,7 @@ const Applications = () => {
     const { data, isFetching, isLoading,isSuccess } = apiData;
     
     function capitalizeFirstLetter(string) {
-      if(string)
+      if([null,undefined,''].includes(string))return ''
       return string?.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
     
@@ -49,6 +49,8 @@ const Applications = () => {
     {
       title: 'Name',
       dataIndex: 'fullNameEn',
+      render:(item)=><span className='capitalize'>{capitalizeFirstLetter(item)}</span>
+
     },
     {
       title: 'Mobile',
@@ -57,7 +59,7 @@ const Applications = () => {
     {
       title: 'Nationality',
       dataIndex: 'nationality',
-      render:(item)=><span className='capitalize'>{item}</span>
+      render:(item)=><span className='capitalize'>{capitalizeFirstLetter(item)}</span>
 
     },
     {
