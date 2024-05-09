@@ -59,61 +59,60 @@ const[postFieldComment]=usePostFieldCommentMutation()
   return (
     <>
       {showModal ? (
-        // <Modal
-        //   showFooter={false}
-        //   body={
-        //     <form onSubmit={handleSubmit}>
-        //       <div className="pb-2">
-        //         <SectionHeader title={"Comment"} />
-        //       </div>
+        <Modal
+          showFooter={false}
+          body={
+            <form onSubmit={handleSubmit}>
+              <div className="pb-2">
+                <SectionHeader title={"Comment"} />
+              </div>
 
-        //       <TextArea
-        //         value={comment}
-        //         onChange={handleChange}
-        //         rows={4}
-        //         cols={50}
-        //         placeholder="Enter your comment here"
-        //         required
-        //         id={"comment"}
-        //         name={"comment"}
-        //         isError={false}
-        //       />
-        //       <div className="flex gap-2  justify-end pt-2">
-        //         <Button type="button" onClick={handleCancel}>
-        //           Close
-        //         </Button>
-        //         <Button type="submit" onClick={async()=>
-        //         {
+              <TextArea
+                value={comment}
+                onChange={handleChange}
+                rows={4}
+                cols={50}
+                placeholder="Enter your comment here"
+                required
+                id={"comment"}
+                name={"comment"}
+                isError={false}
+              />
+              <div className="flex gap-2  justify-end pt-2">
+                <Button type="button" onClick={handleCancel}>
+                  Close
+                </Button>
+                <Button type="submit" onClick={async()=>
+                {
 
-        //           try{
-        //             const res=await postFieldComment(
+                  try{
+                    const res=await postFieldComment(
 
-        //             {
+                    {
                      
-        //               "requestId": requestIDSlug,
+                      "requestId": requestIDSlug,
                      
-        //               "comment": comment,
+                      "comment": comment,
                      
-        //               "fieldId":fieldKey||field ,
-        //             }
-        //           ).unwrap()
-        //           console.log("tt",res)
-        //           if(isValidResponse(res))
-        //           {
-        //             emitMessage("Addedd Comment Successfully",'success')
-        //             refetch()
-        //           }
-        //           }
-        //           catch(e)
-        //           {
-        //             //
-        //           }
-        //         }}>Save</Button>
-        //       </div>
-        //     </form>
-        //   }
-        // />
-        <></>
+                      "fieldId":fieldKey||field ,
+                    }
+                  ).unwrap()
+                  console.log("tt",res)
+                  if(isValidResponse(res))
+                  {
+                    emitMessage("Addedd Comment Successfully",'success')
+                    refetch()
+                  }
+                  }
+                  catch(e)
+                  {
+                    //
+                  }
+                }}>Save</Button>
+              </div>
+            </form>
+          }
+        />
       ) : null}
 
       <div 

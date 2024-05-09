@@ -209,7 +209,7 @@ const TaskManagement = ({
                   >
                     {config?.map((button: any, i: number) => {
                       return (
-                        <Button
+                        <Button sizeVariant='xs'
                           disabled={checkButtonDisabled(button?.button, button?.actionName)}
                           key={i}
                           onClick={() => {
