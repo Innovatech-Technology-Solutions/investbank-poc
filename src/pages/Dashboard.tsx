@@ -117,15 +117,15 @@ const Dashboard = () => {
     fill: {
       type: "fill",
     },
-    colors: ["#A0D4AB", "#FFE5A3", "#F78682"],
+    colors: ["#8BC34A", "#ffa500", "#f44336"],
   };
 
   const series2 = [
     {
       data: [
-        { x: "Approved", y: 24, fillColor: "#A0D4AB" },
-        { x: "Rejected", y: 48, fillColor: "#FFE5A3" },
-        { x: "Pending", y: 72, fillColor: "#F78682" },
+        { x: "Approved", y: 24, fillColor: "#8BC34A" },
+        { x: "Pending", y: 72, fillColor: "#ffa500" },
+        { x: "Rejected", y: 48, fillColor: "#f44336" },
       ],
     },
   ];
@@ -153,7 +153,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-[2fr_1fr] gap-6 max-xl:grid-cols-1">
         <section className="flex flex-col gap-6">
           <div className="flex flex-row gap-2 items-center max-lg:flex-col w-full">
-            <div className="w-full bg-[#343434] rounded-xl px-4 py-8 flex justify-center items-center">
+            <div className="w-full bg-[#514a43] rounded-xl px-4 py-8 flex justify-center items-center">
               <div className="flex items-center gap-8 justify-between">
                 <div className="relative">
                   <Progress
@@ -180,7 +180,7 @@ const Dashboard = () => {
                   <div className="text-[#ffffff] font-[600] text-[25px]">
                     10,340
                   </div>
-                  <div className="text-[#ffffff] font-[400] text-[12px]">
+                  <div className="text-[#ffffff] font-[400] text-[13px]">
                     Total Application Requests
                   </div>
                 </div>
@@ -202,11 +202,11 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full bg-[#343434] rounded-xl px-4 py-8 flex justify-center items-center">
+            <div className="w-full bg-[#514a43] rounded-xl px-4 py-8 flex justify-center items-center">
               <div className="flex items-center gap-4 justify-between">
                 <div className="border-r-[#EAECF0] border-r-[1px] pr-2">
                   <div className="flex flex-col justify-between items-center">
-                    <div className="text-[#ffffff] font-[400] text-[12px] whitespace-nowrap">
+                    <div className="text-[#ffffff] font-[400] text-[13px] whitespace-nowrap">
                       Approved Applications
                     </div>
                     <div className="font-[600] text-[25px] text-[#76BD85]">
@@ -216,7 +216,7 @@ const Dashboard = () => {
                 </div>
                 <div className="border-r-[#EAECF0] border-r-[1px] pr-2">
                   <div className="flex flex-col justify-between items-center">
-                    <div className="text-[#ffffff] font-[400] text-[12px] whitespace-nowrap">
+                    <div className="text-[#ffffff] font-[400] text-[13px] whitespace-nowrap">
                       Pending Applications
                     </div>
                     <div className="text-[#FC7B45] font-[600] text-[25px]">
@@ -226,7 +226,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <div className="flex flex-col justify-between items-center">
-                    <div className="text-[#ffffff] font-[400] text-[12px] whitespace-nowrap">
+                    <div className="text-[#ffffff] font-[400] text-[13px] whitespace-nowrap">
                       Rejected Applications
                     </div>
                     <div className="text-[#FD524C] font-[600] text-[25px]">
