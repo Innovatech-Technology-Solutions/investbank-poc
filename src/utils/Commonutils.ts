@@ -1,3 +1,4 @@
+import moment from "moment";
 import { TASK_BUTTONS } from "../constants/taskConstants";
 import emitMessage from "../services/emitMessage";
 
@@ -346,27 +347,27 @@ export const getButtonTaskBtnClasses = (taskStats: string) => {
       return '';
   }
 };
-// export const timeAgo = (date: string): string => {
-//   const now = moment();
-//   const inputDate = moment(date);
+export const timeAgo = (date: string): string => {
+  const now = moment();
+  const inputDate = moment(date);
 
-//   const duration = moment.duration(now.diff(inputDate));
+  const duration = moment.duration(now.diff(inputDate));
 
-//   const daysAgo = Math.floor(duration.asDays());
-//   const hoursAgo = Math.floor(duration.asHours());
+  const daysAgo = Math.floor(duration.asDays());
+  const hoursAgo = Math.floor(duration.asHours());
 
-//   if (daysAgo > 1) {
-//     return `${daysAgo} days ago`;
-//   } else if (daysAgo === 1) {
-//     return '1 day ago';
-//   } else if (hoursAgo > 1) {
-//     return `${hoursAgo} hours ago`;
-//   } else if (hoursAgo === 1) {
-//     return '1 hour ago';
-//   } else {
-//     return 'Less than an hour ago';
-//   }
-// };
+  if (daysAgo > 1) {
+    return `${daysAgo} days ago`;
+  } else if (daysAgo === 1) {
+    return '1 day ago';
+  } else if (hoursAgo > 1) {
+    return `${hoursAgo} hours ago`;
+  } else if (hoursAgo === 1) {
+    return '1 hour ago';
+  } else {
+    return 'Less than an hour ago';
+  }
+};
 export const listToTree = (list1: any[]) => {
   const list = structuredClone(list1);
 

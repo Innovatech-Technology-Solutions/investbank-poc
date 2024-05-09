@@ -7,10 +7,10 @@ import * as Yup from 'yup';
 import 'quill-mention';
 import React, { useEffect, useRef, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getResponseMessage, isValidResponse } from '../utils/Commonutils';
-import { useSubmitCommentMutation, useUpdateCommentMutation } from '../services/hostApiServices';
+import { getResponseMessage, isValidResponse } from './utils/Commonutils';
+import { useSubmitCommentMutation, useUpdateCommentMutation } from './services/hostApiServices';
 import Button from './Button';
-import emitMessage from '../services/emitMessage';
+import emitMessage from './services/emitMessage';
 
 interface IComment {
   id?: string | null;

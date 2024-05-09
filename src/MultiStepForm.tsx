@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState,  forwardRef } from "react";
 import LeaderLine from "react-leader-line";
+import HistoryComments from "./HistoryComments"
+import {  orderBy } from 'lodash';
+
 
 import {
   Steps,
@@ -26,9 +29,9 @@ import Preview from "./Preview";
 import {useNavigate, useParams} from 'react-router-dom'
 import { decodeToken, isSales } from "./commonuitils";
 import React from "react";
-import { isValidResponse } from "./utils/Commonutils";
+import { getResponseMessage, isValidApiResponse, isValidResponse } from "./utils/Commonutils";
 import emitMessage from "./services/emitMessage";
-import { useGetApplicationByReqIDQuery, useGetFieldCommentsQuery } from "./services/hostApiServices";
+import { useGetApplicationByReqIDQuery, useGetAuditHistoryByIDQuery, useGetFieldCommentsQuery } from "./services/hostApiServices";
 import TaskManagement from "./TaskManagement";
 import BreadCrumbs from "./BreadCrumbs";
 const { Step } = Steps;
@@ -820,6 +823,17 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
       description: "Form Submitted Successfully",
     });
   };
+
+  const auditHistoryApiRes = useGetAuditHistoryByIDQuery(requestIDSlug as any ,{skip:[null,undefined,''].includes(requestIDSlug)});
+  const { data: auditHistoryData } = auditHistoryApiRes;
+  if (!isValidApiResponse(auditHistoryApiRes)) {
+    emitMessage(
+      getResponseMessage('something went wrong',
+      'error',
+    ))
+  }
+  const auditHistory = orderBy(auditHistoryData?.data?.auditHistory, 'queuedDate', 'desc');
+
   return (
     <ConfigProvider
       theme={{
@@ -1762,6 +1776,7 @@ payload["status"]='submitted'
         {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output||[]} viewCommentRef={viewCommentRef}/>}
       </div>
       </div>
+      {requestIDSlug&&<HistoryComments requestId={requestIDSlug as string} allActivities={auditHistory} />}
     </ConfigProvider>
   );
 };

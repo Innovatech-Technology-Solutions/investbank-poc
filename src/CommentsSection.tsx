@@ -6,10 +6,10 @@ import 'quill-mention';
 // import { Card } from 'antd';
 // import { CardContent } from '@mui/material';
 import CommentBox from './CommentsBox';
-import { useLazyGetAllCommentsByRequestIdQuery } from '../services/hostApiServices';
-import { getResponseMessage, isValidResponse, listToTree } from '../utils/Commonutils';
+import { useLazyGetAllCommentsByRequestIdQuery } from './services/hostApiServices';
+import { getResponseMessage, isValidResponse, listToTree } from './utils/Commonutils';
 // import { Card } from 'antd';
-import emitMessage from '../services/emitMessage';
+import emitMessage from './services/emitMessage';
 import { CircleNotch } from '@phosphor-icons/react';
 
 type IProps = {
