@@ -112,3 +112,15 @@
 .ql-toolbar.ql-snow {
   border-radius: 5px 5px 0px 0px !important;
 }
+
+.ql-editor{
+  min-height: 100px !important;
+}
+
+.ql-editor p {
+font-size: 14px !important;
+}
+
+.commentbg div {
+  background: #fffbdd !important;
+}

@@ -790,12 +790,17 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
     }
   ];
 
-  const viewCommentRef=(commentId:string)=>{
-    console.log(commentId, document.getElementById(`comment_${commentId}`), document.getElementById(commentId))
-  let line =
-    new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true});
-  console.log(line)
-  }
+  const viewCommentRef=(line:any)=>{
+  // let line =
+  //  new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true});
+  line.show();
+
+}
+
+  const commentRef=(commentId:string)=>{
+    // let line =
+    return new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true, hide: true});
+    }
   
 
   const handleNext = () => {
@@ -1773,7 +1778,7 @@ payload["status"]='submitted'
       </div>
       </div> */}
         </Card>
-        {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output||[]} viewCommentRef={viewCommentRef}/>}
+        {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output||[]} viewCommentRef={viewCommentRef} commentRef={commentRef}/>}
       </div>
       </div>
       {requestIDSlug&&<HistoryComments requestId={requestIDSlug as string} allActivities={auditHistory} />}

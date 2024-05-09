@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface CommentType {
   id: string;
@@ -14,20 +14,23 @@ interface CommentType {
 interface FieldCommentsProps {
   comments: CommentType[];
   viewCommentRef: any;
+  commentRef:any;
 }
 
 const FieldComments: React.FC<FieldCommentsProps> = ({
   comments,
   viewCommentRef,
+  commentRef
 }) => {
   return (
    comments && comments?.length > 0 ?
-    <div className="flex-col" style={{ width: "35%", cursor: "pointer" }}>
+    <div className="flex-col commentbg" style={{ width: "35%", cursor: "pointer" }}>
       {comments.map((comment) => (
         <Comment
           key={comment.id}
           data={comment}
           viewCommentRef={viewCommentRef}
+          commentRef={commentRef}
         />
       ))}
     </div> :
@@ -42,14 +45,21 @@ const FieldComments: React.FC<FieldCommentsProps> = ({
 interface CommentProps {
   data: CommentType;
   viewCommentRef: any;
+  commentRef:any;
 }
 
-const Comment: React.FC<CommentProps> = ({ data, viewCommentRef }) => {
+const Comment: React.FC<CommentProps> = ({ data, viewCommentRef, commentRef }) => {
+  const [line, setLine] = useState(null);
+
+  useEffect(()=>{
+    setLine(commentRef(`${data.fieldId}`))
+  },[])
+
   return (
     <Card
       className="mb-2 comment"
       id={`comment_${data.fieldId}`}
-      onClick={() => viewCommentRef(`${data.fieldId}`)}
+      onClick={() => viewCommentRef(`${line}`)}
     >
       <blockquote className="aegov-quote" style={{ padding: "5%" }}>
         <svg
