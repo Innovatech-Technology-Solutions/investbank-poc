@@ -1760,5 +1760,4 @@ payload["status"]='submitted'
     </ConfigProvider>
   );
 };
-
 export default MultiStepForm;
