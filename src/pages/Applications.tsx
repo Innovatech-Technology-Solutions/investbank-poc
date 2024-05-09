@@ -4,7 +4,7 @@ import Commontable from './Commontable';
 import { Link } from 'react-router-dom';
 import { TagChevron } from '@phosphor-icons/react';
 import { useGetMyApplicationsQuery } from '../services/hostApiServices';
-import { Empty } from 'antd';
+import { Badge, Empty, Tag } from 'antd';
 import Button from '../Button';
 import {useNavigate} from "react-router-dom"
 import React from 'react';
@@ -19,7 +19,9 @@ const Applications = () => {
     const navigate=useNavigate()
     const { data, isFetching, isLoading,isSuccess } = apiData;
     
-
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
     
     // if (!isValidApiResponse(apiData)) {
     //   emitMessage(getResponseMessage(data, uiConfiguration), 'error');
@@ -63,8 +65,15 @@ const Applications = () => {
     {
       title: 'Status',
       dataIndex: 'status',
-      render:(item)=><span className='capitalize'>{item}</span>
+      render: status => (
+        <span>
+        {capitalizeFirstLetter(status )=== 'Approved' && 
+        <Tag color="green">{capitalizeFirstLetter(status)}</Tag>}
+        {capitalizeFirstLetter(status ) === 'Rejected' &&         <Tag color="red">{capitalizeFirstLetter(status)}</Tag>}
 
+        {capitalizeFirstLetter(status ) !== 'Approved' && capitalizeFirstLetter(status ) !== 'Rejected' && capitalizeFirstLetter(status)}
+      </span>
+      ),
     },
   ];
 
