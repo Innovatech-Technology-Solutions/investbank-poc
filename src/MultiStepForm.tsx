@@ -786,8 +786,8 @@ const MultiStepForm = () => {
   ];
 
   const viewCommentRef=(commentId:string)=>{
-    new LeaderLine(document.getElementById(commentId), document.getElementById(`comment_${commentId}`), {dash: true});
-
+  let line =  new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true});
+  // line.remove();
   }
   
 
