@@ -35,6 +35,7 @@ import emitMessage from "./services/emitMessage";
 import { useGetApplicationByReqIDQuery, useGetAuditHistoryByIDQuery, useGetFieldCommentsQuery } from "./services/hostApiServices";
 import TaskManagement from "./TaskManagement";
 import BreadCrumbs from "./BreadCrumbs";
+import RecordVideo from "./RecordVideo";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -1508,7 +1509,7 @@ payload["status"]='submitted'
                     accordianIndex: 5,
                     content: (
                       <div>
-                        <div>
+                        {/* <div>
                           <div className="flex flex-end gap-2">
                             <Button onClick={startRecording}>
                               Start Recording
@@ -1527,7 +1528,8 @@ payload["status"]='submitted'
                               </div>
                             )}
                           </div>
-                        </div>
+                        </div> */}
+                        <RecordVideo/>
 
                         <div
                           id="stepidx-5"
