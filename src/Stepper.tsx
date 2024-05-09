@@ -23,6 +23,11 @@ const Stepper = ({ stepperItems, clickedIndex }: StepperProps) => {
     if(clickedIndex){
       clickedIndex(index)
     }
+    setTimeout(() => {
+      document
+        .getElementById(`stepidx-${index}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }, 10);
   }
 
   const RenderLinkStage = ({ label, stage, stepperIndex, isLastItem,isActive, path }: StepperItem) => {

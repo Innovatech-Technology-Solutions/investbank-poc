@@ -1110,7 +1110,7 @@ payload["status"]='submitted'
                       <>
                         {" "}
                         <div
-                          id="stepidx-1"
+                          id="stepidx-2"
                           className={
                             "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                           }
@@ -1229,7 +1229,7 @@ payload["status"]='submitted'
                     accordianIndex: 3,
                     content: (
                       <div
-                        id="stepidx-1"
+                        id="stepidx-3"
                         className={
                           "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                         }
@@ -1347,7 +1347,7 @@ payload["status"]='submitted'
                     accordianIndex: 4,
                     content: (
                       <div
-                        id="stepidx-1"
+                        id="stepidx-4"
                         className={
                           "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                         }
@@ -1518,7 +1518,7 @@ payload["status"]='submitted'
                         </div>
 
                         <div
-                          id="stepidx-1"
+                          id="stepidx-5"
                           className={
                             "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                           }
@@ -1637,7 +1637,7 @@ payload["status"]='submitted'
                     accordianIndex: 6,
                     content: (
                       <div
-                        id="stepidx-1"
+                        id="stepidx-6"
                         className={
                           "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                         }
