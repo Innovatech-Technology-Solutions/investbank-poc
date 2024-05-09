@@ -8,6 +8,7 @@ interface CommentType {
   comment: string;
   createdBy: string;
   createdDate: string;
+  fullNameEn:string
 }
 
 interface FieldCommentsProps {
@@ -62,7 +63,7 @@ const Comment: React.FC<CommentProps> = ({ data, viewCommentRef }) => {
         </svg>
         <p style={{ fontSize: "12px" }}>{data.comment}</p>
         <div className="quote-footer">
-          <div className="quote-author">{data.createdBy}</div>
+          <div className="quote-author">{data.fullNameEn}</div>
           <div className="quote-cite">{data.createdDate}</div>
         </div>
       </blockquote>

@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import CommentsSection from './CommentsSection';
-import useLanguage from '../hooks/useLanguage';
-import { useGetInterfaceByIDQuery } from '../services/hostApiServices';
+import useLanguage from './hooks/useLanguage';
+import { useGetInterfaceByIDQuery } from './services/hostApiServices';
 import RequestHistory from './RequestHistory';
 import Tabs from './Tabs';
 interface IProps {
