@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState,  forwardRef } from "react";
@@ -46,6 +47,7 @@ const { Option } = Select;
 //     {children}
 //   </div>
 // ));
+const randID=crypto.getRandomValues(new Uint32Array(1))[0]/2**32
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -785,7 +787,6 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
   const commentRef=(commentId:string)=>{
     return new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`), "draw"),document.getElementById(commentId),  {dash: true, hide: true});
     }
-  
 
   const handleNext = () => {
     form.validateFields().then(() => {
@@ -806,13 +807,59 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
 
   const [api, contextHolder] = notification.useNotification();
 
+
   const openNotificationWithIcon = (type: NotificationType) => {
     api[type]({
       message: "Success",
       description: "Form Submitted Successfully",
     });
   };
+  const taskUpdate = async () => {
+    const data: any = useFormMethods.getValues();
+    return new Promise(async (resolve, reject) => {
+        
+         
 
+
+          const apiUrl = `${
+            import.meta.env.VITE_BASE_URL
+          }/gateway/Investbankpoc/InvestBankPoc?action=RESUBMIT`;
+
+          // Define your headers
+          const headers = {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getBearerToken()}`, // Include the Bearer token
+          };
+const payload=structuredClone(useFormMethods.getValues())
+payload["status"]='submitted'
+payload.attachments = [{ requestId: data?.requestId }];
+// Make the POST request
+          axios
+            .post(apiUrl, payload, { headers })
+            .then((response: any) => {
+              // Handle success
+            if(isValidResponse(response))
+            {
+              resolve(true);
+
+              emitMessage("Submitted successfully",'success')
+              setTimeout(()=>{
+                
+              })
+              navigate("/investbank/applications")
+            }
+            else{              resolve(false);
+            }
+            })
+            .catch(e=>
+              {
+                reject(false);
+                emitMessage(
+                   'Unable to submit form at the moment',
+                  'error')
+              })
+            
+            })}
   const auditHistoryApiRes = useGetAuditHistoryByIDQuery(requestIDSlug as any ,{skip:[null,undefined,''].includes(requestIDSlug)});
   const { data: auditHistoryData } = auditHistoryApiRes;
   if (!isValidApiResponse(auditHistoryApiRes)) {
@@ -842,7 +889,11 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
       <div style={{background:'white',     padding: '2%',borderRadius: '6px'}}>
      
       <div className={"flex justify-end gap-2 border-b  pb-2"} >
-        {appData?.data?.output?.taskId&&<TaskManagement taskIdString={appData?.data?.output?.taskId} backURL={"/investbank/applications"}/>}
+        {appData?.data?.output?.taskId&&<TaskManagement
+        
+        updateApiCall={taskUpdate}
+        isUpdateDetailsOnTaskUpdate={true}
+        taskIdString={appData?.data?.output?.taskId} backURL={"/investbank/applications"}/>}
       {requestIDSlug?<div   style={{cursor:'pointer'}}
           onClick={() => {
             setShowComments(showComments==1 ? 0 : 1)
@@ -880,7 +931,8 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
             };
 const payload=structuredClone(useFormMethods.getValues())
 payload["status"]='submitted'
-            // Make the POST request
+payload.attachments = [{ requestId: randID }];
+// Make the POST request
             axios
               .post(apiUrl, payload, { headers })
               .then((response: any) => {
@@ -1515,7 +1567,7 @@ payload["status"]='submitted'
                             )}
                           </div>
                         </div> */}
-                        <RecordVideo/>
+                        <RecordVideo randID={randID as any}/>
 
                         <div
                           id="stepidx-5"

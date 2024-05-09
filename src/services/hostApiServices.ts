@@ -333,8 +333,8 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
       query: (id: string) => ({
         url: `${
           localStorage.getItem('token')
-            ? '/adminmgmt/attachmentConfig/AttachmentConfiguration'
-            : '/moeimgmt/supportingservices/getAttachmentConfigById'
+            ? '/api/adminmgmt/attachmentConfig/AttachmentConfiguration'
+            : '/api/moeimgmt/supportingservices/getAttachmentConfigById'
         }/${id}`,
         method: 'GET',
       }),
@@ -361,8 +361,8 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     uploadAttchment: builder.mutation({
       query: (data) => ({
         url: localStorage.getItem('token')
-          ? '/common/attachment/Attachment'
-          : '/moeimgmt/supportingservices/uploadAttachment',
+          ? '/api/common/attachment/Attachment'
+          : '/api/moeimgmt/supportingservices/uploadAttachment',
         method: 'POST',
         data,
       }),
@@ -371,8 +371,8 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     downloadFile: builder.query({
       query: (id: string) => ({
         url: localStorage.getItem('token')
-          ? `/common/attachment/Attachment/` + id
-          : `/moeimgmt/supportingservices/downloadAttachment/` + id,
+          ? `/api/common/attachment/Attachment/` + id
+          : `/api/moeimgmt/supportingservices/downloadAttachment/` + id,
         method: 'GET',
       }),
       keepUnusedDataFor: 0,

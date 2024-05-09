@@ -11,6 +11,7 @@ import React from 'react';
 import { isSales } from '../commonuitils';
 import BreadCrumbs from '../BreadCrumbs';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import Loader from '../Loader';
 
 // import { isValidApiResponse } from '../utils/Commonutils';
 // import emitMessage from '../services/emitMessage';
@@ -95,7 +96,9 @@ const Applications = () => {
       ),
     },
   ];
-
+if(isLoading||isFetching) return <div className='flex h-[50vh] justify-center items-center'>
+<Loader/>
+</div>
   return <>
   <div className='flex flex-col items-start md:flex-row md:items-center justify-between py-3'>
       <div className='flex gap-2 items-center'>
@@ -110,7 +113,7 @@ const Applications = () => {
       },
      
 
-    ]} homePath={'#'}/>
+    ]} homePath={'/investbank/dashboard'}/>
     </div>
   </div>
   {data?.data?.output?.length>0&&isSuccess?
