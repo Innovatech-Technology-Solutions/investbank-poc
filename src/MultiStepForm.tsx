@@ -766,7 +766,7 @@ const MultiStepForm = () => {
     {
       id: '2',
       requestId: 'REQ002',
-      fieldId: 'addressVerification',
+      fieldId: 'primeCustomer',
       comment: 'Another sample comment',
       createdBy: 'Dua Lipa',
       createdDate: '30-03-2023'
@@ -782,8 +782,10 @@ const MultiStepForm = () => {
   ];
 
   const viewCommentRef=(commentId:string)=>{
-  let line =  new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true});
-  // line.remove();
+    console.log(commentId, document.getElementById(`comment_${commentId}`), document.getElementById(commentId))
+  let line =
+    new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true});
+  console.log(line)
   }
   
 

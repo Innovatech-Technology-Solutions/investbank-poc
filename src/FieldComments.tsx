@@ -36,7 +36,7 @@ const Comment: React.FC<CommentProps> = ({ data,viewCommentRef }) => {
       <blockquote className="aegov-quote"
 style={{padding:'5%'}}      >
         <svg
-          class="quote-icon"
+          className="quote-icon"
           width="11"
           height="11"
           viewBox="0 0 48 48"
@@ -51,9 +51,9 @@ style={{padding:'5%'}}      >
         <p style={{fontSize:'12px'}}>
         {data.comment}
         </p>
-        <div class="quote-footer">
-          <div class="quote-author">{data.createdBy}</div>
-          <div class="quote-cite">{data.createdDate}</div>
+        <div className="quote-footer">
+          <div className="quote-author">{data.createdBy}</div>
+          <div className="quote-cite">{data.createdDate}</div>
         </div>
       </blockquote>
     </Card>
