@@ -841,7 +841,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
         >
           Show Reviewer Comments
         </Button>:null}
-        <Button sizeVariant="xs"
+        {isSales()&&<Button sizeVariant="xs"
           onClick={() => {
             console.log(useFormMethods.getValues());
 
@@ -874,7 +874,7 @@ payload["status"]='submitted'
           }}
         >
           Submit
-        </Button>
+        </Button>}
       </div>
 
       <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
