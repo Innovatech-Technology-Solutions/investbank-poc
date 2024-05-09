@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .background-container {
   position: relative;
   width: 100%; /* Adjust the width as needed */
