@@ -31,7 +31,7 @@ const FieldComments: React.FC<FieldCommentsProps> = ({
         />
       ))}
     </div> :
-    <div>2323</div> 
+    <div></div> 
   );
 };
 
