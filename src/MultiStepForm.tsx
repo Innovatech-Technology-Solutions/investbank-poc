@@ -836,24 +836,9 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
         ))}
       </Steps> */}
 
-<div className='flex flex-col items-start md:flex-row md:items-center justify-between py-3'>
-      <div className='flex gap-2 items-center'>
-        
-        <h2 className='text-lg text-blue-600 text-primary-600'>{"Application Form"}</h2>
-      </div>  <div className='flex items-center space-x-2'>
-
-    <BreadCrumbs itemFeed={[
-      {
-        label:"Application Form",
-        path:"#"
-      },
+      <div style={{background:'white',     padding: '2%',borderRadius: '6px'}}>
      
-
-    ]} homePath={'#'}/>
-    </div>
-  </div>
-     
-      <div className={"flex justify-end gap-2"}>
+      <div className={"flex justify-end gap-2 border-b  pb-2"} >
         {appData?.data?.output?.taskId&&<TaskManagement taskIdString={appData?.data?.output?.taskId} backURL={"/investbank/applications"}/>}
       {requestIDSlug?<Button sizeVariant="xs"
           onClick={() => {
@@ -1775,6 +1760,7 @@ payload["status"]='submitted'
       </div> */}
         </Card>
         {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output||[]} viewCommentRef={viewCommentRef}/>}
+      </div>
       </div>
     </ConfigProvider>
   );

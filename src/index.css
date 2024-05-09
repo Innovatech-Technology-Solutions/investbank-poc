@@ -99,3 +99,8 @@
   font-size: 0.9rem !important;
    line-height: 0rem !important; 
 }
+
+.border-b {
+  border-bottom-width: 1px;
+  color: #514a4317 !important;
+}

@@ -14,12 +14,28 @@ const { Header, Content, Footer } = Layout;
 // }));
 
 const App: React.FC = () => {
-
-  return (   
-
-                        <MultiStepForm />
-
- 
+  return (
+    <>
+      <div className="flex flex-col items-start md:flex-row md:items-center justify-between py-3">
+        <div className="flex gap-2 items-center">
+          <h2 className="text-lg text-blue-600 text-primary-600">
+            {"Application Form"}
+          </h2>
+        </div>{" "}
+        <div className="flex items-center space-x-2">
+          <BreadCrumbs
+            itemFeed={[
+              {
+                label: "Application Form",
+                path: "#",
+              },
+            ]}
+            homePath={"#"}
+          />
+        </div>
+      </div>
+      <MultiStepForm />
+    </>
   );
 };
 

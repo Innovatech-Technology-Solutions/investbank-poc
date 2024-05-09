@@ -143,12 +143,12 @@ const ShellLayout: React.FC = () => {
             </div>
           </div>
         </Row>
-        <Content style={{ padding: "48px" }}>
+        <Content style={{ padding: "10px 48px" }}>
           <div
             style={{
-              background: colorBgContainer,
+              background: '#ffffff00',
               minHeight: 280,
-              padding: "20px",
+              padding: "0px 20px",
               borderRadius: borderRadiusLG,
             }}
           >
