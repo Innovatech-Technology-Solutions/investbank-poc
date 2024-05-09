@@ -10,6 +10,8 @@ import {useNavigate} from "react-router-dom"
 import React from 'react';
 import { isSales } from '../commonuitils';
 import BreadCrumbs from '../BreadCrumbs';
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+
 // import { isValidApiResponse } from '../utils/Commonutils';
 // import emitMessage from '../services/emitMessage';
 
@@ -60,7 +62,18 @@ const Applications = () => {
     {
       title: 'Prime Customer',
       dataIndex: 'primeCustomer',
-      render:(item)=><span className='capitalize'>{item}</span>
+
+      render: status => (
+        <span>
+          {status === 'yes' ? (
+            <Tag color="green" icon={<CheckCircleOutlined />}>{status}</Tag>
+          ) : status === 'no' ? (
+            <Tag color="red" icon={<CloseCircleOutlined />}>{status}</Tag>
+          ) : (
+            <Tag color="blue">{status}</Tag>
+          )}
+        </span>
+      ),
     },
     {
       title: 'Status',
