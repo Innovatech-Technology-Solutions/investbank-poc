@@ -124,3 +124,39 @@ font-size: 14px !important;
 .commentbg div {
   background: #fffbdd !important;
 }
+
+.ant-table-thead{
+  background: '#f9f9f9' !important;
+  height: 3.3rem !important;
+}
+
+
+th.ant-table-cell, .ant-table-tbody>tr>td{
+  padding: 11px 16px !important
+}
+
+.ant-table-measure-row{
+  display: none !important;
+}
+
+.aegov-btn.btn-sm {
+  height: 2.3rem !important;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 0.9rem !important; 
+  line-height: 1.5rem;
+}
+
+.aegov-form-control .form-control-input{
+  --tw-ring-color : rgb(212 212 212) !important;
+}
+
+.ant-picker-outlined{
+  border-color: rgb(212 212 212) !important;
+}
+/* 
+{
+  color: #92722a;
+  background: #fff5d7;
+  border-color: #e8dcb7;
+} */

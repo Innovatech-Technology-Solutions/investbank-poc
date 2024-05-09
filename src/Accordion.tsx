@@ -50,7 +50,7 @@ const Accordion = ({
           className={`accordion-item ${item.className ? item.className : ''}`}
         >
           <div className='accordion-title' id='acc-v2-head-1'>
-            <button
+            <button 
               className={
                 activeIndex === item?.accordianIndex ? 'accordion-active' : 'accordion-inactive'
               }
