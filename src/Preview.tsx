@@ -1,89 +1,79 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from "react";
 import SectionDetails from "./pages/SectionDetails";
 
-const Preview = () => {
+const Preview = ({data}:any) => {
   return (
     <div>
       {/* Applicant Details */}
       <SectionDetails
         sectionHeader="Applicant Details"
         sectionData={[
-          { key: "Full Name in Arabic", value: "Test" },
-          { key: "Full Name in English", value: "Test" },
-          { key: "Mobile Number", value: "Test" },
-          { key: "Email", value: "Test" },
-          { key: "Mother Name", value: "Test" },
-          { key: "Sex", value: "Test" },
-          { key: "Date of Birth", value: "Test" },
-          { key: "Nationality", value: "Test" },
-          { key: "National ID", value: "Test" },
-          { key: "National ID Date", value: "Test" },
-          { key: "National ID Expiry Date", value: "Test" },
-          { key: "Is Bank Blacklisted?", value: "Test" },
-          { key: "Birth Country", value: "Test" },
-          { key: "Birth City", value: "Test" },
+          { key: "Full Name in Arabic", fieldKey: 'fullNameAr', value: data?.fullNameAr },
+          { key: "Full Name in English", fieldKey: 'fullNameEn', value: data?.fullNameEn },
+          { key: "Mobile Number", fieldKey: 'mobileNo', value: data?.mobileNo },
+          { key: "Email", fieldKey: 'email', value: data?.email },
+          { key: "Mother Name", fieldKey: 'motherName', value: data?.motherName },
+          { key: "Sex", fieldKey: 'sex', value: data?.sex },
+          { key: "Date of Birth", fieldKey: 'dateOfBirth', value: data?.dateOfBirth },
+          { key: "Nationality", fieldKey: 'nationality', value: data?.nationality },
+          { key: "National ID", fieldKey: 'nationalId', value: data?.nationalId },
+          { key: "National ID Date", fieldKey: 'nationalIdDate', value: data?.nationalIdDate },
+          { key: "National ID Expiry Date", fieldKey: 'nationalIdExpiryDate', value: data?.nationalIdExpiryDate },
+          { key: "Is Bank Blacklisted?", fieldKey: 'isBankBlacklisted', value: data?.isBankBlacklisted },
+          { key: "Birth Country", fieldKey: 'birthCountry', value: data?.birthCountry },
+          { key: "Birth City", fieldKey: 'birthCity', value: data?.birthCity },
         ]}
       />
 
-      {/* Social Status */}
-      <SectionDetails
-        sectionHeader="Social Status"
-        sectionData={[
-          { key: "Residance Status", value: "Test" },
-          { key: "Martial Status", value: "Test" },
-          { key: "Wife/Husband Name", value: "Test" },
-          { key: "Childs Names", value: "Test" },
-          { key: "Persoanl Identity Issuance Location", value: "Test" },
-          { key: "Personal Identity Type", value: "Test" },
-        ]}
-      />
+ {/* Residence Address */}
+<SectionDetails
+  sectionHeader="Residence Address"
+  sectionData={[
+    { key: "City Name", fieldKey: 'cityName', value: data?.cityName },
+    { key: "Area Name", fieldKey: 'areaName', value: data?.areaName },
+    { key: "Street Name", fieldKey: 'streetName', value: data?.streetName },
+    { key: "Apartment No", fieldKey: 'apartmentNo', value: data?.apartmentNo },
+    { key: "Postal Code", fieldKey: 'postalCode', value: data?.postalCode },
+    { key: "Home Landline", fieldKey: 'homeLandLine', value: data?.homeLandLine },
+  ]}
+/>
 
-      {/* Residence Address */}
-      <SectionDetails
-        sectionHeader="Residence Address"
-        sectionData={[
-          { key: "City Name", value: "Test" },
-          { key: "Area Name", value: "Test" },
-          { key: "Street Name", value: "Test" },
-          { key: "Apartment No", value: "Test" },
-          { key: "Postal Code", value: "Test" },
-          { key: "Home Landline", value: "Test" },
-        ]}
-      />
+{/* Employment and Financial Details */}
+<SectionDetails
+  sectionHeader="Employment and Financial Details"
+  sectionData={[
+    { key: "Job", fieldKey: 'job', value: data?.job },
+    { key: "Job Location", fieldKey: 'jobLocation', value: data?.jobLocation },
+    { key: "Monthly Salary", fieldKey: 'monthlySalary', value: data?.monthlySalary },
+    { key: "Income Source", fieldKey: 'incomeSource', value: data?.incomeSource },
+    { key: "Other Income Sources", fieldKey: 'otherIncomeSources', value: data?.otherIncomeSources },
+    { key: "Transaction Size Per Account", fieldKey: 'transactionSizePerAccount', value: data?.transactionSizePerAccount },
+    { key: "Account Opening Purpose", fieldKey: 'accountOpeningPurpose', value: data?.accountOpeningPurpose },
+  ]}
+/>
 
-      {/* Employment and Financial Details */}
-      <SectionDetails
-        sectionHeader="Employment and Financial Details"
-        sectionData={[
-          { key: "Job", value: "Test", fieldKey:"accountOpeningPurpose" },
-          { key: "Job Location", value: "Test" },
-          { key: "Monthly Salary", value: "Test" },
-          { key: "Income Source", value: "Test" },
-          { key: "Other Income Sources", value: "Test" },
-          { key: "Transaction Size Per Account", value: "Test" },
-          { key: "Account Opening Purpose", value: "Test" },
-        ]}
-      />
+{/* Customer Information */}
+<SectionDetails
+  sectionHeader="Customer Information"
+  sectionData={[
+    { key: "Prime Customer (Yes or No)", fieldKey: 'primeCustomer', value: data?.primeCustomer },
+    { key: "Customer Number", fieldKey: 'customerNumber', value: data?.customerNumber },
+    { key: "Branch Name", fieldKey: 'branchName', value: data?.branchName },
+  ]}
+/>
 
-      {/* Customer Information */}
-      <SectionDetails
-        sectionHeader="Customer Information"
-        sectionData={[
-          { key: "Prime Customer (Yes or No)", value: "Test" },
-          { key: "Cusomter Number", value: "Test" },
-          { key: "Branch Name", value: "Test" },
-        ]}
-      />
+{/* Account Information */}
+<SectionDetails
+  sectionHeader="Account Information"
+  sectionData={[
+    { key: "Account Type", fieldKey: 'accountType', value: data?.accountType },
+    { key: "Account Currency", fieldKey: 'accountCurrency', value: data?.accountCurrency },
+    { key: "Account Number", fieldKey: 'accountNumber', value: data?.accountNumber },
+    { key: "Account IBAN", fieldKey: 'accountIban', value: data?.accountIban },
+  ]}
+/>
 
-      {/* Account Information */}
-      <SectionDetails
-        sectionHeader="Account Information"
-        sectionData={[
-          { key: "Account Type", value: "Test" },
-          { key: "Account Currency", value: "Test" },
-          { key: "Account Number", value: "Test" },
-          { key: "Account IBAN", value: "Test" },
-        ]}
-      />
     </div>
   );
 };

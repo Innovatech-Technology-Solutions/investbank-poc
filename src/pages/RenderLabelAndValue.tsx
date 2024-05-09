@@ -6,6 +6,10 @@ import Modal from "../Modal";
 import Button from "../Button";
 import TextArea from "../TextArea";
 import SectionHeader from "./SectionHeader";
+import { usePostFieldCommentMutation } from "../services/hostApiServices";
+import { useParams } from "react-router";
+import { isValidApiResponse } from "../utils/Commonutils";
+import emitMessage from "../services/emitMessage";
 const RenderLabelAndValue = ({
   label,
   value,
@@ -24,22 +28,29 @@ const RenderLabelAndValue = ({
   const [showCommentIcon, setShowCommentIcon] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [comment, setComment] = useState("");
+  
+  const [field, setField] = useState("");
 
+
+const[postFieldComment]=usePostFieldCommentMutation()
   const handleChange = (e: any) => {
     setComment(e.target.value);
   };
-
+const{requestIdSlug}=useParams()
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setComment("");
     setShowModal(false);
     setShowCommentIcon(false);
+    setField('')
   };
 
   const handleCancel = () => {
     setComment("");
     setShowModal(false);
     setShowCommentIcon(false);
+    setField('')
+
   };
 
   return (
@@ -68,7 +79,31 @@ const RenderLabelAndValue = ({
                 <Button type="button" onClick={handleCancel}>
                   Close
                 </Button>
-                <Button type="submit">Save</Button>
+                <Button type="submit" onClick={async()=>
+                {
+
+                  try{
+                    const res=postFieldComment(
+
+                    {
+                     
+                      "requestId": requestIdSlug,
+                     
+                      "comment": comment,
+                     
+                      "fieldId":fieldKey ,
+                    }
+                  )
+                  if(isValidApiResponse(res))
+                  {
+                    emitMessage("Addedd Comment Successfully",'success')
+                  }
+                  }
+                  catch(e)
+                  {
+                    //
+                  }
+                }}>Save</Button>
               </div>
             </form>
           }
@@ -87,6 +122,7 @@ const RenderLabelAndValue = ({
               <ChatCircleText
                 onClick={() => {
                   setShowModal(true);
+                  setField(fieldKey as any)
                 }}
                 color="#BD982E"
                 size={16}

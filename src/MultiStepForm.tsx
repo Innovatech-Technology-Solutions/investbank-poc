@@ -28,6 +28,7 @@ import { decodeToken, isSales } from "./commonuitils";
 import React from "react";
 import { isValidResponse } from "./utils/Commonutils";
 import emitMessage from "./services/emitMessage";
+import { useGetApplicationByReqIDQuery } from "./services/hostApiServices";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -44,11 +45,14 @@ const MultiStepForm = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [showComments, setShowComments] = useState(0);
   const{requestIDSlug}=useParams();
+  const {data:appData,isLoading,isFetching,isSuccess}=useGetApplicationByReqIDQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
+
   const navigate=useNavigate()
   const videoRef = useRef<HTMLVideoElement>(null);
   const recordedVideoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
+
 
 
   const startRecording = async () => {
@@ -491,13 +495,13 @@ const MultiStepForm = () => {
       show: true,
     },
   ];
-  const socialStatusControlsConfig = [
+  const maritalStatusControlsConfig = [
     {
       order: 1,
-      label: "Social Status",
-      name: "socialStatus",
-      id: "socialStatus",
-      placeholder: "Social Status",
+      label: "Marital Status",
+      name: "maritalStatus",
+      id: "maritalStatus",
+      placeholder: "Marital Status",
       type: "select",
       show: true,
       options: [
@@ -594,8 +598,8 @@ const MultiStepForm = () => {
     {
       order: 6,
       label: "Home Landline",
-      name: "homeLandline",
-      id: "homeLandline",
+      name: "homeLandLine",
+      id: "homeLandLine",
       placeholder: "Home Landline",
       type: "text",
       show: true,
@@ -745,8 +749,8 @@ const MultiStepForm = () => {
     {
       order: 4,
       label: "Account IBAN",
-      name: "accountIBAN",
-      id: "accountIBAN",
+      name: "accountIban",
+      id: "accountIban",
       placeholder: "Account IBAN",
       type: "text",
       show: true,
@@ -890,7 +894,7 @@ payload["status"]='submitted'
                 isLastItem: false,
               },
               {
-                label: "Social Status",
+                label: "Marital Status",
                 path: "#",
                 stage: activeIndex!==2?"upcoming":"current",
                 stepperIndex: 2,
@@ -1075,7 +1079,7 @@ payload["status"]='submitted'
                     ),
                   },
                   {
-                    title: "Social Status",
+                    title: "Marital Status",
                     accordianIndex: 2,
                     content: (
                       <>
@@ -1086,7 +1090,7 @@ payload["status"]='submitted'
                             "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                           }
                         >
-                          {socialStatusControlsConfig
+                          {maritalStatusControlsConfig
                             .sort((a, b) => a.order - b.order)
                             .map(
                               ({
@@ -1725,7 +1729,7 @@ payload["status"]='submitted'
               />
             </form>
           ) : (
-            <Preview />
+            <Preview data={appData?.data?.output||{}} />
           )}
 
           {/* <div>
