@@ -22,7 +22,8 @@ const Applications = () => {
     const { data, isFetching, isLoading,isSuccess } = apiData;
     
     function capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+      if(string)
+      return string?.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
     
     // if (!isValidApiResponse(apiData)) {
@@ -66,11 +67,11 @@ const Applications = () => {
       render: status => (
         <span>
           {status === 'yes' ? (
-            <Tag color="green" icon={<CheckCircleOutlined />}>{status}</Tag>
+            <Tag color="green" icon={<CheckCircleOutlined />}>{capitalizeFirstLetter(status)}</Tag>
           ) : status === 'no' ? (
-            <Tag color="red" icon={<CloseCircleOutlined />}>{status}</Tag>
+            <Tag color="red" icon={<CloseCircleOutlined />}>{capitalizeFirstLetter(status)}</Tag>
           ) : (
-            <Tag color="blue">{status}</Tag>
+            <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>
           )}
         </span>
       ),
