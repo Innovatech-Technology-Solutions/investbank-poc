@@ -69,9 +69,12 @@ const Applications = () => {
         <span>
         {capitalizeFirstLetter(status )=== 'Approved' && 
         <Tag color="green">{capitalizeFirstLetter(status)}</Tag>}
+           {capitalizeFirstLetter(status )=== 'Submitted' && 
+        <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>}
         {capitalizeFirstLetter(status ) === 'Rejected' &&         <Tag color="red">{capitalizeFirstLetter(status)}</Tag>}
 
-        {capitalizeFirstLetter(status ) !== 'Approved' && capitalizeFirstLetter(status ) !== 'Rejected' && capitalizeFirstLetter(status)}
+        {capitalizeFirstLetter(status ) !== 'Approved' && capitalizeFirstLetter(status ) !== 'Rejected'&&
+        capitalizeFirstLetter(status ) !== 'Submitted'  && capitalizeFirstLetter(status)}
       </span>
       ),
     },
