@@ -100,7 +100,7 @@ const Dashboard = () => {
       colors: ["#fff"],
     },
     xaxis: {
-      categories: ["Approved", "Rejected", "Pending"],
+      categories: ["Approved", "Pending", "Rejected"],
       tickPlacement: "between",
       min: 0,
       max: 96,
@@ -297,7 +297,7 @@ const Dashboard = () => {
           <Card className="w-full  h-full" bodyStyle={{ padding: "10px" }}>
             <div>
               <div className="text-[16px] font-[700] text-[#323438] ml-4">
-                Average application Processing Time
+                Average Application Processing Time
               </div>
               <Chart
                 options={options2}
@@ -306,9 +306,10 @@ const Dashboard = () => {
                 height={230}
               />
             </div>
-            <div className="text-[12px] font-[600] text-[#323438] line-clamp-2 ml-4">
+            <div className="text-[12px] font-[400] text-[#323438] line-clamp-2 ml-4" style={{    border: '1px solid #bdbdbd',padding: '2%',
+    borderRadius: '5px'}}>
               Total no of Applications experiencing delay in response :{" "}
-              <span className="text-[#F24747]">1293</span>
+              <span className="text-[#F24747] text-[18px] font-[500] ">1293</span>
             </div>
           </Card>
           <Card className="w-full  h-full" bodyStyle={{ padding: "10px" }}>
