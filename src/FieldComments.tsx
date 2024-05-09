@@ -31,7 +31,11 @@ const FieldComments: React.FC<FieldCommentsProps> = ({
         />
       ))}
     </div> :
-    <div></div> 
+    <div  style={{ width: "35%"}}>
+    <Card style={{background:'#ed7b7b1c'}}
+    className="mb-2 comment"
+  >No Reviewer Comments</Card>
+  </div>
   );
 };
 
