@@ -53,14 +53,14 @@ const ConfirmationModal = ({
                 </div>
               </div>
               <div className='mt-4 sm:mt-6 sm:flex sm:flex-row-reverse sm:gap-4'>
-                <button disabled={isLoading} onClick={onConfirm} className='aegov-btn btn-red w-full sm:w-auto'>
+                <button disabled={isLoading} onClick={onConfirm} className='aegov-btn btn-xs btn-red w-full sm:w-auto'>
                   {confirmTitle}
                 </button>
                 {showCancel ? (
                   <button
                     onClick={onCancel}
                     data-modal-hide='modal-simple-alert'
-                    className='aegov-btn btn-outline mt-3 sm:mt-0 w-full sm:w-auto'
+                    className='aegov-btn  btn-xs btn-outline mt-3 sm:mt-0 w-full sm:w-auto'
                   >
                     {cancelTitle}
                   </button>

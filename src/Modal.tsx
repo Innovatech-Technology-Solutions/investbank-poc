@@ -33,11 +33,11 @@ export const ModalFooter = ({
 }: ModalFooterProps) => {
   return (
     <div className='mt-4 flex flex-row-reverse gap-4'>
-      <Button onClick={onConfirm} disabled={isDisabled || isLoading}>
+      <Button   className='btn-xs' onClick={onConfirm} disabled={isDisabled || isLoading}>
         {isLoading && loadingLabel ? loadingLabel : confirmTitle}
       </Button>
       {cancelTitle && (
-        <Button onClick={onCancel} data-modal-hide='modal-simple-alert' styleVariant='outline'>
+        <Button className='btn-xs' onClick={onCancel} data-modal-hide='modal-simple-alert' styleVariant='outline'>
           {cancelTitle}
         </Button>
       )}
