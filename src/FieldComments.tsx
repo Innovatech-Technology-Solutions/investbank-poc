@@ -12,29 +12,41 @@ interface CommentType {
 
 interface FieldCommentsProps {
   comments: CommentType[];
-  viewCommentRef:any;
+  viewCommentRef: any;
 }
 
-const FieldComments: React.FC<FieldCommentsProps> = ({ comments,viewCommentRef }) => {
+const FieldComments: React.FC<FieldCommentsProps> = ({
+  comments,
+  viewCommentRef,
+}) => {
   return (
-    <div className="flex-col" style={{width:'35%', cursor:'pointer'}} >
+   comments && comments?.length > 0 ?
+    <div className="flex-col" style={{ width: "35%", cursor: "pointer" }}>
       {comments.map((comment) => (
-        <Comment key={comment.id} data={comment} viewCommentRef={viewCommentRef} />
+        <Comment
+          key={comment.id}
+          data={comment}
+          viewCommentRef={viewCommentRef}
+        />
       ))}
-    </div>
+    </div> :
+    <div>2323</div> 
   );
 };
 
 interface CommentProps {
   data: CommentType;
-  viewCommentRef:any;
+  viewCommentRef: any;
 }
 
-const Comment: React.FC<CommentProps> = ({ data,viewCommentRef }) => {
+const Comment: React.FC<CommentProps> = ({ data, viewCommentRef }) => {
   return (
-    <Card className="mb-2 comment" id={`comment_${data.fieldId}`} onClick={()=>viewCommentRef(`${data.fieldId}`)}>
-      <blockquote className="aegov-quote"
-style={{padding:'5%'}}      >
+    <Card
+      className="mb-2 comment"
+      id={`comment_${data.fieldId}`}
+      onClick={() => viewCommentRef(`${data.fieldId}`)}
+    >
+      <blockquote className="aegov-quote" style={{ padding: "5%" }}>
         <svg
           className="quote-icon"
           width="11"
@@ -48,9 +60,7 @@ style={{padding:'5%'}}      >
             fill="#343330"
           ></path>
         </svg>
-        <p style={{fontSize:'12px'}}>
-        {data.comment}
-        </p>
+        <p style={{ fontSize: "12px" }}>{data.comment}</p>
         <div className="quote-footer">
           <div className="quote-author">{data.createdBy}</div>
           <div className="quote-cite">{data.createdDate}</div>
