@@ -765,39 +765,25 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
     },
   ];
 
-  const comments = [
-    {
-      id: '1',
-      requestId: 'REQ001',
-      fieldId: 'accountOpeningPurpose',
-      comment: `There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.`,
-      createdBy: 'Raja',
-      createdDate: '29-02-2023'
-    },
-    {
-      id: '2',
-      requestId: 'REQ002',
-      fieldId: 'primeCustomer',
-      comment: 'Another sample comment',
-      createdBy: 'Dua Lipa',
-      createdDate: '30-03-2023'
-    },
-    {
-      id: '3',
-      requestId: 'REQ003',
-      fieldId: 'incomeVerification',
-      comment: 'Yet another sample comment',
-      createdBy: 'Sowjanya',
-      createdDate: '15-04-2023'
-    }
-  ];
 
-  const viewCommentRef=(line:any)=>{
-  line.show();
+  const viewCommentRef=(line:any, docId:any)=>{
+    // line.position();
+    // 
+   let scrollableBox = document.getElementById(docId)
+  //  window.scrollTo(scrollableBox.offsetLeft,scrollableBox.offsetTop,behavior: 'smooth'); 
+  window.scrollTo({
+    top: scrollableBox.offsetTop,
+    left: scrollableBox.offsetLeft,
+    behavior: 'smooth'
+  });
+   line.show();
+    // scrollableBox.addEventListener('scroll', (function() {
+    //   line.position();
+    // }), false);
 }
 
   const commentRef=(commentId:string)=>{
-    return new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true, hide: true});
+    return new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`), "draw"),document.getElementById(commentId),  {dash: true, hide: true});
     }
   
 

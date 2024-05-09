@@ -59,7 +59,7 @@ const Comment: React.FC<CommentProps> = ({ data, viewCommentRef, commentRef }) =
     <Card
       className="mb-2 comment"
       id={`comment_${data.fieldId}`}
-      onClick={() => viewCommentRef(`${line}`)}
+      onClick={() => viewCommentRef(`${line}`, data.fieldId)}
     >
       <blockquote className="aegov-quote" style={{ padding: "5%" }}>
         <svg

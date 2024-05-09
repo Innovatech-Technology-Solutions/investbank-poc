@@ -4,7 +4,7 @@ import SectionDetails from "./pages/SectionDetails";
 
 const Preview = ({data}:any) => {
   return (
-    <div>
+    <div id="scrollableBox" >
       {/* Applicant Details */}
       <SectionDetails
                           stepId="stepidx-1"
