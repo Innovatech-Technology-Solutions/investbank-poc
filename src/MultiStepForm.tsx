@@ -4,7 +4,8 @@ import { useRef, useState,  forwardRef } from "react";
 import LeaderLine from "react-leader-line";
 import HistoryComments from "./HistoryComments"
 import {  orderBy } from 'lodash';
-
+import cm from './assets/comment.png';
+import hcm from './assets/hidecomment.png';
 
 import {
   Steps,
@@ -791,14 +792,10 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
   ];
 
   const viewCommentRef=(line:any)=>{
-  // let line =
-  //  new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true});
   line.show();
-
 }
 
   const commentRef=(commentId:string)=>{
-    // let line =
     return new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`)),document.getElementById(commentId),  {dash: true, hide: true});
     }
   
@@ -859,13 +856,28 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
      
       <div className={"flex justify-end gap-2 border-b  pb-2"} >
         {appData?.data?.output?.taskId&&<TaskManagement taskIdString={appData?.data?.output?.taskId} backURL={"/investbank/applications"}/>}
-      {requestIDSlug?<Button sizeVariant="xs"
+      {requestIDSlug?<div   style={{cursor:'pointer'}}
           onClick={() => {
             setShowComments(showComments==1 ? 0 : 1)
           }}
         >
-          Show Reviewer Comments
-        </Button>:null}
+          {showComments == 0 ? <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
+          <img style={{width:'30px'}}
+                src={cm}
+              />
+          <span className="font-[500]">Reviewer Comments</span>
+          </div>
+          : 
+          <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
+          <img style={{width:'30px'}}
+                src={hcm}
+              />
+          <span className="font-[500]">Hide Comments</span>
+          </div>  
+        }
+          
+          
+        </div>:null}
         {!requestIDSlug&&isSales()&&<Button sizeVariant="xs"
           onClick={() => {
             console.log(useFormMethods.getValues());
