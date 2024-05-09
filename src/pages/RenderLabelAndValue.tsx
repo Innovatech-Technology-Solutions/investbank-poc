@@ -10,6 +10,7 @@ import { useGetFieldCommentsQuery, usePostFieldCommentMutation } from "../servic
 import { useParams } from "react-router";
 import { isValidApiResponse, isValidResponse } from "../utils/Commonutils";
 import emitMessage from "../services/emitMessage";
+import { isOperation } from "../commonuitils";
 const RenderLabelAndValue = ({
   label,
   value,
@@ -121,7 +122,7 @@ const[postFieldComment]=usePostFieldCommentMutation()
         <div className="font-medium font-size-responsive text-[#8D8E90] font-roboto line-height-[16.41px]">
           <div className="flex gap-1">
             {label}
-            {showCommentIcon ? (
+            {showCommentIcon&&isOperation() ? (
               <ChatCircleText
                 onClick={() => {
                   setShowModal(true);
