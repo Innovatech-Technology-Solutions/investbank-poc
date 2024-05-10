@@ -83,10 +83,10 @@ const[uploadAttachment]=useUploadAttchmentMutation()
         const data: any = {
             attachmentTypeId: "ATTYP_428",
             requestId:  randID,
-            fileName: "screencapture",
-            fileType: "",
+            fileName: `screencapture_${Math.random()}.webm`,
+            fileType: "video/webm",
             isUploaded: false,
-            fileSize: "40kb",
+            fileSize: null,
             source: "source",
             type: "type",
             attachment: { content: base64data },
