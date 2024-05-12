@@ -4,7 +4,7 @@ import SectionDetails from "./pages/SectionDetails";
 import Attachments from "./Attachments";
 
 const Preview = ({ data }: any) => {
-  console.log("datarrr", data);
+  console.log("datarrr", data?.attachments?.[0]?.filePath,import.meta.env?.VITE_BASE_URL);
   return (
     <div id="scrollableBox">
       {/* Applicant Details */}
@@ -185,17 +185,15 @@ const Preview = ({ data }: any) => {
             value: data?.branchName,
           },
           {
-            key: <span className="text-aegold-500">Recording</span>,
-            value: (
-              <Attachments
-                readOnly={true}
-                files={data?.attachments || []}
-                attachmentID={"ATTYP_428"}
-                requestId={data?.requestId}
-                type={""}
-                source={"DB"}
-              />
-            ),
+            key: <span className="text-aegold-500"> Recording</span>,
+            value:
+           data?.attachments? <video width="740" height="310" controls>
+
+  <source src={`${import.meta.env?.VITE_BASE_URL}/api/ixcommon/supporting/GetFileContentByPath?filePath=${data?.attachments?.[0]?.filePath}`} />
+  Your browser does not support the video tag.
+
+</video>:null
+            
           },
         ]}
       />

@@ -37,6 +37,7 @@ import { useGetApplicationByReqIDQuery, useGetAuditHistoryByIDQuery, useGetField
 import TaskManagement from "./TaskManagement";
 import BreadCrumbs from "./BreadCrumbs";
 import RecordVideo from "./RecordVideo";
+import SectionHeader from "./pages/SectionHeader";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -1567,7 +1568,6 @@ payload.attachments = [{ requestId: randID }];
                             )}
                           </div>
                         </div> */}
-                        <RecordVideo randID={randID as any}/>
 
                         <div
                           id="stepidx-5"
@@ -1681,6 +1681,11 @@ payload.attachments = [{ requestId: randID }];
                                 ) : null
                             )}
                         </div>
+                        <SectionHeader title='Capture Customer Signing Process'/>
+                        <div className="flex pt-2">
+                        <RecordVideo randID={randID as any}/>
+                        </div>
+
                       </div>
                     ),
                   },

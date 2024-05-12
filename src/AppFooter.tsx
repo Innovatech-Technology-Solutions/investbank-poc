@@ -146,7 +146,7 @@ const AppFooter = () => {
           <div className='flex flex-wrap gap-y-6 items-center justify-between'>
             <div className='w-full lg:w-7/12'>
               <div className='text-aeblack-700 text-xs sm:text-sm mb-0'>
-                &copy; {new Date().getFullYear()}.{uiConfiguration?.["MOEI_ALLRIGHTS"]||"Copyrights © 2024 INVESTBANK. All rights reserved"}.{' '}
+                &copy; {new Date().getFullYear()}.{"Copyrights © 2024 INVESTBANK. All rights reserved"}.{' '}
               </div>
             </div>
             <div className='w-full lg:w-5/12 social-sharing max-md:w-full justify-center lg:justify-end'>

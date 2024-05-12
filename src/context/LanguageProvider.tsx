@@ -23,9 +23,9 @@ const LanguageProvider = ({ children }: LanguageProviderProps) => {
   useEffect(() => {
     localStorage.setItem('lang', language);
     if(language==='EN')
-    document.title="Ministry of Energy and Infrastructure in UAE"
+    document.title="Investbank"
   if(language==='AR')
-   document.title='وزارة الطاقة والبنية التحتية - دولة الإمارات'
+   document.title='البنك الإستثماري'
     document
       .querySelector('html')
       ?.setAttribute('dir', language === 'AR' ? 'rtl' : 'ltr');
