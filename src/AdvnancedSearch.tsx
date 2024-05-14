@@ -57,8 +57,8 @@ const AdvancedSearch: React.FC<{
               setSearchParams({ ...searchParams, gender: value })
             }
           >
-            <Option value="male">Male</Option>
-            <Option value="female">Female</Option>
+            <Option value="1">Male</Option>
+            <Option value="0">Female</Option>
           </Select>
         </Col>
         <Col span={12}>
@@ -73,11 +73,13 @@ const AdvancedSearch: React.FC<{
           >
             <Option value="single">Single</Option>
             <Option value="married">Married</Option>
+            <Option value="divorced">Divorced</Option>
+            <Option value="widowed">Widowed</Option>
           </Select>
         </Col>
         <Col span={12}>
           <Input
-          style={{background:'white'}}
+          style={{background:'white',border:'1px solid'}}
             placeholder="Enter name"
             onChange={(e) =>
               setSearchParams({ ...searchParams, name: e.target.value })

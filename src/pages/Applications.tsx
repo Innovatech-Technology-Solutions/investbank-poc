@@ -2,12 +2,12 @@
 
 import Commontable from "./Commontable";
 import { Link } from "react-router-dom";
-import { TagChevron } from "@phosphor-icons/react";
+import { TagChevron, XCircle } from "@phosphor-icons/react";
 import { useGetMyApplicationsQuery } from "../services/hostApiServices";
 import { Empty, Tag } from "antd";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import { isSales } from "../commonuitils";
 import BreadCrumbs from "../BreadCrumbs";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
@@ -22,7 +22,8 @@ type ApplicationsProps = {
   isMyapplications?: boolean;
 };
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
-  const apiData = useGetMyApplicationsQuery();
+  const [params, setParams] = useState("");
+  const apiData = useGetMyApplicationsQuery(params as any);
   const navigate = useNavigate();
   const { data, isFetching, isLoading, isSuccess } = apiData;
 
@@ -30,7 +31,14 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
     if ([null, undefined, ""].includes(string)) return "";
     return string?.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
+  let debounceTimer; // Variable to store the timer ID
 
+  const debounceSearch = (value) => {
+    clearTimeout(debounceTimer); // Clear previous timeout
+    debounceTimer = setTimeout(() => {
+      setParams(`&search=${value}`); // Set parameters after debounce time
+    }, 300); // 300 milliseconds debounce delay, adjust as needed
+  };
   const sortedDataSource = (source) =>
     [...structuredClone(source)].sort((a, b) => {
       const aHasTaskId = "taskId" in a && a.taskId !== null;
@@ -157,13 +165,14 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
           <div className="flex gap-2 justify-end">
             <SearchBar
               onSearch={function (value: string): void {
-                throw new Error("Function not implemented.");
+                debounceSearch(value);
               }}
-              onAdvancedSearch={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              onAdvancedSearch={function (val): void {
+                console.log(val)
+setParams(`&${val}`)             }}
             />
             {isSales() && !isMyapplications ? (
+              
               <div className="flex justify-end ">
                 <Button
                   onClick={() => {
@@ -199,14 +208,23 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
               <div>No Application found. </div>
               {isSales() && !isMyapplications ? (
                 <div>
-                  <Button
-                    onClick={() => {
-                      navigate("/investbank/account-request");
-                    }}
-                    sizeVariant="xs"
-                  >
-                    Open Account
-                  </Button>
+                {!params? <Button
+                  onClick={() => {
+                    navigate("/investbank/account-request");
+                  }}
+                  sizeVariant="xs"
+                >
+                  Open Account
+                </Button>:<Button
+                styleVariant="secondary"
+                  onClick={() => {
+setParams('')                  }}
+                  sizeVariant="xs"
+                >
+                  Clear Search <XCircle size={32} />
+
+
+                </Button>}
                 </div>
               ) : null}
             </div>
