@@ -3,7 +3,12 @@
 import Commontable from "./Commontable";
 import { Link } from "react-router-dom";
 import { TagChevron, XCircle } from "@phosphor-icons/react";
-import { useDownloadRDLMutation, useGetMyApplicationsQuery } from "../services/hostApiServices";
+import {
+  useDownloadRDLMutation,
+  useGetMyApplicationsQuery,
+} from "../services/hostApiServices";
+import { useGetInterfaceByIDQuery } from "../services/hostApiServices";
+import useLanguage from "../hooks/useLanguage";
 import { Empty, Tag } from "antd";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
@@ -26,9 +31,12 @@ type ApplicationsProps = {
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
   const [params, setParams] = useState("");
   const apiData = useGetMyApplicationsQuery(params as any);
-  const[downLoadRDl]=useDownloadRDLMutation()
+  const [downLoadRDl] = useDownloadRDLMutation();
   const navigate = useNavigate();
   const { data, isFetching, isLoading, isSuccess } = apiData;
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
 
   function capitalizeFirstLetter(string) {
     if ([null, undefined, ""].includes(string)) return "";
@@ -47,13 +55,13 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
     const byteCharacters = atob(base64String);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+    const blob = new Blob([byteArray], { type: "application/octet-stream" });
 
     // Create a link element
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
 
@@ -63,7 +71,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
 
     // Clean up
     document.body.removeChild(link);
-}
+  }
 
   const sortedDataSource = (source) =>
     [...structuredClone(source)].sort((a, b) => {
@@ -80,7 +88,11 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
     });
   const columns = [
     {
-      title: <span className="pl-4">Request Id</span>,
+      title: (
+        <span className="pl-4">
+          {uiConfiguration?.UI_LABELS?.REQUEST_ID || "Request Id"}
+        </span>
+      ),
       dataIndex: "requestId",
       render: (text: any, record: any, idx: any) => (
         <div className={"flex items-center gap-1"}>
@@ -100,36 +112,36 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
     {
-      title: "Name",
+      title: uiConfiguration?.UI_LABELS?.NAME || "Name",
       dataIndex: "fullNameEn",
       render: (item) => (
         <span className="capitalize">{capitalizeFirstLetter(item)}</span>
       ),
     },
     {
-      title: "Mobile",
+      title: uiConfiguration?.UI_LABELS?.MOBILE || "Mobile",
       dataIndex: "mobileNo",
     },
     {
-      title: "Nationality",
+      title: uiConfiguration?.UI_LABELS?.NATIONALITY || "Nationality",
       dataIndex: "nationality",
       render: (item) => (
         <span className="capitalize">{capitalizeFirstLetter(item)}</span>
       ),
     },
     {
-      title: "Prime Customer",
+      title: uiConfiguration?.UI_LABELS?.PRIME_CUSTOMER || "Prime Customer",
       dataIndex: "primeCustomer",
 
       render: (status) => (
         <span>
           {status === "yes" ? (
             <Tag color="green" icon={<CheckCircleOutlined />}>
-              {capitalizeFirstLetter(status)}
+              {capitalizeFirstLetter(uiConfiguration?.UI_LABELS?.YES || status)}
             </Tag>
           ) : status === "no" ? (
             <Tag color="red" icon={<CloseCircleOutlined />}>
-              {capitalizeFirstLetter(status)}
+              {capitalizeFirstLetter(uiConfiguration?.UI_LABELS?.NO || status)}
             </Tag>
           ) : (
             <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>
@@ -143,13 +155,25 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       render: (status) => (
         <span>
           {capitalizeFirstLetter(status) === "Approved" && (
-            <Tag color="green">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="green">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.APPROVAL || status
+              )}
+            </Tag>
           )}
           {capitalizeFirstLetter(status) === "Submitted" && (
-            <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="blue">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.SUBMITTED || status
+              )}
+            </Tag>
           )}
           {capitalizeFirstLetter(status) === "Rejected" && (
-            <Tag color="red">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="red">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.REJECTED || status
+              )}
+            </Tag>
           )}
 
           {capitalizeFirstLetter(status) !== "Approved" &&
@@ -171,14 +195,18 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       <div className="flex flex-col items-start md:flex-row md:items-center justify-between py-3">
         <div className="flex gap-2 items-center">
           <h2 className="text-lg text-blue-600 text-primary-600">
-            {isMyapplications ? "My Tasks" : "Applications"}
+            {isMyapplications
+              ? uiConfiguration?.UI_LABELS?.MY_TASKS || "My Tasks"
+              : uiConfiguration?.UI_LABELS?.APPLICATIONS || "Applications"}
           </h2>
         </div>{" "}
         <div className="flex items-center space-x-2">
           <BreadCrumbs
             itemFeed={[
               {
-                label: isMyapplications ? "My Tasks" : "Applications",
+                label: isMyapplications
+                  ? uiConfiguration?.UI_LABELS?.MY_TASKS || "My Tasks"
+                  : uiConfiguration?.UI_LABELS?.APPLICATIONS || "Applications",
                 path: "#",
               },
             ]}
@@ -209,30 +237,27 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                   Open Account
                 </Button>
                 <MenuDropDown
-                buttonSize="xs"
-                
-    
-      buttonText='Export'
-      items={[
-        { label: 'PDF', value: 'pdf' },
-        { label: 'Excel', value: 'xls' },
-      ]}
-      onItemClick={async(e)=>
-        {
-          try{
-          const res:any=await downLoadRDl().unwrap()
-          if(isValidResponse(res))
-          {
-            console.log("ff",res?.data?.fileContent)
-          downloadBase64File(res?.data?.fileContent,`Report.${e}`)
-          }
-          }
-          catch(e)
-          {
-            console.log("ee",e)
-          }
-        }}
-    />
+                  buttonSize="xs"
+                  buttonText="Export"
+                  items={[
+                    { label: "PDF", value: "pdf" },
+                    { label: "Excel", value: "xls" },
+                  ]}
+                  onItemClick={async (e) => {
+                    try {
+                      const res: any = await downLoadRDl().unwrap();
+                      if (isValidResponse(res)) {
+                        console.log("ff", res?.data?.fileContent);
+                        downloadBase64File(
+                          res?.data?.fileContent,
+                          `Report.${e}`
+                        );
+                      }
+                    } catch (e) {
+                      console.log("ee", e);
+                    }
+                  }}
+                />
               </div>
             ) : null}
           </div>
