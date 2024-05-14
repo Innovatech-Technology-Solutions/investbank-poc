@@ -11,14 +11,14 @@ import useLanguage from "./hooks/useLanguage";
 const SearchBar: React.FC<{
   onSearch: (value: string) => void;
   onAdvancedSearch: (value: string) => void;
-  input:any
-}> = ({ onSearch, onAdvancedSearch,input }) => {
+  input: any;
+}> = ({ onSearch, onAdvancedSearch, input }) => {
   const { data: uiData } = useGetInterfaceByIDQuery("159");
   const { language } = useLanguage();
   const uiConfiguration = uiData?.[language || "EN"];
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [searchText, setSearchText] = useState(input||undefined);
+  const [searchText, setSearchText] = useState(input || undefined);
   const [width, setWidth] = useState("10.2rem");
 
   const handleBasicSearch = (value: string) => {
@@ -30,13 +30,17 @@ const SearchBar: React.FC<{
       <div className="flex justify-normal  gap-2 items-center">
         <div className="flex">
           <InputText
-            style={{ height: "2.2rem",width:width }}
+            style={{ height: "2.2rem", width: width }}
             sizeVariant={"sm"}
             placeholder={uiConfiguration?.UI_LABELS?.SEARCH || "Search..."}
             value={searchText}
-          
-
-            suffxIcon={!input?<MagnifyingGlass onClick={() => onSearch(searchText)} />: <XCircle onClick={() => onSearch('' as any)} size={16} />}
+            suffxIcon={
+              !input ? (
+                <MagnifyingGlass onClick={() => onSearch(searchText)} />
+              ) : (
+                <XCircle onClick={() => onSearch("" as any)} size={16} />
+              )
+            }
             onChange={(e) => handleBasicSearch(e.target.value)}
             isError={false}
             id={""}

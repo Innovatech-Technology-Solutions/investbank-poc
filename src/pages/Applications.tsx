@@ -2,7 +2,14 @@
 
 import Commontable from "./Commontable";
 import { Link } from "react-router-dom";
-import { Bank, CaretDown, FilePdf, FileXls, TagChevron, XCircle } from "@phosphor-icons/react";
+import {
+  Bank,
+  CaretDown,
+  FilePdf,
+  FileXls,
+  TagChevron,
+  XCircle,
+} from "@phosphor-icons/react";
 import {
   useDownloadRDLMutation,
   useGetMyApplicationsQuery,
@@ -151,7 +158,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
     {
-      title: "Status",
+      title: uiConfiguration?.UI_LABELS?.STATUS || "Status",
       dataIndex: "status",
       render: (status) => (
         <span>
@@ -219,11 +226,10 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
         <div className="flex flex-col gap-2 ">
           <div className="flex gap-2 justify-end items-center">
             <SearchBar
-            input={params1}
+              input={params1}
               onSearch={function (value: string): void {
                 debounceSearch(value);
-                setParams1(value)
-
+                setParams1(value);
               }}
               onAdvancedSearch={function (val): void {
                 console.log(val);
@@ -238,21 +244,38 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                   }}
                   sizeVariant="xs"
                 >
-<span className="flex gap-2 items-center justify-center">Open Account<Bank size={16} />
-
-</span>            </Button>
+                  <span className="flex gap-2 items-center justify-center">
+                    {uiConfiguration?.UI_LABELS?.OPEN_ACCOUNT || "Open Account"}
+                    <Bank size={16} />
+                  </span>{" "}
+                </Button>
                 <MenuDropDown
                   buttonSize="xs"
-                  buttonText={<span className="flex gap-2 items-center justify-center">Export<CaretDown size={18} /></span>
-
-                }
+                  buttonText={
+                    <span className="flex gap-2 items-center justify-center">
+                      {uiConfiguration?.UI_LABELS?.EXPORT || "Export"}
+                      <CaretDown size={18} />
+                    </span>
+                  }
                   items={[
-                    { label: <span className="flex gap-2 items-center justify-center">{"PDF"}<FilePdf color="red" size={8} />
-
-                    </span>, value: "pdf" },
-                    { label: <span className="flex gap-2 items-center justify-center">{"Excel"}<FileXls  color='green'size={8} />
-
-                    </span> ,value: "xls" },
+                    {
+                      label: (
+                        <span className="flex gap-2 items-center justify-center">
+                          {uiConfiguration?.UI_LABELS?.PDF || "PDF"}
+                          <FilePdf color="red" size={8} />
+                        </span>
+                      ),
+                      value: "pdf",
+                    },
+                    {
+                      label: (
+                        <span className="flex gap-2 items-center justify-center">
+                          {uiConfiguration?.UI_LABELS?.EXCEL || "Excel"}
+                          <FileXls color="green" size={8} />
+                        </span>
+                      ),
+                      value: "xls",
+                    },
                   ]}
                   onItemClick={async (e) => {
                     try {
@@ -292,8 +315,11 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={
             <div className="flex flex-col gap-2">
-              <div>No Application found. </div>
-              {isSales()  ? (
+              <div>
+                {uiConfiguration?.UI_LABELS?.NO_APPLICATION_FOUND ||
+                  "No Application found."}{" "}
+              </div>
+              {isSales() ? (
                 <div>
                   {!params ? (
                     <Button
@@ -302,18 +328,21 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                       }}
                       sizeVariant="xs"
                     >
-                      Open Account
+                      {uiConfiguration?.UI_LABELS?.OPEN_ACCOUNT ||
+                        "Open Account"}
                     </Button>
                   ) : (
                     <Button
                       styleVariant="secondary"
                       onClick={() => {
                         setParams("");
-                        setParams1('')
+                        setParams1("");
                       }}
                       sizeVariant="xs"
                     >
-                      Clear Search <XCircle size={32} />
+                      {uiConfiguration?.UI_LABELS?.CLEAR_SEARCH ||
+                        "Clear Search"}{" "}
+                      <XCircle size={32} />
                     </Button>
                   )}
                 </div>

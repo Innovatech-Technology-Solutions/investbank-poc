@@ -122,7 +122,9 @@ const ShellLayout: React.FC = () => {
                               </Avatar>
 
                               <span className="flex text-sm text-slate-950 items-center justify-center">
-                                {user?.fullNameEn}
+                                {language === "EN"
+                                  ? user?.fullNameEn
+                                  : user?.fullNameAr}
                               </span>
                             </div>
                           }

@@ -1,19 +1,14 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRef, useState,  forwardRef } from "react";
+import { useRef, useState, forwardRef } from "react";
 import LeaderLine from "react-leader-line";
-import HistoryComments from "./HistoryComments"
-import {  orderBy } from 'lodash';
-import cm from './assets/comment.png';
-import hcm from './assets/hidecomment.png';
+import HistoryComments from "./HistoryComments";
+import { orderBy } from "lodash";
+import cm from "./assets/comment.png";
+import hcm from "./assets/hidecomment.png";
 
-import {
-  Steps,
-  Form,
-  ConfigProvider,
-  Card,
-} from "antd";
+import { Steps, Form, ConfigProvider, Card } from "antd";
 import dayjs from "dayjs";
 import axios from "axios";
 import Stepper from "./Stepper";
@@ -28,12 +23,20 @@ import Button from "./Button";
 import FieldComments from "./FieldComments";
 import { notification, Space } from "antd";
 import Preview from "./Preview";
-import {useNavigate, useParams} from 'react-router-dom'
+import { useNavigate, useParams } from "react-router-dom";
 import { decodeToken, isSales } from "./commonuitils";
 import React from "react";
-import { getResponseMessage, isValidApiResponse, isValidResponse } from "./utils/Commonutils";
+import {
+  getResponseMessage,
+  isValidApiResponse,
+  isValidResponse,
+} from "./utils/Commonutils";
 import emitMessage from "./services/emitMessage";
-import { useGetApplicationByReqIDQuery, useGetAuditHistoryByIDQuery, useGetFieldCommentsQuery } from "./services/hostApiServices";
+import {
+  useGetApplicationByReqIDQuery,
+  useGetAuditHistoryByIDQuery,
+  useGetFieldCommentsQuery,
+} from "./services/hostApiServices";
 import TaskManagement from "./TaskManagement";
 import BreadCrumbs from "./BreadCrumbs";
 import RecordVideo from "./RecordVideo";
@@ -43,28 +46,35 @@ const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
 
-
 // const RectComp = forwardRef(({ children, ...props }, ref) => (
 //   <div ref={ref} {...props}>
 //     {children}
 //   </div>
 // ));
-const randID=crypto.getRandomValues(new Uint32Array(1))[0]/2**32
+const randID = crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [activeIndex, setActiveIndex] = useState(1);
   const [showComments, setShowComments] = useState(0);
-  const{requestIDSlug}=useParams();
-  const {data:appData,isLoading,isFetching,isSuccess}=useGetApplicationByReqIDQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
-const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
-  const navigate=useNavigate()
+  const { requestIDSlug } = useParams();
+  const {
+    data: appData,
+    isLoading,
+    isFetching,
+    isSuccess,
+  } = useGetApplicationByReqIDQuery(requestIDSlug as any, {
+    skip: [null, undefined, ""].includes(requestIDSlug),
+  });
+  const { data: fieldcomments, refetch } = useGetFieldCommentsQuery(
+    requestIDSlug as any,
+    { skip: [null, undefined, ""].includes(requestIDSlug) }
+  );
+  const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const recordedVideoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
-
-
 
   const startRecording = async () => {
     try {
@@ -168,7 +178,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
     isMandatory?: boolean;
     isNumeric?: boolean;
     options?: Array<any>;
-    dir?:string
+    dir?: string;
   };
   const formControlsConfig: formType[] = [
     {
@@ -180,7 +190,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
       type: "text",
       show: true,
       isMandatory: true,
-      dir:"rtl"
+      dir: "rtl",
     },
     {
       order: 2,
@@ -251,202 +261,204 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
       id: "nationality",
       placeholder: "Nationality",
       type: "select",
-      options:[
-        { "label": "-- select one --", "value": "" },
-        { "label": "Afghan", "value": "afghan" },
-        { "label": "Albanian", "value": "albanian" },
-        { "label": "Algerian", "value": "algerian" },
-        { "label": "American", "value": "american" },
-        { "label": "Andorran", "value": "andorran" },
-        { "label": "Angolan", "value": "angolan" },
-        { "label": "Antiguans", "value": "antiguans" },
-        { "label": "Argentinean", "value": "argentinean" },
-        { "label": "Armenian", "value": "armenian" },
-        { "label": "Australian", "value": "australian" },
-        { "label": "Austrian", "value": "austrian" },
-        { "label": "Azerbaijani", "value": "azerbaijani" },
-        { "label": "Bahamian", "value": "bahamian" },
-        { "label": "Bahraini", "value": "bahraini" },
-        { "label": "Bangladeshi", "value": "bangladeshi" },
-        { "label": "Barbadian", "value": "barbadian" },
-        { "label": "Barbudans", "value": "barbudans" },
-        { "label": "Batswana", "value": "batswana" },
-        { "label": "Belarusian", "value": "belarusian" },
-        { "label": "Belgian", "value": "belgian" },
-        { "label": "Belizean", "value": "belizean" },
-        { "label": "Beninese", "value": "beninese" },
-        { "label": "Bhutanese", "value": "bhutanese" },
-        { "label": "Bolivian", "value": "bolivian" },
-        { "label": "Bosnian", "value": "bosnian" },
-        { "label": "Brazilian", "value": "brazilian" },
-        { "label": "British", "value": "british" },
-        { "label": "Bruneian", "value": "bruneian" },
-        { "label": "Bulgarian", "value": "bulgarian" },
-        { "label": "Burkinabe", "value": "burkinabe" },
-        { "label": "Burmese", "value": "burmese" },
-        { "label": "Burundian", "value": "burundian" },
-        { "label": "Cambodian", "value": "cambodian" },
-        { "label": "Cameroonian", "value": "cameroonian" },
-        { "label": "Canadian", "value": "canadian" },
-        { "label": "Cape Verdean", "value": "cape verdean" },
-        { "label": "Central African", "value": "central african" },
-        { "label": "Chadian", "value": "chadian" },
-        { "label": "Chilean", "value": "chilean" },
-        { "label": "Chinese", "value": "chinese" },
-        { "label": "Colombian", "value": "colombian" },
-        { "label": "Comoran", "value": "comoran" },
-        { "label": "Congolese", "value": "congolese" },
-        { "label": "Costa Rican", "value": "costa rican" },
-        { "label": "Croatian", "value": "croatian" },
-        { "label": "Cuban", "value": "cuban" },
-        { "label": "Cypriot", "value": "cypriot" },
-        { "label": "Czech", "value": "czech" },
-        { "label": "Danish", "value": "danish" },
-        { "label": "Djibouti", "value": "djibouti" },
-        { "label": "Dominican", "value": "dominican" },
-        { "label": "Dutch", "value": "dutch" },
-        { "label": "East Timorese", "value": "east timorese" },
-        { "label": "Ecuadorean", "value": "ecuadorean" },
-        { "label": "Egyptian", "value": "egyptian" },
-        { "label": "Emirian", "value": "emirian" },
-        { "label": "Equatorial Guinean", "value": "equatorial guinean" },
-        { "label": "Eritrean", "value": "eritrean" },
-        { "label": "Estonian", "value": "estonian" },
-        { "label": "Ethiopian", "value": "ethiopian" },
-        { "label": "Fijian", "value": "fijian" },
-        { "label": "Filipino", "value": "filipino" },
-        { "label": "Finnish", "value": "finnish" },
-        { "label": "French", "value": "french" },
-        { "label": "Gabonese", "value": "gabonese" },
-        { "label": "Gambian", "value": "gambian" },
-        { "label": "Georgian", "value": "georgian" },
-        { "label": "German", "value": "german" },
-        { "label": "Ghanaian", "value": "ghanaian" },
-        { "label": "Greek", "value": "greek" },
-        { "label": "Grenadian", "value": "grenadian" },
-        { "label": "Guatemalan", "value": "guatemalan" },
-        { "label": "Guinea-Bissauan", "value": "guinea-bissauan" },
-        { "label": "Guinean", "value": "guinean" },
-        { "label": "Guyanese", "value": "guyanese" },
-        { "label": "Haitian", "value": "haitian" },
-        { "label": "Herzegovinian", "value": "herzegovinian" },
-        { "label": "Honduran", "value": "honduran" },
-        { "label": "Hungarian", "value": "hungarian" },
-        { "label": "Icelander", "value": "icelander" },
-        { "label": "Indian", "value": "indian" },
-        { "label": "Indonesian", "value": "indonesian" },
-        { "label": "Iranian", "value": "iranian" },
-        { "label": "Iraqi", "value": "iraqi" },
-        { "label": "Irish", "value": "irish" },
-        { "label": "Israeli", "value": "israeli" },
-        { "label": "Italian", "value": "italian" },
-        { "label": "Ivorian", "value": "ivorian" },
-        { "label": "Jamaican", "value": "jamaican" },
-        { "label": "Japanese", "value": "japanese" },
-        { "label": "Jordanian", "value": "jordanian" },
-        { "label": "Kazakhstani", "value": "kazakhstani" },
-        { "label": "Kenyan", "value": "kenyan" },
-        { "label": "Kittian and Nevisian", "value": "kittian and nevisian" },
-        { "label": "Kuwaiti", "value": "kuwaiti" },
-        { "label": "Kyrgyz", "value": "kyrgyz" },
-        { "label": "Laotian", "value": "laotian" },
-        { "label": "Latvian", "value": "latvian" },
-        { "label": "Lebanese", "value": "lebanese" },
-        { "label": "Liberian", "value": "liberian" },
-        { "label": "Libyan", "value": "libyan" },
-        { "label": "Liechtensteiner", "value": "liechtensteiner" },
-        { "label": "Lithuanian", "value": "lithuanian" },
-        { "label": "Luxembourger", "value": "luxembourger" },
-        { "label": "Macedonian", "value": "macedonian" },
-        { "label": "Malagasy", "value": "malagasy" },
-        { "label": "Malawian", "value": "malawian" },
-        { "label": "Malaysian", "value": "malaysian" },
-        { "label": "Maldivan", "value": "maldivan" },
-        { "label": "Malian", "value": "malian" },
-        { "label": "Maltese", "value": "maltese" },
-        { "label": "Marshallese", "value": "marshallese" },
-        { "label": "Mauritanian", "value": "mauritanian" },
-        { "label": "Mauritian", "value": "mauritian" },
-        { "label": "Mexican", "value": "mexican" },
-        { "label": "Micronesian", "value": "micronesian" },
-        { "label": "Moldovan", "value": "moldovan" },
-        { "label": "Monacan", "value": "monacan" },
-        { "label": "Mongolian", "value": "mongolian" },
-        { "label": "Moroccan", "value": "moroccan" },
-        { "label": "Mosotho", "value": "mosotho" },
-        { "label": "Motswana", "value": "motswana" },
-        { "label": "Mozambican", "value": "mozambican" },
-        { "label": "Namibian", "value": "namibian" },
-        { "label": "Nauruan", "value": "nauruan" },
-        { "label": "Nepalese", "value": "nepalese" },
-        { "label": "New Zealander", "value": "new zealander" },
-        { "label": "Ni-Vanuatu", "value": "ni-vanuatu" },
-        { "label": "Nicaraguan", "value": "nicaraguan" },
-        { "label": "Nigerien", "value": "nigerien" },
-        { "label": "North Korean", "value": "north korean" },
-        { "label": "Northern Irish", "value": "northern irish" },
-        { "label": "Norwegian", "value": "norwegian" },
-        { "label": "Omani", "value": "omani" },
-        { "label": "Pakistani", "value": "pakistani" },
-        { "label": "Palauan", "value": "palauan" },
-        { "label": "Panamanian", "value": "panamanian" },
-        { "label": "Papua New Guinean", "value": "papua new guinean" },
-        { "label": "Paraguayan", "value": "paraguayan" },
-        { "label": "Peruvian", "value": "peruvian" },
-        { "label": "Polish", "value": "polish" },
-        { "label": "Portuguese", "value": "portuguese" },
-        { "label": "Qatari", "value": "qatari" },
-        { "label": "Romanian", "value": "romanian" },
-        { "label": "Russian", "value": "russian" },
-        { "label": "Rwandan", "value": "rwandan" },
-        { "label": "Saint Lucian", "value": "saint lucian" },
-        { "label": "Salvadoran", "value": "salvadoran" },
-        { "label": "Samoan", "value": "samoan" },
-        { "label": "San Marinese", "value": "san marinese" },
-        { "label": "Sao Tomean", "value": "sao tomean" },
-        { "label": "Saudi", "value": "saudi" },
-        { "label": "Scottish", "value": "scottish" },
-        { "label": "Senegalese", "value": "senegalese" },
-        { "label": "Serbian", "value": "serbian" },
-        { "label": "Seychellois", "value": "seychellois" },
-        { "label": "Sierra Leonean", "value": "sierra leonean" },
-        { "label": "Singaporean", "value": "singaporean" },
-        { "label": "Slovakian", "value": "slovakian" },
-        { "label": "Slovenian", "value": "slovenian" },
-        { "label": "Solomon Islander", "value": "solomon islander" },
-        { "label": "Somali", "value": "somali" },
-        { "label": "South African", "value": "south african" },
-        { "label": "South Korean", "value": "south korean" },
-        { "label": "Spanish", "value": "spanish" },
-        { "label": "Sri Lankan", "value": "sri lankan" },
-        { "label": "Sudanese", "value": "sudanese" },
-        { "label": "Surinamer", "value": "surinamer" },
-        { "label": "Swazi", "value": "swazi" },
-        { "label": "Swedish", "value": "swedish" },
-        { "label": "Swiss", "value": "swiss" },
-        { "label": "Syrian", "value": "syrian" },
-        { "label": "Taiwanese", "value": "taiwanese" },
-        { "label": "Tajik", "value": "tajik" },
-        { "label": "Tanzanian", "value": "tanzanian" },
-        { "label": "Thai", "value": "thai" },
-        { "label": "Togolese", "value": "togolese" },
-        { "label": "Tongan", "value": "tongan" },
-        { "label": "Trinidadian or Tobagonian", "value": "trinidadian or tobagonian" },
-        { "label": "Tunisian", "value": "tunisian" },
-        { "label": "Turkish", "value": "turkish" },
-        { "label": "Tuvaluan", "value": "tuvaluan" },
-        { "label": "Ugandan", "value": "ugandan" },
-        { "label": "Ukrainian", "value": "ukrainian" },
-        { "label": "Uruguayan", "value": "uruguayan" },
-        { "label": "Uzbekistani", "value": "uzbekistani" },
-        { "label": "Venezuelan", "value": "venezuelan" },
-        { "label": "Vietnamese", "value": "vietnamese" },
-        { "label": "Welsh", "value": "welsh" },
-        { "label": "Yemenite", "value": "yemenite" },
-        { "label": "Zambian", "value": "zambian" },
-        { "label": "Zimbabwean", "value": "zimbabwean" }
-      ]
-      ,
+      options: [
+        { label: "-- select one --", value: "" },
+        { label: "Afghan", value: "afghan" },
+        { label: "Albanian", value: "albanian" },
+        { label: "Algerian", value: "algerian" },
+        { label: "American", value: "american" },
+        { label: "Andorran", value: "andorran" },
+        { label: "Angolan", value: "angolan" },
+        { label: "Antiguans", value: "antiguans" },
+        { label: "Argentinean", value: "argentinean" },
+        { label: "Armenian", value: "armenian" },
+        { label: "Australian", value: "australian" },
+        { label: "Austrian", value: "austrian" },
+        { label: "Azerbaijani", value: "azerbaijani" },
+        { label: "Bahamian", value: "bahamian" },
+        { label: "Bahraini", value: "bahraini" },
+        { label: "Bangladeshi", value: "bangladeshi" },
+        { label: "Barbadian", value: "barbadian" },
+        { label: "Barbudans", value: "barbudans" },
+        { label: "Batswana", value: "batswana" },
+        { label: "Belarusian", value: "belarusian" },
+        { label: "Belgian", value: "belgian" },
+        { label: "Belizean", value: "belizean" },
+        { label: "Beninese", value: "beninese" },
+        { label: "Bhutanese", value: "bhutanese" },
+        { label: "Bolivian", value: "bolivian" },
+        { label: "Bosnian", value: "bosnian" },
+        { label: "Brazilian", value: "brazilian" },
+        { label: "British", value: "british" },
+        { label: "Bruneian", value: "bruneian" },
+        { label: "Bulgarian", value: "bulgarian" },
+        { label: "Burkinabe", value: "burkinabe" },
+        { label: "Burmese", value: "burmese" },
+        { label: "Burundian", value: "burundian" },
+        { label: "Cambodian", value: "cambodian" },
+        { label: "Cameroonian", value: "cameroonian" },
+        { label: "Canadian", value: "canadian" },
+        { label: "Cape Verdean", value: "cape verdean" },
+        { label: "Central African", value: "central african" },
+        { label: "Chadian", value: "chadian" },
+        { label: "Chilean", value: "chilean" },
+        { label: "Chinese", value: "chinese" },
+        { label: "Colombian", value: "colombian" },
+        { label: "Comoran", value: "comoran" },
+        { label: "Congolese", value: "congolese" },
+        { label: "Costa Rican", value: "costa rican" },
+        { label: "Croatian", value: "croatian" },
+        { label: "Cuban", value: "cuban" },
+        { label: "Cypriot", value: "cypriot" },
+        { label: "Czech", value: "czech" },
+        { label: "Danish", value: "danish" },
+        { label: "Djibouti", value: "djibouti" },
+        { label: "Dominican", value: "dominican" },
+        { label: "Dutch", value: "dutch" },
+        { label: "East Timorese", value: "east timorese" },
+        { label: "Ecuadorean", value: "ecuadorean" },
+        { label: "Egyptian", value: "egyptian" },
+        { label: "Emirian", value: "emirian" },
+        { label: "Equatorial Guinean", value: "equatorial guinean" },
+        { label: "Eritrean", value: "eritrean" },
+        { label: "Estonian", value: "estonian" },
+        { label: "Ethiopian", value: "ethiopian" },
+        { label: "Fijian", value: "fijian" },
+        { label: "Filipino", value: "filipino" },
+        { label: "Finnish", value: "finnish" },
+        { label: "French", value: "french" },
+        { label: "Gabonese", value: "gabonese" },
+        { label: "Gambian", value: "gambian" },
+        { label: "Georgian", value: "georgian" },
+        { label: "German", value: "german" },
+        { label: "Ghanaian", value: "ghanaian" },
+        { label: "Greek", value: "greek" },
+        { label: "Grenadian", value: "grenadian" },
+        { label: "Guatemalan", value: "guatemalan" },
+        { label: "Guinea-Bissauan", value: "guinea-bissauan" },
+        { label: "Guinean", value: "guinean" },
+        { label: "Guyanese", value: "guyanese" },
+        { label: "Haitian", value: "haitian" },
+        { label: "Herzegovinian", value: "herzegovinian" },
+        { label: "Honduran", value: "honduran" },
+        { label: "Hungarian", value: "hungarian" },
+        { label: "Icelander", value: "icelander" },
+        { label: "Indian", value: "indian" },
+        { label: "Indonesian", value: "indonesian" },
+        { label: "Iranian", value: "iranian" },
+        { label: "Iraqi", value: "iraqi" },
+        { label: "Irish", value: "irish" },
+        { label: "Israeli", value: "israeli" },
+        { label: "Italian", value: "italian" },
+        { label: "Ivorian", value: "ivorian" },
+        { label: "Jamaican", value: "jamaican" },
+        { label: "Japanese", value: "japanese" },
+        { label: "Jordanian", value: "jordanian" },
+        { label: "Kazakhstani", value: "kazakhstani" },
+        { label: "Kenyan", value: "kenyan" },
+        { label: "Kittian and Nevisian", value: "kittian and nevisian" },
+        { label: "Kuwaiti", value: "kuwaiti" },
+        { label: "Kyrgyz", value: "kyrgyz" },
+        { label: "Laotian", value: "laotian" },
+        { label: "Latvian", value: "latvian" },
+        { label: "Lebanese", value: "lebanese" },
+        { label: "Liberian", value: "liberian" },
+        { label: "Libyan", value: "libyan" },
+        { label: "Liechtensteiner", value: "liechtensteiner" },
+        { label: "Lithuanian", value: "lithuanian" },
+        { label: "Luxembourger", value: "luxembourger" },
+        { label: "Macedonian", value: "macedonian" },
+        { label: "Malagasy", value: "malagasy" },
+        { label: "Malawian", value: "malawian" },
+        { label: "Malaysian", value: "malaysian" },
+        { label: "Maldivan", value: "maldivan" },
+        { label: "Malian", value: "malian" },
+        { label: "Maltese", value: "maltese" },
+        { label: "Marshallese", value: "marshallese" },
+        { label: "Mauritanian", value: "mauritanian" },
+        { label: "Mauritian", value: "mauritian" },
+        { label: "Mexican", value: "mexican" },
+        { label: "Micronesian", value: "micronesian" },
+        { label: "Moldovan", value: "moldovan" },
+        { label: "Monacan", value: "monacan" },
+        { label: "Mongolian", value: "mongolian" },
+        { label: "Moroccan", value: "moroccan" },
+        { label: "Mosotho", value: "mosotho" },
+        { label: "Motswana", value: "motswana" },
+        { label: "Mozambican", value: "mozambican" },
+        { label: "Namibian", value: "namibian" },
+        { label: "Nauruan", value: "nauruan" },
+        { label: "Nepalese", value: "nepalese" },
+        { label: "New Zealander", value: "new zealander" },
+        { label: "Ni-Vanuatu", value: "ni-vanuatu" },
+        { label: "Nicaraguan", value: "nicaraguan" },
+        { label: "Nigerien", value: "nigerien" },
+        { label: "North Korean", value: "north korean" },
+        { label: "Northern Irish", value: "northern irish" },
+        { label: "Norwegian", value: "norwegian" },
+        { label: "Omani", value: "omani" },
+        { label: "Pakistani", value: "pakistani" },
+        { label: "Palauan", value: "palauan" },
+        { label: "Panamanian", value: "panamanian" },
+        { label: "Papua New Guinean", value: "papua new guinean" },
+        { label: "Paraguayan", value: "paraguayan" },
+        { label: "Peruvian", value: "peruvian" },
+        { label: "Polish", value: "polish" },
+        { label: "Portuguese", value: "portuguese" },
+        { label: "Qatari", value: "qatari" },
+        { label: "Romanian", value: "romanian" },
+        { label: "Russian", value: "russian" },
+        { label: "Rwandan", value: "rwandan" },
+        { label: "Saint Lucian", value: "saint lucian" },
+        { label: "Salvadoran", value: "salvadoran" },
+        { label: "Samoan", value: "samoan" },
+        { label: "San Marinese", value: "san marinese" },
+        { label: "Sao Tomean", value: "sao tomean" },
+        { label: "Saudi", value: "saudi" },
+        { label: "Scottish", value: "scottish" },
+        { label: "Senegalese", value: "senegalese" },
+        { label: "Serbian", value: "serbian" },
+        { label: "Seychellois", value: "seychellois" },
+        { label: "Sierra Leonean", value: "sierra leonean" },
+        { label: "Singaporean", value: "singaporean" },
+        { label: "Slovakian", value: "slovakian" },
+        { label: "Slovenian", value: "slovenian" },
+        { label: "Solomon Islander", value: "solomon islander" },
+        { label: "Somali", value: "somali" },
+        { label: "South African", value: "south african" },
+        { label: "South Korean", value: "south korean" },
+        { label: "Spanish", value: "spanish" },
+        { label: "Sri Lankan", value: "sri lankan" },
+        { label: "Sudanese", value: "sudanese" },
+        { label: "Surinamer", value: "surinamer" },
+        { label: "Swazi", value: "swazi" },
+        { label: "Swedish", value: "swedish" },
+        { label: "Swiss", value: "swiss" },
+        { label: "Syrian", value: "syrian" },
+        { label: "Taiwanese", value: "taiwanese" },
+        { label: "Tajik", value: "tajik" },
+        { label: "Tanzanian", value: "tanzanian" },
+        { label: "Thai", value: "thai" },
+        { label: "Togolese", value: "togolese" },
+        { label: "Tongan", value: "tongan" },
+        {
+          label: "Trinidadian or Tobagonian",
+          value: "trinidadian or tobagonian",
+        },
+        { label: "Tunisian", value: "tunisian" },
+        { label: "Turkish", value: "turkish" },
+        { label: "Tuvaluan", value: "tuvaluan" },
+        { label: "Ugandan", value: "ugandan" },
+        { label: "Ukrainian", value: "ukrainian" },
+        { label: "Uruguayan", value: "uruguayan" },
+        { label: "Uzbekistani", value: "uzbekistani" },
+        { label: "Venezuelan", value: "venezuelan" },
+        { label: "Vietnamese", value: "vietnamese" },
+        { label: "Welsh", value: "welsh" },
+        { label: "Yemenite", value: "yemenite" },
+        { label: "Zambian", value: "zambian" },
+        { label: "Zimbabwean", value: "zimbabwean" },
+      ],
       show: true,
     },
     {
@@ -771,26 +783,32 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
     },
   ];
 
-
-  const viewCommentRef=(line:any, docId:any)=>{
+  const viewCommentRef = (line: any, docId: any) => {
     // line.position();
-    // 
-   let scrollableBox = document.getElementById(docId)
-  //  window.scrollTo(scrollableBox.offsetLeft,scrollableBox.offsetTop,behavior: 'smooth'); 
-  window.scrollTo({
-    top: scrollableBox.offsetTop,
-    left: scrollableBox.offsetLeft,
-    behavior: 'smooth'
-  });
-   line.show();
+    //
+    let scrollableBox = document.getElementById(docId);
+    //  window.scrollTo(scrollableBox.offsetLeft,scrollableBox.offsetTop,behavior: 'smooth');
+    window.scrollTo({
+      top: scrollableBox.offsetTop,
+      left: scrollableBox.offsetLeft,
+      behavior: "smooth",
+    });
+    line.show();
     // scrollableBox.addEventListener('scroll', (function() {
     //   line.position();
     // }), false);
-}
+  };
 
-  const commentRef=(commentId:string)=>{
-    return new LeaderLine(LeaderLine.mouseHoverAnchor(document.getElementById(`comment_${commentId}`), "draw"),document.getElementById(commentId),  {dash: true, hide: true});
-    }
+  const commentRef = (commentId: string) => {
+    return new LeaderLine(
+      LeaderLine.mouseHoverAnchor(
+        document.getElementById(`comment_${commentId}`),
+        "draw"
+      ),
+      document.getElementById(commentId),
+      { dash: true, hide: true }
+    );
+  };
 
   const handleNext = () => {
     form.validateFields().then(() => {
@@ -805,12 +823,11 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
     mode: "all",
     reValidateMode: "onChange",
     resolver: zodResolver(schema),
-    values:requestIDSlug?appData?.data?.output:{}
+    values: requestIDSlug ? appData?.data?.output : {},
   });
   type NotificationType = "success" | "info" | "warning" | "error";
 
   const [api, contextHolder] = notification.useNotification();
-
 
   const openNotificationWithIcon = (type: NotificationType) => {
     api[type]({
@@ -821,59 +838,57 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
   const taskUpdate = async () => {
     const data: any = useFormMethods.getValues();
     return new Promise(async (resolve, reject) => {
-        
-         
+      const apiUrl = `${
+        import.meta.env.VITE_BASE_URL
+      }/gateway/Investbankpoc/InvestBankPoc?action=RESUBMIT`;
 
+      // Define your headers
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getBearerToken()}`, // Include the Bearer token
+      };
+      const payload = structuredClone(useFormMethods.getValues());
+      payload["status"] = "submitted";
+      payload.attachments = [{ requestId: data?.requestId }];
+      // Make the POST request
+      axios
+        .post(apiUrl, payload, { headers })
+        .then((response: any) => {
+          // Handle success
+          if (isValidResponse(response)) {
+            resolve(true);
 
-          const apiUrl = `${
-            import.meta.env.VITE_BASE_URL
-          }/gateway/Investbankpoc/InvestBankPoc?action=RESUBMIT`;
-
-          // Define your headers
-          const headers = {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getBearerToken()}`, // Include the Bearer token
-          };
-const payload=structuredClone(useFormMethods.getValues())
-payload["status"]='submitted'
-payload.attachments = [{ requestId: data?.requestId }];
-// Make the POST request
-          axios
-            .post(apiUrl, payload, { headers })
-            .then((response: any) => {
-              // Handle success
-            if(isValidResponse(response))
-            {
-              resolve(true);
-
-              emitMessage("Submitted successfully",'success')
-              setTimeout(()=>{
-                
-              })
-              navigate("/investbank/applications")
-            }
-            else{              resolve(false);
-            }
-            })
-            .catch(e=>
-              {
-                reject(false);
-                emitMessage(
-                   'Unable to submit form at the moment',
-                  'error')
-              })
-            
-            })}
-  const auditHistoryApiRes = useGetAuditHistoryByIDQuery(requestIDSlug as any ,{skip:[null,undefined,''].includes(requestIDSlug)});
+            emitMessage("Submitted successfully", "success");
+            setTimeout(() => {});
+            navigate("/investbank/applications");
+          } else {
+            resolve(false);
+          }
+        })
+        .catch((e) => {
+          reject(false);
+          emitMessage("Unable to submit form at the moment", "error");
+        });
+    });
+  };
+  const auditHistoryApiRes = useGetAuditHistoryByIDQuery(requestIDSlug as any, {
+    skip: [null, undefined, ""].includes(requestIDSlug),
+  });
   const { data: auditHistoryData } = auditHistoryApiRes;
   if (!isValidApiResponse(auditHistoryApiRes)) {
-    emitMessage(
-      getResponseMessage('something went wrong',
-      'error',
-    ))
+    emitMessage(getResponseMessage("something went wrong", "error"));
   }
-  const auditHistory = orderBy(auditHistoryData?.data?.auditHistory, 'queuedDate', 'desc');
-if(isLoading||isFetching) return <div className="flex items-center justify-center h-[70vh]"><Loader/></div>
+  const auditHistory = orderBy(
+    auditHistoryData?.data?.auditHistory,
+    "queuedDate",
+    "desc"
+  );
+  if (isLoading || isFetching)
+    return (
+      <div className="flex items-center justify-center h-[70vh]">
+        <Loader />
+      </div>
+    );
   return (
     <ConfigProvider
       theme={{
@@ -890,265 +905,273 @@ if(isLoading||isFetching) return <div className="flex items-center justify-cente
         ))}
       </Steps> */}
 
-      <div style={{background:'white',     padding: '2%',borderRadius: '6px'}}>
-     
-      <div className={"flex justify-end gap-2 border-b  pb-2"} >
-        {appData?.data?.output?.taskId&&<TaskManagement
-        
-        updateApiCall={taskUpdate}
-        isUpdateDetailsOnTaskUpdate={true}
-        taskIdString={appData?.data?.output?.taskId} backURL={"/investbank/applications"}/>}
-      {requestIDSlug?<div   style={{cursor:'pointer'}}
-          onClick={() => {
-            setShowComments(showComments==1 ? 0 : 1)
-          }}
-        >
-          {showComments == 0 ? <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
-          <img style={{width:'30px'}}
-                src={cm}
-              />
-          <span className="font-[500]">Reviewer Comments</span>
-          </div>
-          : 
-          <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
-          <img style={{width:'30px'}}
-                src={hcm}
-              />
-          <span className="font-[500]">Hide Comments</span>
-          </div>  
-        }
-          
-          
-        </div>:null}
-        {!requestIDSlug&&isSales()&&<Button sizeVariant="xs"
-          onClick={() => {
-            console.log(useFormMethods.getValues());
-
-            const apiUrl = `${
-              import.meta.env.VITE_BASE_URL
-            }/gateway/Investbankpoc/InvestBankPoc?action=SUBMIT`;
-
-            // Define your headers
-            const headers = {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${getBearerToken()}`, // Include the Bearer token
-            };
-const payload=structuredClone(useFormMethods.getValues())
-payload["status"]='submitted'
-payload.attachments = [{ requestId: randID }];
-// Make the POST request
-            axios
-              .post(apiUrl, payload, { headers })
-              .then((response: any) => {
-                // Handle success
-              if(isValidResponse(response))
-              {
-                emitMessage("Submitted successfully",'success')
-                navigate("/investbank/applications")
-              }
-              })
-              .catch((error: any) => {
-                // Handle error
-                console.error("Error:", error);
-              });
-          }}
-        >
-          Submit
-        </Button>}
-      </div>
-
-      <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
-      {showComments == 0 &&    <Card style={{ width: 350, paddingTop: "1.5rem" }}>
-        <Stepper 
-
-            clickedIndex={(e) => {
-              console.log("ee",e)
-              setActiveIndex(e)}}
-            stepperItems={[
-              {
-                label: "Applicant Details",
-                path: "#",
-                stage:  activeIndex!==1?"upcoming":"current",
-                stepperIndex: 1,
-                isActive: activeIndex==1,
-                isLastItem: false,
-              },
-              {
-                label: "Marital Status",
-                path: "#",
-                stage: activeIndex!==2?"upcoming":"current",
-                stepperIndex: 2,
-                isActive: activeIndex==2,
-                isLastItem: false,
-              },
-              {
-                label: "Residence Address",
-                path: "#",
-                stage:  activeIndex!==3?"upcoming":"current",
-                stepperIndex: 3,
-                isActive: activeIndex==3,
-                isLastItem: false,
-              },
-              {
-                label: "Employment and Financial Details",
-                path: "#",
-                stage:  activeIndex!==4?"upcoming":"current",
-                stepperIndex: 4,
-                isActive: activeIndex==4,
-                isLastItem: false,
-              },
-              {
-                label: "Customer Information",
-                path: "#",
-                stage:  activeIndex!==5?"upcoming":"current",
-                stepperIndex: 5,
-                isActive: activeIndex==5,
-                isLastItem: false,
-              },
-              {
-                label: "Account Information",
-                path: "#",
-                stage:  activeIndex!==6?"upcoming":"current",
-                stepperIndex: 6,
-                isActive: activeIndex==6,
-                isLastItem: true,
-              },
-            ]}
-          /> 
-        </Card> }
-        <Card style={{ width: "100%" }}>
-          {(!requestIDSlug&&isSales()) || (isSales()&&appData?.data?.output?.taskId) ? (
-            <form
-              noValidate
-              onSubmit={(e) => {
-                e.preventDefault();
+      <div style={{ background: "white", padding: "2%", borderRadius: "6px" }}>
+        <div className={"flex justify-end gap-2 border-b  pb-2"}>
+          {appData?.data?.output?.taskId && (
+            <TaskManagement
+              updateApiCall={taskUpdate}
+              isUpdateDetailsOnTaskUpdate={true}
+              taskIdString={appData?.data?.output?.taskId}
+              backURL={"/investbank/applications"}
+            />
+          )}
+          {requestIDSlug ? (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setShowComments(showComments == 1 ? 0 : 1);
               }}
             >
-              {contextHolder}
+              {showComments == 0 ? (
+                <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
+                  <img style={{ width: "30px" }} src={cm} />
+                  <span className="font-[500]">Reviewer Comments</span>
+                </div>
+              ) : (
+                <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
+                  <img style={{ width: "30px" }} src={hcm} />
+                  <span className="font-[500]">Hide Comments</span>
+                </div>
+              )}
+            </div>
+          ) : null}
+          {!requestIDSlug && isSales() && (
+            <Button
+              sizeVariant="xs"
+              onClick={() => {
+                console.log(useFormMethods.getValues());
 
-              <Accordion
-                defaultIndex={activeIndex}
-                showFooterButtons={true}
-                clickedAccordion={(e: any) => setActiveIndex(e)}
-                accordionItems={[
+                const apiUrl = `${
+                  import.meta.env.VITE_BASE_URL
+                }/gateway/Investbankpoc/InvestBankPoc?action=SUBMIT`;
+
+                // Define your headers
+                const headers = {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${getBearerToken()}`, // Include the Bearer token
+                };
+                const payload = structuredClone(useFormMethods.getValues());
+                payload["status"] = "submitted";
+                payload.attachments = [{ requestId: randID }];
+                // Make the POST request
+                axios
+                  .post(apiUrl, payload, { headers })
+                  .then((response: any) => {
+                    // Handle success
+                    if (isValidResponse(response)) {
+                      emitMessage("Submitted successfully", "success");
+                      navigate("/investbank/applications");
+                    }
+                  })
+                  .catch((error: any) => {
+                    // Handle error
+                    console.error("Error:", error);
+                  });
+              }}
+            >
+              Submit
+            </Button>
+          )}
+        </div>
+
+        <div className={"flex md:flex-col lg:flex-row pt-2 gap-2"}>
+          {showComments == 0 && (
+            <Card style={{ width: 350, paddingTop: "1.5rem" }}>
+              <Stepper
+                clickedIndex={(e) => {
+                  console.log("ee", e);
+                  setActiveIndex(e);
+                }}
+                stepperItems={[
                   {
-                    title: "Applicant Details",
-                    accordianIndex: 1,
-                    content: (
-                      <>
-                        <div
-                          id="stepidx-1"
-                          className={
-                            "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                          }
-                        >
-                          {formControlsConfig
-                            .sort((a, b) => a.order - b.order)
-                            .map(
-                              ({
-                                id,
-                                type,
-                                name,
-                                placeholder,
-                                show = true,
-                                isMandatory = false,
-                                isNumeric,
-                                options = [],
-                                dir='ltr'
-                              }) =>
-                                show ? (
-                                  <>
-                                    {type === "text" ? (
-                                      <div key={id}>
-                                        <Controller
-                                          name={name as any}
-                                          control={useFormMethods.control}
-                                          render={({
-                                            field: { onChange, value },
-                                            fieldState: { error },
-                                          }) => (
-                                            <InputText
-                                              label={placeholder}
-                                              isError={!!error}
-                                              name={name}
-                                              id={id}
-                                              placeholder={placeholder}
-                                              isMandatory={isMandatory}
-                                              disabled={false}
-                                              onlyNumeric={isNumeric}
-                                              type={type}
-                                              onInputChange={onChange}
-                                              value={value}
-                                              errorMessage={
-                                                error ? error.message : ""
-                                              }
-                                            />
-                                          )}
-                                        />
-                                      </div>
-                                    ) : null}
-                                    {type === "select" ? (
-                                      <div>
-                                        <Controller
-                                          name={id as any}
-                                          control={useFormMethods.control}
-                                          render={({
-                                            field: { onChange, value },
-                                            fieldState: { error },
-                                          }) => (
-                                            <Select
-                                              name={id as any}
-                                              id={id}
-                                              label={placeholder}
-                                              size={"sm" as any}
-                                              isMandatory={true}
-                                              disableLabel={false}
-                                              onChange={onChange}
-                                              value={value}
-                                              isError={!!error}
-                                              errorMessage={error?.message}
-                                              showPlaceHolder={true as any}
-                                              options={options}
-                                            />
-                                          )}
-                                        />
-                                      </div>
-                                    ) : null}
-                                    {type === "date" ? (
-                                      <div>
-                                        <Controller
-                                          name={name}
-                                          control={useFormMethods.control}
-                                          render={({
-                                            field: { onChange, value },
-                                            fieldState: { error },
-                                          }) => (
-                                            <DatePickerInput
-                                              name={name}
-                                              id={name}
-                                              label={placeholder}
-                                              picker="date"
-                                              onChange={(_date, value) => {
-                                                onChange(value);
-                                              }}
-                                              requiredLabel={true}
-                                              format='YYYY-MM-DD'
-                                              value={
-                                                value && dayjs(value).isValid() ? dayjs(value) : null
-                                              }
-                                              size="large"
-                                              isError={!!error}
-                                              errorMessage={error?.message}
-                                            />
-                                          )}
-                                        />
-                                      </div>
-                                    ) : null}
-                                  </>
-                                ) : null
-                            )}
-                        </div>
-                        {/* <div
+                    label: "Applicant Details",
+                    path: "#",
+                    stage: activeIndex !== 1 ? "upcoming" : "current",
+                    stepperIndex: 1,
+                    isActive: activeIndex == 1,
+                    isLastItem: false,
+                  },
+                  {
+                    label: "Marital Status",
+                    path: "#",
+                    stage: activeIndex !== 2 ? "upcoming" : "current",
+                    stepperIndex: 2,
+                    isActive: activeIndex == 2,
+                    isLastItem: false,
+                  },
+                  {
+                    label: "Residence Address",
+                    path: "#",
+                    stage: activeIndex !== 3 ? "upcoming" : "current",
+                    stepperIndex: 3,
+                    isActive: activeIndex == 3,
+                    isLastItem: false,
+                  },
+                  {
+                    label: "Employment and Financial Details",
+                    path: "#",
+                    stage: activeIndex !== 4 ? "upcoming" : "current",
+                    stepperIndex: 4,
+                    isActive: activeIndex == 4,
+                    isLastItem: false,
+                  },
+                  {
+                    label: "Customer Information",
+                    path: "#",
+                    stage: activeIndex !== 5 ? "upcoming" : "current",
+                    stepperIndex: 5,
+                    isActive: activeIndex == 5,
+                    isLastItem: false,
+                  },
+                  {
+                    label: "Account Information",
+                    path: "#",
+                    stage: activeIndex !== 6 ? "upcoming" : "current",
+                    stepperIndex: 6,
+                    isActive: activeIndex == 6,
+                    isLastItem: true,
+                  },
+                ]}
+              />
+            </Card>
+          )}
+          <Card style={{ width: "100%" }}>
+            {(!requestIDSlug && isSales()) ||
+            (isSales() && appData?.data?.output?.taskId) ? (
+              <form
+                noValidate
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                {contextHolder}
+
+                <Accordion
+                  defaultIndex={activeIndex}
+                  showFooterButtons={true}
+                  clickedAccordion={(e: any) => setActiveIndex(e)}
+                  accordionItems={[
+                    {
+                      title: "Applicant Details",
+                      accordianIndex: 1,
+                      content: (
+                        <>
+                          <div
+                            id="stepidx-1"
+                            className={
+                              "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                            }
+                          >
+                            {formControlsConfig
+                              .sort((a, b) => a.order - b.order)
+                              .map(
+                                ({
+                                  id,
+                                  type,
+                                  name,
+                                  placeholder,
+                                  show = true,
+                                  isMandatory = false,
+                                  isNumeric,
+                                  options = [],
+                                  dir = "ltr",
+                                }) =>
+                                  show ? (
+                                    <>
+                                      {type === "text" ? (
+                                        <div key={id}>
+                                          <Controller
+                                            name={name as any}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <InputText
+                                                label={placeholder}
+                                                isError={!!error}
+                                                name={name}
+                                                id={id}
+                                                placeholder={placeholder}
+                                                isMandatory={isMandatory}
+                                                disabled={false}
+                                                onlyNumeric={isNumeric}
+                                                type={type}
+                                                onInputChange={onChange}
+                                                value={value}
+                                                errorMessage={
+                                                  error ? error.message : ""
+                                                }
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                      {type === "select" ? (
+                                        <div>
+                                          <Controller
+                                            name={id as any}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <Select
+                                                name={id as any}
+                                                id={id}
+                                                label={placeholder}
+                                                size={"sm" as any}
+                                                isMandatory={true}
+                                                disableLabel={false}
+                                                onChange={onChange}
+                                                value={value}
+                                                isError={!!error}
+                                                errorMessage={error?.message}
+                                                showPlaceHolder={true as any}
+                                                options={options}
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                      {type === "date" ? (
+                                        <div>
+                                          <Controller
+                                            name={name}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <DatePickerInput
+                                                name={name}
+                                                id={name}
+                                                label={placeholder}
+                                                picker="date"
+                                                onChange={(_date, value) => {
+                                                  onChange(value);
+                                                }}
+                                                requiredLabel={true}
+                                                format="YYYY-MM-DD"
+                                                value={
+                                                  value &&
+                                                  dayjs(value).isValid()
+                                                    ? dayjs(value)
+                                                    : null
+                                                }
+                                                size="large"
+                                                isError={!!error}
+                                                errorMessage={error?.message}
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                    </>
+                                  ) : null
+                              )}
+                          </div>
+                          {/* <div
                     className={
                       'flex justify-between   flex-col  lg:flex-row gap-2 pb-2'}
                   >
@@ -1156,22 +1179,143 @@ payload.attachments = [{ requestId: randID }];
                       {'Next Step'} <CaretRight size={32} />
                     </Button>
                   </div> */}
-                      </>
-                    ),
-                  },
-                  {
-                    title: "Marital Status",
-                    accordianIndex: 2,
-                    content: (
-                      <>
-                        {" "}
+                        </>
+                      ),
+                    },
+                    {
+                      title: "Marital Status",
+                      accordianIndex: 2,
+                      content: (
+                        <>
+                          {" "}
+                          <div
+                            id="stepidx-2"
+                            className={
+                              "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                            }
+                          >
+                            {maritalStatusControlsConfig
+                              .sort((a, b) => a.order - b.order)
+                              .map(
+                                ({
+                                  id,
+                                  type,
+                                  name,
+                                  placeholder,
+                                  show = true,
+                                  isMandatory = false,
+                                  isNumeric,
+                                  options = [],
+                                }) =>
+                                  show ? (
+                                    <>
+                                      {type === "text" ? (
+                                        <div key={id}>
+                                          <Controller
+                                            name={name as any}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <InputText
+                                                label={placeholder}
+                                                isError={!!error}
+                                                name={name}
+                                                id={id}
+                                                placeholder={placeholder}
+                                                isMandatory={isMandatory}
+                                                disabled={false}
+                                                onlyNumeric={isNumeric}
+                                                type={type}
+                                                onInputChange={onChange}
+                                                value={value}
+                                                errorMessage={
+                                                  error ? error.message : ""
+                                                }
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                      {type === "select" ? (
+                                        <div>
+                                          <Controller
+                                            name={id as any}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <Select
+                                                name={id as any}
+                                                id={id}
+                                                label={placeholder}
+                                                size={"sm" as any}
+                                                isMandatory={true}
+                                                disableLabel={false}
+                                                onChange={onChange}
+                                                value={value}
+                                                isError={!!error}
+                                                errorMessage={error?.message}
+                                                showPlaceHolder={true as any}
+                                                options={options}
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                      {type === "date" ? (
+                                        <div>
+                                          <Controller
+                                            name={name}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <DatePickerInput
+                                                name={name}
+                                                id={name}
+                                                label={placeholder}
+                                                picker="date"
+                                                onChange={(_date, value) => {
+                                                  onChange(value);
+                                                }}
+                                                requiredLabel={true}
+                                                format="YYYY-MM-DD"
+                                                value={
+                                                  value &&
+                                                  dayjs(value).isValid()
+                                                    ? dayjs(value)
+                                                    : null
+                                                }
+                                                size="large"
+                                                isError={!!error}
+                                                errorMessage={error?.message}
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                    </>
+                                  ) : null
+                              )}
+                          </div>
+                        </>
+                      ),
+                    },
+                    {
+                      title: "Residence Address",
+                      accordianIndex: 3,
+                      content: (
                         <div
-                          id="stepidx-2"
+                          id="stepidx-3"
                           className={
                             "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                           }
                         >
-                          {maritalStatusControlsConfig
+                          {residenceAddressControlsConfig
                             .sort((a, b) => a.order - b.order)
                             .map(
                               ({
@@ -1260,10 +1404,11 @@ payload.attachments = [{ requestId: randID }];
                                                 onChange(value);
                                               }}
                                               requiredLabel={true}
-                                              format='YYYY-MM-DD'
-
+                                              format="YYYY-MM-DD"
                                               value={
-                                                value && dayjs(value).isValid() ? dayjs(value) : null
+                                                value && dayjs(value).isValid()
+                                                  ? dayjs(value)
+                                                  : null
                                               }
                                               size="large"
                                               isError={!!error}
@@ -1277,282 +1422,164 @@ payload.attachments = [{ requestId: randID }];
                                 ) : null
                             )}
                         </div>
-                      </>
-                    ),
-                  },
-                  {
-                    title: "Residence Address",
-                    accordianIndex: 3,
-                    content: (
-                      <div
-                        id="stepidx-3"
-                        className={
-                          "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                        }
-                      >
-                        {residenceAddressControlsConfig
-                          .sort((a, b) => a.order - b.order)
-                          .map(
-                            ({
-                              id,
-                              type,
-                              name,
-                              placeholder,
-                              show = true,
-                              isMandatory = false,
-                              isNumeric,
-                              options = [],
-                            }) =>
-                              show ? (
-                                <>
-                                  {type === "text" ? (
-                                    <div key={id}>
-                                      <Controller
-                                        name={name as any}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <InputText
-                                            label={placeholder}
-                                            isError={!!error}
-                                            name={name}
-                                            id={id}
-                                            placeholder={placeholder}
-                                            isMandatory={isMandatory}
-                                            disabled={false}
-                                            onlyNumeric={isNumeric}
-                                            type={type}
-                                            onInputChange={onChange}
-                                            value={value}
-                                            errorMessage={
-                                              error ? error.message : ""
-                                            }
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                  {type === "select" ? (
-                                    <div>
-                                      <Controller
-                                        name={id as any}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <Select
-                                            name={id as any}
-                                            id={id}
-                                            label={placeholder}
-                                            size={"sm" as any}
-                                            isMandatory={true}
-                                            disableLabel={false}
-                                            onChange={onChange}
-                                            value={value}
-                                            isError={!!error}
-                                            errorMessage={error?.message}
-                                            showPlaceHolder={true as any}
-                                            options={options}
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                  {type === "date" ? (
-                                    <div>
-                                      <Controller
-                                        name={name}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <DatePickerInput
-                                            name={name}
-                                            id={name}
-                                            label={placeholder}
-                                            picker="date"
-                                            onChange={(_date, value) => {
-                                              onChange(value);
-                                            }}
-                                            requiredLabel={true}
-                                            format='YYYY-MM-DD'
-                                            value={
-                                              value && dayjs(value).isValid() ? dayjs(value) : null
-                                            }
-                                           
-                                            size="large"
-                                            isError={!!error}
-                                            errorMessage={error?.message}
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                </>
-                              ) : null
-                          )}
-                      </div>
-                    ),
-                  },
-                  {
-                    title: "Employment and Financial Details",
-                    accordianIndex: 4,
-                    content: (
-                      <div
-                        id="stepidx-4"
-                        className={
-                          "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                        }
-                      >
-                        {employmentFinancialControlsConfig
-                          .sort((a, b) => a.order - b.order)
-                          .map(
-                            ({
-                              id,
-                              type,
-                              name,
-                              placeholder,
-                              show = true,
-                              isMandatory = false,
-                              isNumeric,
-                              options = [],
-                            }) =>
-                              show ? (
-                                <>
-                                  {type === "text" ? (
-                                    <div key={id}>
-                                      <Controller
-                                        name={name as any}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <InputText
-                                            label={placeholder}
-                                            isError={!!error}
-                                            name={name}
-                                            id={id}
-                                            placeholder={placeholder}
-                                            isMandatory={isMandatory}
-                                            disabled={false}
-                                            onlyNumeric={isNumeric}
-                                            type={type}
-                                            onInputChange={onChange}
-                                            value={value}
-                                            errorMessage={
-                                              error ? error.message : ""
-                                            }
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
+                      ),
+                    },
+                    {
+                      title: "Employment and Financial Details",
+                      accordianIndex: 4,
+                      content: (
+                        <div
+                          id="stepidx-4"
+                          className={
+                            "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                          }
+                        >
+                          {employmentFinancialControlsConfig
+                            .sort((a, b) => a.order - b.order)
+                            .map(
+                              ({
+                                id,
+                                type,
+                                name,
+                                placeholder,
+                                show = true,
+                                isMandatory = false,
+                                isNumeric,
+                                options = [],
+                              }) =>
+                                show ? (
+                                  <>
+                                    {type === "text" ? (
+                                      <div key={id}>
+                                        <Controller
+                                          name={name as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <InputText
+                                              label={placeholder}
+                                              isError={!!error}
+                                              name={name}
+                                              id={id}
+                                              placeholder={placeholder}
+                                              isMandatory={isMandatory}
+                                              disabled={false}
+                                              onlyNumeric={isNumeric}
+                                              type={type}
+                                              onInputChange={onChange}
+                                              value={value}
+                                              errorMessage={
+                                                error ? error.message : ""
+                                              }
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                     {type === "number" ? (
-                                    <div key={id}>
-                                      <Controller
-                                        name={name as any}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <InputText
-                                            label={placeholder}
-                                            isError={!!error}
-                                            name={name}
-                                            id={id}
-                                            placeholder={placeholder}
-                                            isMandatory={isMandatory}
-                                            disabled={false}
-                                            onlyNumeric={true}
-                                            min={0}
-                                            max={10000000}
-                                            type={type}
-                                            onInputChange={onChange}
-                                            value={value}
-                                            errorMessage={
-                                              error ? error.message : ""
-                                            }
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                  {type === "select" ? (
-                                    <div>
-                                      <Controller
-                                        name={id as any}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <Select
-                                            name={id as any}
-                                            id={id}
-                                            label={placeholder}
-                                            size={"sm" as any}
-                                            isMandatory={true}
-                                            disableLabel={false}
-                                            onChange={onChange}
-                                            value={value}
-                                            isError={!!error}
-                                            errorMessage={error?.message}
-                                            showPlaceHolder={true as any}
-                                            options={options}
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                  {type === "date" ? (
-                                    <div>
-                                      <Controller
-                                        name={name}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <DatePickerInput
-                                            name={name}
-                                            id={name}
-                                            label={placeholder}
-                                            picker="date"
-                                            onChange={(_date, value) => {
-                                              onChange(value);
-                                            }}
-                                            requiredLabel={true}
-                                            format='YYYY-MM-DD'
-
-                                            value={
-                                              value && dayjs(value).isValid() ? dayjs(value) : null
-                                            }
-                                            size="large"
-                                            isError={!!error}
-                                            errorMessage={error?.message}
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                </>
-                              ) : null
-                          )}
-                      </div>
-                    ),
-                  },
-                  {
-                    title: "Customer Information",
-                    accordianIndex: 5,
-                    content: (
-                      <div>
-                        {/* <div>
+                                      <div key={id}>
+                                        <Controller
+                                          name={name as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <InputText
+                                              label={placeholder}
+                                              isError={!!error}
+                                              name={name}
+                                              id={id}
+                                              placeholder={placeholder}
+                                              isMandatory={isMandatory}
+                                              disabled={false}
+                                              onlyNumeric={true}
+                                              min={0}
+                                              max={10000000}
+                                              type={type}
+                                              onInputChange={onChange}
+                                              value={value}
+                                              errorMessage={
+                                                error ? error.message : ""
+                                              }
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "select" ? (
+                                      <div>
+                                        <Controller
+                                          name={id as any}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <Select
+                                              name={id as any}
+                                              id={id}
+                                              label={placeholder}
+                                              size={"sm" as any}
+                                              isMandatory={true}
+                                              disableLabel={false}
+                                              onChange={onChange}
+                                              value={value}
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                              showPlaceHolder={true as any}
+                                              options={options}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {type === "date" ? (
+                                      <div>
+                                        <Controller
+                                          name={name}
+                                          control={useFormMethods.control}
+                                          render={({
+                                            field: { onChange, value },
+                                            fieldState: { error },
+                                          }) => (
+                                            <DatePickerInput
+                                              name={name}
+                                              id={name}
+                                              label={placeholder}
+                                              picker="date"
+                                              onChange={(_date, value) => {
+                                                onChange(value);
+                                              }}
+                                              requiredLabel={true}
+                                              format="YYYY-MM-DD"
+                                              value={
+                                                value && dayjs(value).isValid()
+                                                  ? dayjs(value)
+                                                  : null
+                                              }
+                                              size="large"
+                                              isError={!!error}
+                                              errorMessage={error?.message}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </>
+                                ) : null
+                            )}
+                        </div>
+                      ),
+                    },
+                    {
+                      title: "Customer Information",
+                      accordianIndex: 5,
+                      content: (
+                        <div>
+                          {/* <div>
                           <div className="flex flex-end gap-2">
                             <Button onClick={startRecording}>
                               Start Recording
@@ -1573,13 +1600,138 @@ payload.attachments = [{ requestId: randID }];
                           </div>
                         </div> */}
 
+                          <div
+                            id="stepidx-5"
+                            className={
+                              "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
+                            }
+                          >
+                            {customerInformationControlsConfig
+                              .sort((a, b) => a.order - b.order)
+                              .map(
+                                ({
+                                  id,
+                                  type,
+                                  name,
+                                  placeholder,
+                                  show = true,
+                                  isMandatory = false,
+                                  isNumeric,
+                                  options = [],
+                                }) =>
+                                  show ? (
+                                    <>
+                                      {type === "text" ? (
+                                        <div key={id}>
+                                          <Controller
+                                            name={name as any}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <InputText
+                                                label={placeholder}
+                                                isError={!!error}
+                                                name={name}
+                                                id={id}
+                                                placeholder={placeholder}
+                                                isMandatory={isMandatory}
+                                                disabled={false}
+                                                onlyNumeric={isNumeric}
+                                                type={type}
+                                                onInputChange={onChange}
+                                                value={value}
+                                                errorMessage={
+                                                  error ? error.message : ""
+                                                }
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                      {type === "select" ? (
+                                        <div>
+                                          <Controller
+                                            name={id as any}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <Select
+                                                name={id as any}
+                                                id={id}
+                                                label={placeholder}
+                                                size={"sm" as any}
+                                                isMandatory={true}
+                                                disableLabel={false}
+                                                onChange={onChange}
+                                                value={value}
+                                                isError={!!error}
+                                                errorMessage={error?.message}
+                                                showPlaceHolder={true as any}
+                                                options={options}
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                      {type === "date" ? (
+                                        <div>
+                                          <Controller
+                                            name={name}
+                                            control={useFormMethods.control}
+                                            render={({
+                                              field: { onChange, value },
+                                              fieldState: { error },
+                                            }) => (
+                                              <DatePickerInput
+                                                name={name}
+                                                id={name}
+                                                label={placeholder}
+                                                picker="date"
+                                                onChange={(_date, value) => {
+                                                  onChange(value);
+                                                }}
+                                                requiredLabel={true}
+                                                format="YYYY-MM-DD"
+                                                value={
+                                                  value &&
+                                                  dayjs(value).isValid()
+                                                    ? dayjs(value)
+                                                    : null
+                                                }
+                                                size="large"
+                                                isError={!!error}
+                                                errorMessage={error?.message}
+                                              />
+                                            )}
+                                          />
+                                        </div>
+                                      ) : null}
+                                    </>
+                                  ) : null
+                              )}
+                          </div>
+                          <SectionHeader title="Capture Customer Signing Process" />
+                          <div className="flex pt-2">
+                            <RecordVideo randID={randID as any} />
+                          </div>
+                        </div>
+                      ),
+                    },
+                    {
+                      title: "Account Information",
+                      accordianIndex: 6,
+                      content: (
                         <div
-                          id="stepidx-5"
+                          id="stepidx-6"
                           className={
                             "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
                           }
                         >
-                          {customerInformationControlsConfig
+                          {accountInformationControlsConfig
                             .sort((a, b) => a.order - b.order)
                             .map(
                               ({
@@ -1668,10 +1820,11 @@ payload.attachments = [{ requestId: randID }];
                                                 onChange(value);
                                               }}
                                               requiredLabel={true}
-                                              format='YYYY-MM-DD'
-
+                                              format="YYYY-MM-DD"
                                               value={
-                                                value && dayjs(value).isValid() ? dayjs(value) : null
+                                                value && dayjs(value).isValid()
+                                                  ? dayjs(value)
+                                                  : null
                                               }
                                               size="large"
                                               isError={!!error}
@@ -1685,140 +1838,16 @@ payload.attachments = [{ requestId: randID }];
                                 ) : null
                             )}
                         </div>
-                        <SectionHeader title='Capture Customer Signing Process'/>
-                        <div className="flex pt-2">
-                        <RecordVideo randID={randID as any}/>
-                        </div>
+                      ),
+                    },
+                  ]}
+                />
+              </form>
+            ) : (
+              <Preview data={appData?.data?.output || {}} />
+            )}
 
-                      </div>
-                    ),
-                  },
-                  {
-                    title: "Account Information",
-                    accordianIndex: 6,
-                    content: (
-                      <div
-                        id="stepidx-6"
-                        className={
-                          "md:col-span-3 grid grid-cols-1 gap-x-6 gap-y-[1.3rem] md:grid-cols-3 pb-[1.2rem]"
-                        }
-                      >
-                        {accountInformationControlsConfig
-                          .sort((a, b) => a.order - b.order)
-                          .map(
-                            ({
-                              id,
-                              type,
-                              name,
-                              placeholder,
-                              show = true,
-                              isMandatory = false,
-                              isNumeric,
-                              options = [],
-                            }) =>
-                              show ? (
-                                <>
-                                  {type === "text" ? (
-                                    <div key={id}>
-                                      <Controller
-                                        name={name as any}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <InputText
-                                            label={placeholder}
-                                            isError={!!error}
-                                            name={name}
-                                            id={id}
-                                            placeholder={placeholder}
-                                            isMandatory={isMandatory}
-                                            disabled={false}
-                                            onlyNumeric={isNumeric}
-                                            type={type}
-                                            onInputChange={onChange}
-                                            value={value}
-                                            errorMessage={
-                                              error ? error.message : ""
-                                            }
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                  {type === "select" ? (
-                                    <div>
-                                      <Controller
-                                        name={id as any}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <Select
-                                            name={id as any}
-                                            id={id}
-                                            label={placeholder}
-                                            size={"sm" as any}
-                                            isMandatory={true}
-                                            disableLabel={false}
-                                            onChange={onChange}
-                                            value={value}
-                                            isError={!!error}
-                                            errorMessage={error?.message}
-                                            showPlaceHolder={true as any}
-                                            options={options}
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                  {type === "date" ? (
-                                    <div>
-                                      <Controller
-                                        name={name}
-                                        control={useFormMethods.control}
-                                        render={({
-                                          field: { onChange, value },
-                                          fieldState: { error },
-                                        }) => (
-                                          <DatePickerInput
-                                            name={name}
-                                            id={name}
-                                            label={placeholder}
-                                            picker="date"
-                                            onChange={(_date, value) => {
-                                              onChange(value);
-                                            }}
-                                            requiredLabel={true}
-                                            format='YYYY-MM-DD'
-
-                                            value={
-                                              value && dayjs(value).isValid() ? dayjs(value) : null
-                                            }
-                                            size="large"
-                                            isError={!!error}
-                                            errorMessage={error?.message}
-                                          />
-                                        )}
-                                      />
-                                    </div>
-                                  ) : null}
-                                </>
-                              ) : null
-                          )}
-                      </div>
-                    ),
-                  },
-                ]}
-              />
-            </form>
-          ) : (
-            <Preview data={appData?.data?.output||{}} />
-          )}
-
-          {/* <div>
+            {/* <div>
       <div className="steps-content p-2">{steps[currentStep].content}</div>
       <div className="steps-action">
         {currentStep > 0 && (
@@ -1838,11 +1867,22 @@ payload.attachments = [{ requestId: randID }];
         )}
       </div>
       </div> */}
-        </Card>
-        {showComments == 1 &&   <FieldComments comments={fieldcomments?.data?.output||[]} viewCommentRef={viewCommentRef} commentRef={commentRef}/>}
+          </Card>
+          {showComments == 1 && (
+            <FieldComments
+              comments={fieldcomments?.data?.output || []}
+              viewCommentRef={viewCommentRef}
+              commentRef={commentRef}
+            />
+          )}
+        </div>
       </div>
-      </div>
-      {requestIDSlug&&<HistoryComments requestId={requestIDSlug as string} allActivities={auditHistory} />}
+      {requestIDSlug && (
+        <HistoryComments
+          requestId={requestIDSlug as string}
+          allActivities={auditHistory}
+        />
+      )}
     </ConfigProvider>
   );
 };

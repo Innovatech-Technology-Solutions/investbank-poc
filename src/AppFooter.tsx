@@ -163,7 +163,7 @@ const AppFooter = () => {
           <div className="flex flex-wrap gap-y-6 items-center justify-between">
             <div className="w-full lg:w-7/12">
               <div className="text-aeblack-700 text-xs sm:text-sm mb-0">
-                &copy; {new Date().getFullYear()}.
+                {/* &copy; {new Date().getFullYear()}. */}
                 {uiConfigurations?.UI_LABELS?.COPYRIGHT ||
                   "Copyrights © 2024 INVESTBANK. All rights reserved"}
                 .{" "}
