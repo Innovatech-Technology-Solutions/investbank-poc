@@ -7,8 +7,14 @@ import { useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import { useGetInterfaceByIDQuery } from "../services/hostApiServices";
+import useLanguage from "../hooks/useLanguage";
 
 const Login = () => {
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
+
   const [spin, setSpin] = useState(false);
   const navigate = useNavigate();
 
@@ -49,7 +55,10 @@ const Login = () => {
         notification.error({ message: "Invalid Username or password" });
       }
     } catch (error) {
-      notification.error({ message: "Login failed",description:"Unable to login at the moment" });
+      notification.error({
+        message: "Login failed",
+        description: "Unable to login at the moment",
+      });
     } finally {
       setSpin(false);
     }
@@ -63,14 +72,15 @@ const Login = () => {
       <div className="background-container max-lg:hidden">
         <div className="text-center ml-20 flex flex-col gap-6 items-start font-[400] text-[40px] text-[#BD982E] mb-36">
           <div className="font-[400] text-[40px] text-[#BD982E]">
-            Welcome to{" "}
+            {uiConfiguration?.UI_LABELS?.WELCOME || "Welcome to"}{" "}
             <span className="font-[500] text-[46px] text-[#BD982E]">
-              INVESTBANK!
+              {uiConfiguration?.UI_LABELS?.INVESTBANK || "INVESTBANK!"}
             </span>
           </div>
           <div className="font-[400] text-[40px] text-[#BD982E]">
             <span className="font-[500] text-[26px] text-[#808080]">
-              Empower your finances, empower your future. Invest with purpose.
+              {uiConfiguration?.UI_LABELS?.EMPOWER ||
+                "Empower your finances, empower your future. Invest with purpose."}
             </span>
           </div>
         </div>
@@ -83,9 +93,12 @@ const Login = () => {
           className="w-[230px] h-[65px] absolute top-[60px]"
         />
         <div className="flex flex-col gap-2 mt-[100px] items-center">
-          <div className="font-[700] text-[24px] text-[#ffffff]">Sign In</div>
+          <div className="font-[700] text-[24px] text-[#ffffff]">
+            {uiConfiguration?.UI_LABELS?.SIGN_IN || "Sign In"}
+          </div>
           <div className="font-[400] text-[12px] text-[#ffffff]">
-            Welcome, please login with your credentials
+            {uiConfiguration?.UI_LABELS?.LOGIN_WITH_YOUR_CREDENTIALS ||
+              "Welcome, please login with your credentials"}
           </div>
           <Form
             name="basic"
@@ -100,11 +113,16 @@ const Login = () => {
             <Form.Item<FieldType>
               name="username"
               rules={[
-                { required: true, message: "Please input your username!" },
+                {
+                  required: true,
+                  message:
+                    uiConfiguration?.UI_LABELS?.PLEASE_INPUT_YOUR_USERNAME ||
+                    "Please input your username!",
+                },
               ]}
             >
               <Input
-                placeholder="Username"
+                placeholder={uiConfiguration?.UI_LABELS?.USERNAME || "Username"}
                 autoComplete="new-password"
                 size="large"
                 prefix={
@@ -124,12 +142,17 @@ const Login = () => {
             <Form.Item<FieldType>
               name="password"
               rules={[
-                { required: true, message: "Please input your password!" },
+                {
+                  required: true,
+                  message:
+                    uiConfiguration?.UI_LABELS?.PLEASE_INPUT_YOUR_PASSWORD ||
+                    "Please input your password!",
+                },
               ]}
             >
               <Input.Password
                 size="large"
-                placeholder="Password"
+                placeholder={uiConfiguration?.UI_LABELS?.PASSWORD || "Password"}
                 autoComplete="new-password"
                 prefix={
                   <svg
@@ -150,7 +173,10 @@ const Login = () => {
               valuePropName="checked"
               wrapperCol={{ offset: 0, span: 24 }}
             >
-              <Checkbox className="!text-[#ffffff]">Remember Password</Checkbox>
+              <Checkbox className="!text-[#ffffff]">
+                {uiConfiguration?.UI_LABELS?.REMEMBER_PASSWORD ||
+                  "Remember Password"}
+              </Checkbox>
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
@@ -161,7 +187,7 @@ const Login = () => {
                 size="large"
               >
                 {!spin ? (
-                  "Login"
+                  uiConfiguration?.UI_LABELS?.LOGIN || "Login"
                 ) : (
                   <Spin
                     indicator={
@@ -176,7 +202,10 @@ const Login = () => {
             </Form.Item>
           </Form>
           <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
-            <label className="text-[#B78F01]">Forgot Password?</label>
+            <label className="text-[#B78F01]">
+              {uiConfiguration?.UI_LABELS?.FORGOT_PASSWORD ||
+                "Forgot Password?"}
+            </label>
           </Form.Item>
         </div>
       </div>
