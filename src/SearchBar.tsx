@@ -19,24 +19,25 @@ const SearchBar: React.FC<{
 
   return (
     <>
-      <Row gutter={[16, 16]}>
-        <Col span={12}>
+      <div className='flex justify-normal  gap-2 items-center'>
+        <div  className='flex'>
           <InputText
+          style={{height:'2.2rem'}}
           sizeVariant={'sm'}
           placeholder={'Search...'}
           value={searchText}
           suffxIcon={<MagnifyingGlass onClick={()=>    onSearch(searchText)
           }/>} onChange={e => handleBasicSearch(e.target.value)} isError={false} id={''}  name={''}/>
-        </Col>
-        <Col span={12} style={{ textAlign: 'right' }}>
+        </div>
+        <div>
           <Button 
           sizeVariant='xs'  onClick={() => setModalVisible(true)}>
             Advanced Search<Faders size={32} />
 
 
           </Button>
-        </Col>
-      </Row>
+        </div>
+      </div>
       <AdvancedSearch
         visible={modalVisible}
         onClose={() => setModalVisible(false)}

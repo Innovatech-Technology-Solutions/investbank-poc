@@ -167,6 +167,12 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
       }),
       keepUnusedDataFor: 0,
     }),
+    downloadRDL: builder.mutation<CommonGetResponce<any>, void>({
+      query: (params:any) => ({
+        url: `/gateway/Investbankpoc/InvestBankPoc?pageNumber=0&pageSize=1000${params?params:''}&exportAs=pdf`,
+        method: 'GET',
+      }),
+    }),
 
     /* Submit Comment*/
     submitComment: builder.mutation({
@@ -456,5 +462,6 @@ export const {
   useGetMyApplicationsQuery,
   useGetApplicationByReqIDQuery,
   usePostFieldCommentMutation,
-  useGetFieldCommentsQuery
+  useGetFieldCommentsQuery,
+  useDownloadRDLMutation
 } = hostApiServices;

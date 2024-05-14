@@ -3,7 +3,7 @@
 import Commontable from "./Commontable";
 import { Link } from "react-router-dom";
 import { TagChevron, XCircle } from "@phosphor-icons/react";
-import { useGetMyApplicationsQuery } from "../services/hostApiServices";
+import { useDownloadRDLMutation, useGetMyApplicationsQuery } from "../services/hostApiServices";
 import { Empty, Tag } from "antd";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Loader from "../Loader";
 import AdvancedSearch from "../AdvnancedSearch";
 import SearchBar from "../SearchBar";
+import { isValidResponse } from "../utils/Commonutils";
+import MenuDropDown from "../MenuDrioDown";
 
 // import { isValidApiResponse } from '../utils/Commonutils';
 // import emitMessage from '../services/emitMessage';
@@ -24,6 +26,7 @@ type ApplicationsProps = {
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
   const [params, setParams] = useState("");
   const apiData = useGetMyApplicationsQuery(params as any);
+  const[downLoadRDl]=useDownloadRDLMutation()
   const navigate = useNavigate();
   const { data, isFetching, isLoading, isSuccess } = apiData;
 
@@ -39,6 +42,29 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       setParams(`&search=${value}`); // Set parameters after debounce time
     }, 300); // 300 milliseconds debounce delay, adjust as needed
   };
+  function downloadBase64File(base64String, fileName) {
+    // Convert base64 string to Blob
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+
+    // Create a link element
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+
+    // Programmatically click the link to trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+}
+
   const sortedDataSource = (source) =>
     [...structuredClone(source)].sort((a, b) => {
       const aHasTaskId = "taskId" in a && a.taskId !== null;
@@ -162,18 +188,18 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       </div>
       {data?.data?.output?.length > 0 && isSuccess ? (
         <div className="flex flex-col gap-2 ">
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-end items-center">
             <SearchBar
               onSearch={function (value: string): void {
                 debounceSearch(value);
               }}
               onAdvancedSearch={function (val): void {
-                console.log(val)
-setParams(`&${val}`)             }}
+                console.log(val);
+                setParams(`&${val}`);
+              }}
             />
             {isSales() && !isMyapplications ? (
-              
-              <div className="flex justify-end ">
+              <div className="flex justify-end gap-2 ">
                 <Button
                   onClick={() => {
                     navigate("/investbank/account-request");
@@ -182,6 +208,31 @@ setParams(`&${val}`)             }}
                 >
                   Open Account
                 </Button>
+                <MenuDropDown
+                buttonSize="xs"
+                
+    
+      buttonText='Export'
+      items={[
+        { label: 'PDF', value: 'pdf' },
+        { label: 'Excel', value: 'xls' },
+      ]}
+      onItemClick={async(e)=>
+        {
+          try{
+          const res:any=await downLoadRDl().unwrap()
+          if(isValidResponse(res))
+          {
+            console.log("ff",res?.data?.fileContent)
+          downloadBase64File(res?.data?.fileContent,`Report.${e}`)
+          }
+          }
+          catch(e)
+          {
+            console.log("ee",e)
+          }
+        }}
+    />
               </div>
             ) : null}
           </div>
@@ -208,23 +259,26 @@ setParams(`&${val}`)             }}
               <div>No Application found. </div>
               {isSales() && !isMyapplications ? (
                 <div>
-                {!params? <Button
-                  onClick={() => {
-                    navigate("/investbank/account-request");
-                  }}
-                  sizeVariant="xs"
-                >
-                  Open Account
-                </Button>:<Button
-                styleVariant="secondary"
-                  onClick={() => {
-setParams('')                  }}
-                  sizeVariant="xs"
-                >
-                  Clear Search <XCircle size={32} />
-
-
-                </Button>}
+                  {!params ? (
+                    <Button
+                      onClick={() => {
+                        navigate("/investbank/account-request");
+                      }}
+                      sizeVariant="xs"
+                    >
+                      Open Account
+                    </Button>
+                  ) : (
+                    <Button
+                      styleVariant="secondary"
+                      onClick={() => {
+                        setParams("");
+                      }}
+                      sizeVariant="xs"
+                    >
+                      Clear Search <XCircle size={32} />
+                    </Button>
+                  )}
                 </div>
               ) : null}
             </div>
