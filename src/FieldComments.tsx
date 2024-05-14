@@ -1,5 +1,6 @@
 import { Card } from "antd";
 import React, { useEffect, useState } from "react";
+import useLanguage from "./hooks/useLanguage";
 
 interface CommentType {
   id: string;
@@ -8,7 +9,9 @@ interface CommentType {
   comment: string;
   createdBy: string;
   createdDate: string;
-  fullNameEn:string
+  fullNameEn:string;
+  fullNameAr:string
+
 }
 
 interface FieldCommentsProps {
@@ -50,6 +53,8 @@ interface CommentProps {
 
 const Comment: React.FC<CommentProps> = ({ data, viewCommentRef, commentRef }) => {
   const [line, setLine] = useState(null);
+  const{language}=useLanguage()
+
 
   useEffect(()=>{
     setLine(commentRef(`${data.fieldId}`))
@@ -77,7 +82,7 @@ const Comment: React.FC<CommentProps> = ({ data, viewCommentRef, commentRef }) =
         </svg>
         <p style={{ fontSize: "12px" }}>{data.comment}</p>
         <div className="quote-footer">
-          <div className="quote-author">{data.fullNameEn}</div>
+          <div className="quote-author ">{language==='EN'?data.fullNameEn:data?.fullNameAr||data?.fullNameEn}</div>
           <div className="quote-cite">{data.createdDate}</div>
         </div>
       </blockquote>
