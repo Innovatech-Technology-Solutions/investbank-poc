@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Select, Input, Row, Col } from "antd";
 import { useGetInterfaceByIDQuery } from "./services/hostApiServices";
 import useLanguage from "./hooks/useLanguage";
+import InputText from "./InputText";
 
 const { Option } = Select;
 
@@ -10,6 +11,7 @@ interface SearchParams {
   name?: string;
   maritalStatus?: string[];
   primeCustomer?: string[];
+  status?: string[];
 }
 
 const AdvancedSearch: React.FC<{
@@ -67,6 +69,13 @@ const AdvancedSearch: React.FC<{
             <Option value="0">Female</Option>
           </Select>
         </Col>
+         <Col span={12}>
+          <InputText
+          style={{height:"2.2rem"}}
+          
+                      placeholder="Search Something..."
+                      onChange={(e) => setSearchParams({ ...searchParams, name: e.target.value })} isError={false} id={''} value={searchParams.name as any} name={''}          />
+        </Col>
         <Col span={12}>
           <Select
             mode="multiple"
@@ -83,15 +92,7 @@ const AdvancedSearch: React.FC<{
             <Option value="widowed">Widowed</Option>
           </Select>
         </Col>
-        <Col span={12}>
-          <Input
-            style={{ background: "white", border: "1px solid" }}
-            placeholder="Enter name"
-            onChange={(e) =>
-              setSearchParams({ ...searchParams, name: e.target.value })
-            }
-          />
-        </Col>
+      
         <Col span={12}>
           <Select
             mode="multiple"
@@ -106,7 +107,24 @@ const AdvancedSearch: React.FC<{
             <Option value="no">No</Option>
           </Select>
         </Col>
+        <Col span={12}>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder="Status"
+            onChange={(value: string[]) =>
+              setSearchParams({ ...searchParams, status: value })
+            }
+          >
+            <Option value="APPROVED">Approved</Option>
+            <Option value="REJECTED">Rejected</Option>
+            <Option value="SUBMITTED">Submitted</Option>
+
+          </Select>
+        </Col>
       </Row>
+     
     </Modal>
   );
 };

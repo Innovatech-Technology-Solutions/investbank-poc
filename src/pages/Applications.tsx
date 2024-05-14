@@ -38,6 +38,8 @@ type ApplicationsProps = {
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
   const [params, setParams] = useState<any>(null);
   const [params1, setParams1] = useState<any>(null);
+  const [params2, setParams2] = useState<any>(null);
+
   const apiData = useGetMyApplicationsQuery(params as any);
   const [downLoadRDl] = useDownloadRDLMutation();
   const navigate = useNavigate();
@@ -234,6 +236,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
               onAdvancedSearch={function (val): void {
                 console.log(val);
                 setParams(`&${val}`);
+                setParams2(val)
               }}
             />
             {isSales() && !isMyapplications ? (
