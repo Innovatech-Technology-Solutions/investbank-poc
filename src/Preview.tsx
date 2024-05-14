@@ -2,96 +2,142 @@
 import React from "react";
 import SectionDetails from "./pages/SectionDetails";
 import Attachments from "./Attachments";
+import { useGetInterfaceByIDQuery } from "./services/hostApiServices";
+import useLanguage from "./hooks/useLanguage";
 
 const Preview = ({ data }: any) => {
-  console.log("datarrr", data?.attachments?.[0]?.filePath,import.meta.env?.VITE_BASE_URL);
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
+
+  console.log(
+    "datarrr",
+    data?.attachments?.[0]?.filePath,
+    import.meta.env?.VITE_BASE_URL
+  );
   return (
     <div id="scrollableBox">
       {/* Applicant Details */}
       <SectionDetails
         stepId="stepidx-1"
-        sectionHeader="Applicant Details"
+        sectionHeader={
+          uiConfiguration?.UI_LABELS?.APPLICANT_DETAILS || "Applicant Details"
+        }
         sectionData={[
           {
-            key: "Full Name in Arabic",
+            key:
+              uiConfiguration?.UI_LABELS?.FULL_NAME_IN_ARABIC ||
+              "Full Name in Arabic",
             fieldKey: "fullNameAr",
             value: data?.fullNameAr,
-            direction:"rtl"
+            direction: "rtl",
           },
           {
-            key: "Full Name in English",
+            key:
+              uiConfiguration?.UI_LABELS?.FULL_NAME_IN_ENGLISH ||
+              "Full Name in English",
             fieldKey: "fullNameEn",
             value: data?.fullNameEn,
           },
-          { key: "Mobile Number", fieldKey: "mobileNo", value: data?.mobileNo },
-          { key: "Email", fieldKey: "email", value: data?.email },
           {
-            key: "Mother Name",
+            key: uiConfiguration?.UI_LABELS?.MOBILE_NUMBER || "Mobile Number",
+            fieldKey: "mobileNo",
+            value: data?.mobileNo,
+          },
+          {
+            key: uiConfiguration?.UI_LABELS?.EMAIL || "Email",
+            fieldKey: "email",
+            value: data?.email,
+          },
+          {
+            key: uiConfiguration?.UI_LABELS?.MOTHER_NAME || "Mother Name",
             fieldKey: "motherName",
             value: data?.motherName,
           },
-          { key: "Sex", fieldKey: "sex", value: data?.sex },
           {
-            key: "Date of Birth",
+            key: uiConfiguration?.UI_LABELS?.SEX || "Sex",
+            fieldKey: "sex",
+            value: data?.sex,
+          },
+          {
+            key: uiConfiguration?.UI_LABELS?.DATE_OF_BIRTH || "Date of Birth",
             fieldKey: "dateOfBirth",
             value: data?.dateOfBirth,
           },
           {
-            key: "Nationality",
+            key: uiConfiguration?.UI_LABELS?.NATIONALITY || "Nationality",
             fieldKey: "nationality",
             value: data?.nationality,
           },
           {
-            key: "National ID",
+            key: uiConfiguration?.UI_LABELS?.NATIONAL_ID || "National ID",
             fieldKey: "nationalId",
             value: data?.nationalId,
           },
           {
-            key: "National ID Date",
+            key:
+              uiConfiguration?.UI_LABELS?.NATIONAL_ID_DATE ||
+              "National ID Date",
             fieldKey: "nationalIdDate",
             value: data?.nationalIdDate,
           },
           {
-            key: "National ID Expiry Date",
+            key:
+              uiConfiguration?.UI_LABELS?.NATIONAL_ID_EXPIRY_DATE ||
+              "National ID Expiry Date",
             fieldKey: "nationalIdExpiryDate",
             value: data?.nationalIdExpiryDate,
           },
           {
-            key: "Is Bank Blacklisted?",
+            key:
+              uiConfiguration?.UI_LABELS?.IS_BANK_BLACKLISTED ||
+              "Is Bank Blacklisted?",
             fieldKey: "isBankBlacklisted",
             value: data?.isBankBlacklisted,
           },
           {
-            key: "Birth Country",
+            key: uiConfiguration?.UI_LABELS?.BIRTH_COUNTRY || "Birth Country",
             fieldKey: "birthCountry",
             value: data?.birthCountry,
           },
-          { key: "Birth City", fieldKey: "birthCity", value: data?.birthCity },
+          {
+            key: uiConfiguration?.UI_LABELS?.BIRTH_CITY || "Birth City",
+            fieldKey: "birthCity",
+            value: data?.birthCity,
+          },
         ]}
       />
 
       {/* Residence Address */}
       <SectionDetails
         stepId="stepidx-2"
-        sectionHeader="Social Status"
+        sectionHeader={
+          uiConfiguration?.UI_LABELS?.SOCIAL_STATUS || "Social Status"
+        }
         sectionData={[
           {
-            key: "Marital Status",
+            key: uiConfiguration?.UI_LABELS?.MARTIAL_STATUS || "Marital Status",
             fieldKey: "maritalStatus",
             value: data?.maritalStatus,
           },
           {
-            key: "Residence Status",
+            key:
+              uiConfiguration?.UI_LABELS?.RESIDENCE_STATUS ||
+              "Residence Status",
             fieldKey: "residenceStatus",
             value: data?.residenceStatus,
           },
           {
-            key: "Personal Identity Issuance Location",
+            key:
+              uiConfiguration?.UI_LABELS?.PERSONAL_IDENTITY_ISSUANCE_LOCATION ||
+              "Personal Identity Issuance Location",
             fieldKey: "personalIdentityIssuanceLocation",
             value: data?.personalIdentityIssuanceLocation,
           },
           {
-            key: "Personal Identity Type",
+            key:
+              uiConfiguration?.UI_LABELS?.PERSONAL_IDENTITY_TYPE ||
+              "Personal Identity Type",
             fieldKey: "personalIdentityType",
             value: data?.personalIdentityType,
           },
@@ -99,27 +145,37 @@ const Preview = ({ data }: any) => {
       ></SectionDetails>
       <SectionDetails
         stepId="stepidx-3"
-        sectionHeader="Residence Address"
+        sectionHeader={
+          uiConfiguration?.UI_LABELS?.RESIDENCE_ADDRESS || "Residence Address"
+        }
         sectionData={[
-          { key: "City Name", fieldKey: "cityName", value: data?.cityName },
-          { key: "Area Name", fieldKey: "areaName", value: data?.areaName },
           {
-            key: "Street Name",
+            key: uiConfiguration?.UI_LABELS?.CITY_NAME || "City Name",
+            fieldKey: "cityName",
+            value: data?.cityName,
+          },
+          {
+            key: uiConfiguration?.UI_LABELS?.AREA_NAME || "Area Name",
+            fieldKey: "areaName",
+            value: data?.areaName,
+          },
+          {
+            key: uiConfiguration?.UI_LABELS?.STREET_NAME || "Street Name",
             fieldKey: "streetName",
             value: data?.streetName,
           },
           {
-            key: "Apartment No",
+            key: uiConfiguration?.UI_LABELS?.APARTMENT_NO || "Apartment No",
             fieldKey: "apartmentNo",
             value: data?.apartmentNo,
           },
           {
-            key: "Postal Code",
+            key: uiConfiguration?.UI_LABELS?.POSTAL_CODE || "Postal Code",
             fieldKey: "postalCode",
             value: data?.postalCode,
           },
           {
-            key: "Home Landline",
+            key: uiConfiguration?.UI_LABELS?.HOME_LANDLINE || "Home Landline",
             fieldKey: "homeLandLine",
             value: data?.homeLandLine,
           },
@@ -129,36 +185,49 @@ const Preview = ({ data }: any) => {
       {/* Employment and Financial Details */}
       <SectionDetails
         stepId="stepidx-4"
-        sectionHeader="Employment and Financial Details"
+        sectionHeader={
+          uiConfiguration?.UI_LABELS?.EMPLOYEMENT_AND_FINANCIAL_DETAILS ||
+          "Employment and Financial Details"
+        }
         sectionData={[
-          { key: "Job", fieldKey: "job", value: data?.job },
           {
-            key: "Job Location",
+            key: uiConfiguration?.UI_LABELS?.JOB || "Job",
+            fieldKey: "job",
+            value: data?.job,
+          },
+          {
+            key: uiConfiguration?.UI_LABELS?.JOB_LOCATION || "Job Location",
             fieldKey: "jobLocation",
             value: data?.jobLocation,
           },
           {
-            key: "Monthly Salary",
+            key: uiConfiguration?.UI_LABELS?.MONTHLY_SALARY || "Monthly Salary",
             fieldKey: "monthlySalary",
             value: data?.monthlySalary,
           },
           {
-            key: "Income Source",
+            key: uiConfiguration?.UI_LABELS?.INCOME_SOURCE || "Income Source",
             fieldKey: "incomeSource",
             value: data?.incomeSource,
           },
           {
-            key: "Other Income Sources",
+            key:
+              uiConfiguration?.UI_LABELS?.OTHER_INCOME_SOURCES ||
+              "Other Income Sources",
             fieldKey: "otherIncomeSources",
             value: data?.otherIncomeSources,
           },
           {
-            key: "Transaction Size Per Account",
+            key:
+              uiConfiguration?.UI_LABELS?.TRANSACTION_SIZE_PER_ACCOUNT ||
+              "Transaction Size Per Account",
             fieldKey: "transactionSizePerAccount",
             value: data?.transactionSizePerAccount,
           },
           {
-            key: "Account Opening Purpose",
+            key:
+              uiConfiguration?.UI_LABELS?.ACCOUNT_OPENING_PURPOSE ||
+              "Account Opening Purpose",
             fieldKey: "accountOpeningPurpose",
             value: data?.accountOpeningPurpose,
           },
@@ -168,33 +237,49 @@ const Preview = ({ data }: any) => {
       {/* Customer Information */}
       <SectionDetails
         stepId="stepidx-5"
-        sectionHeader="Customer Information"
+        sectionHeader={
+          uiConfiguration?.UI_LABELS?.CUSTOMER_INFORMATION ||
+          "Customer Information"
+        }
         sectionData={[
           {
-            key: "Prime Customer (Yes or No)",
+            key:
+              uiConfiguration?.UI_LABELS?.PRIME_CUSTOMER_YES_OR_NO ||
+              "Prime Customer (Yes or No)",
             fieldKey: "primeCustomer",
             value: data?.primeCustomer,
           },
           {
-            key: "Customer Number",
+            key:
+              uiConfiguration?.UI_LABELS?.CUSTOMER_NUMBER || "Customer Number",
             fieldKey: "customerNumber",
             value: data?.customerNumber,
           },
           {
-            key: "Branch Name",
+            key: uiConfiguration?.UI_LABELS?.BRANCH_NAME || "Branch Name",
             fieldKey: "branchName",
             value: data?.branchName,
           },
           {
-            key: <span className="text-aegold-500"> Recording</span>,
-            value:
-           data?.attachments? <video width="740" height="310" controls>
-
-  <source src={`${import.meta.env?.VITE_BASE_URL}/api/ixcommon/supporting/GetFileContentByPath?filePath=${data?.attachments?.[0]?.filePath}`} />
-  Your browser does not support the video tag.
-
-</video>:null
-            
+            key: (
+              <span className="text-aegold-500">
+                {" "}
+                {uiConfiguration?.UI_LABELS?.RECORDING || "Recording"}
+              </span>
+            ),
+            value: data?.attachments ? (
+              <video width="740" height="310" controls>
+                <source
+                  src={`${
+                    import.meta.env?.VITE_BASE_URL
+                  }/api/ixcommon/supporting/GetFileContentByPath?filePath=${
+                    data?.attachments?.[0]?.filePath
+                  }`}
+                />
+                {uiConfiguration?.UI_LABELS?.VIDEO_TAG ||
+                  "Your browser does not support the video tag."}
+              </video>
+            ) : null,
           },
         ]}
       />
@@ -202,25 +287,30 @@ const Preview = ({ data }: any) => {
       {/* Account Information */}
       <SectionDetails
         stepId="stepidx-6"
-        sectionHeader="Account Information"
+        sectionHeader={
+          uiConfiguration?.UI_LABELS?.ACCOUNT_INFORMATION ||
+          "Account Information"
+        }
         sectionData={[
           {
-            key: "Account Type",
+            key: uiConfiguration?.UI_LABELS?.ACCOUNT_TYPE || "Account Type",
             fieldKey: "accountType",
             value: data?.accountType,
           },
           {
-            key: "Account Currency",
+            key:
+              uiConfiguration?.UI_LABELS?.ACCOUNT_CURRENCY ||
+              "Account Currency",
             fieldKey: "accountCurrency",
             value: data?.accountCurrency,
           },
           {
-            key: "Account Number",
+            key: uiConfiguration?.UI_LABELS?.ACCOUNT_NUMBER || "Account Number",
             fieldKey: "accountNumber",
             value: data?.accountNumber,
           },
           {
-            key: "Account IBAN",
+            key: uiConfiguration?.UI_LABELS?.ACCOUNT_IBAN || "Account IBAN",
             fieldKey: "accountIban",
             value: data?.accountIban,
           },

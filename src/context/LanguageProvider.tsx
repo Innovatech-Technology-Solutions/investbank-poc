@@ -23,7 +23,7 @@ const LanguageProvider = ({ children }: LanguageProviderProps) => {
   useEffect(() => {
     localStorage.setItem('lang', language);
     if(language==='EN')
-    document.title="Investbank"
+    document.title="Invest Bank"
   if(language==='AR')
    document.title='البنك الإستثماري'
     document

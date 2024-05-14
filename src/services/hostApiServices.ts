@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ENDPOINTS } from '../APIEndpoints/apiEndpoints';
+import { ENDPOINTS } from "../APIEndpoints/apiEndpoints";
 import {
   CommonGetResponce,
   IApplicantProfile,
   IMenu,
   ISearchUsers,
   IUserDetails,
-} from '../dto/CommonInterface.dto';
-import { isValidResponse, prepareUIConfiguration } from '../utils/Commonutils';
-import { httpClient as shellHttpClient } from './httpClient';
+} from "../dto/CommonInterface.dto";
+import { isValidResponse, prepareUIConfiguration } from "../utils/Commonutils";
+import { httpClient as shellHttpClient } from "./httpClient";
 
 const appCode = import.meta.env.VITE_APPCODE;
 export const hostApiServices = shellHttpClient().injectEndpoints({
@@ -27,19 +27,22 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
         if (searchKey) queryParams.push(`search=${searchKey}`);
         if (department) queryParams.push(`department=${department}`);
         if (appCode) queryParams.push(`appCode=${appCode}`);
-        const params = queryParams.length ? `?${queryParams.join('&')}` : '';
+        const params = queryParams.length ? `?${queryParams.join("&")}` : "";
         return {
           url: `/moei/common/SearchUsers${params}`,
-          method: 'GET',
+          method: "GET",
         };
       },
       keepUnusedDataFor: 0,
     }),
 
-    getSearchInternalUsers: builder.query<CommonGetResponce<IUserDetails[]>, string>({
+    getSearchInternalUsers: builder.query<
+      CommonGetResponce<IUserDetails[]>,
+      string
+    >({
       query: (searchKey) => ({
         url: `/moei/common/SearchInternalUsers?toSearch=${searchKey}`,
-        method: 'GET',
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
@@ -47,12 +50,14 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     /* Get Auth Token  based on UAE Pass state and code params*/
     token: builder.query({
       query: ({ code, state, redirectUri }) => ({
-        url: localStorage.getItem('invitationId')
-          ? `/moeimgmt/login/UdpLogin?code=${code}&state=${state}&appCode=${appCode}&invitationId=${localStorage.getItem('invitationId')}&redirectUri=${redirectUri}`
+        url: localStorage.getItem("invitationId")
+          ? `/moeimgmt/login/UdpLogin?code=${code}&state=${state}&appCode=${appCode}&invitationId=${localStorage.getItem(
+              "invitationId"
+            )}&redirectUri=${redirectUri}`
           : `/moeimgmt/login/UdpLogin?code=${code}&state=${state}&appCode=${appCode}&redirectUri=${redirectUri}`,
-        method: 'GET',
+        method: "GET",
         headers: {
-          'X-TOKEN-REQ': false,
+          "X-TOKEN-REQ": false,
           // 'x-wn-adminui': true,
         },
       }),
@@ -60,12 +65,14 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
 
     getExternaltoken: builder.query({
       query: ({ code, state, redirectUri }) => ({
-        url: localStorage.getItem('invitationId')
-          ? `/moeimgmt/login/UdpLogin?code=${code}&state=${state}&appCode=${appCode}&invitationId=${localStorage.getItem('invitationId')}&redirectUri=${redirectUri}`
+        url: localStorage.getItem("invitationId")
+          ? `/moeimgmt/login/UdpLogin?code=${code}&state=${state}&appCode=${appCode}&invitationId=${localStorage.getItem(
+              "invitationId"
+            )}&redirectUri=${redirectUri}`
           : `/moeimgmt/login/UdpLogin?code=${code}&state=${state}&appCode=${appCode}&redirectUri=${redirectUri}`,
-        method: 'GET',
+        method: "GET",
         headers: {
-          'X-TOKEN-REQ': false,
+          "X-TOKEN-REQ": false,
           // 'x-wn-adminui': true,
         },
       }),
@@ -74,7 +81,7 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     getURLPath: builder.query({
       query: (id) => ({
         url: `/moeiintegration/applink/GetLinkById/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
 
@@ -82,33 +89,40 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     loginConfiguration: builder.query<any, void>({
       query: () => ({
         url: `/moeimgmt/login/LoginConfiguration`,
-        method: 'GET',
+        method: "GET",
         headers: {
-          'X-TOKEN-REQ': false,
+          "X-TOKEN-REQ": false,
         },
       }),
       transformResponse: (response: any) => {
-        return { ...prepareUIConfiguration(response?.data?.output?.interfaceSpecificData) };
+        return {
+          ...prepareUIConfiguration(
+            response?.data?.output?.interfaceSpecificData
+          ),
+        };
       },
     }),
     /* Profile Information */
     getProfileInfo: builder.query<CommonGetResponce<IMenu>, void>({
       query: () => ({
         url: `/admin/adminpermission/getMenuPermissions/103`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     /* Profile Information */
     getMenuPermissions: builder.query<any, string>({
       query: (menuId) => ({
         url: `/admin/adminpermission/getMenuPermissions/${menuId}`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
 
     /* Get Interface Details*/
     getInterfaceByID: builder.query({
-      query: (id: string) => ({ url: `${ENDPOINTS.INTERFACE.url}/${id}`, method: 'GET' }),
+      query: (id: string) => ({
+        url: `${ENDPOINTS.INTERFACE.url}/${id}`,
+        method: "GET",
+      }),
       transformResponse: (response: any) => {
         return { ...prepareUIConfiguration(response?.data?.output) };
       },
@@ -118,33 +132,34 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     getTaskAction: builder.query({
       query: (taskId: string) => ({
         url: `/taskmanagement/taskaction/getTaskById/${taskId}`,
-        method: 'GET',
+        method: "GET",
       }),
-      providesTags: ['Task'],
+      providesTags: ["Task"],
     }),
 
     performAction: builder.mutation({
       query: ({ data, id }) => ({
         url: `/taskmanagement/taskaction/updateTask/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         data,
       }),
-      invalidatesTags: (response) => (isValidResponse(response) ? ['Task'] : []),
+      invalidatesTags: (response) =>
+        isValidResponse(response) ? ["Task"] : [],
     }),
 
     postOtp: builder.mutation({
       query: (data) => ({
         url: `/moeimgmt/login/SendLoginOtp`,
-        method: 'POST',
+        method: "POST",
         data:
-          appCode === 'INTERNAL'
+          appCode === "INTERNAL"
             ? {
                 ...data,
-                type: 'INTERNAL',
+                type: "INTERNAL",
               }
             : data,
         headers: {
-          'X-TOKEN-REQ': false,
+          "X-TOKEN-REQ": false,
         },
       }),
     }),
@@ -152,25 +167,29 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     verifyOtp: builder.query({
       query: ({ userName, password }) => ({
         url: `/usermgmt/otplogin/OTPLogin`,
-        method: 'GET',
+        method: "GET",
         headers: {
-          Authorization: 'Basic ' + btoa(userName + ':' + password),
-          'X-TOKEN-REQ': false,
+          Authorization: "Basic " + btoa(userName + ":" + password),
+          "X-TOKEN-REQ": false,
         },
       }),
     }),
 
     getMyApplications: builder.query<CommonGetResponce<any>, void>({
-      query: (params:any) => ({
-        url: `/gateway/Investbankpoc/InvestBankPoc?pageNumber=0&pageSize=1000${params}`,
-        method: 'GET',
+      query: (params: any) => ({
+        url: `/gateway/Investbankpoc/InvestBankPoc?pageNumber=0&pageSize=1000${
+          params ? params : ""
+        }`,
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
     downloadRDL: builder.mutation<CommonGetResponce<any>, void>({
-      query: (params:any) => ({
-        url: `/gateway/Investbankpoc/InvestBankPoc?pageNumber=0&pageSize=1000${params?params:''}&exportAs=pdf`,
-        method: 'GET',
+      query: (params: any) => ({
+        url: `/gateway/Investbankpoc/InvestBankPoc?pageNumber=0&pageSize=1000${
+          params ? params : ""
+        }&exportAs=pdf`,
+        method: "GET",
       }),
     }),
 
@@ -178,7 +197,7 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     submitComment: builder.mutation({
       query: (data) => ({
         url: `/ixcommon/comment/Comment`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
@@ -186,7 +205,7 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     updateComment: builder.mutation({
       query: ({ data, id }) => ({
         url: `/ixcommon/comment/Comment/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         data,
       }),
     }),
@@ -194,7 +213,7 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     deleteComment: builder.mutation({
       query: (id) => ({
         url: `/ixcommon/comment/Comment/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
     }),
 
@@ -202,7 +221,7 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     getAllCommentsByRequestId: builder.query({
       query: (params) => ({
         url: `/ixcommon/comment/Comment${params}`,
-        method: 'GET',
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
@@ -211,7 +230,7 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     getAuditHistoryByID: builder.query({
       query: (id: string) => ({
         url: `/common/audithistory/GetAuditHistoryByReqId?requestId=${id}`,
-        method: 'GET',
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
@@ -220,10 +239,10 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     login: builder.query({
       query: (data) => ({
         url: ENDPOINTS.LOGIN.url,
-        method: 'GET',
+        method: "GET",
         headers: {
-          Authorization: 'Basic ' + btoa(data?.userName + ':' + data?.password),
-          'X-TOKEN-REQ': false,
+          Authorization: "Basic " + btoa(data?.userName + ":" + data?.password),
+          "X-TOKEN-REQ": false,
           // 'x-wn-adminui': true,
         },
       }),
@@ -231,87 +250,90 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     getContentList: builder.mutation({
       query: (data) => ({
         url: `/moei/CMSMenuList/ContentList`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     getZayedReportResult: builder.mutation({
       query: (data) => ({
         url: `/moei/CMSMenuList/ReportResult`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     getLandReportResult: builder.mutation({
       query: (data) => ({
         url: `/moei/CMSMenuList/ReportResult`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     getMarineReportResult: builder.mutation({
       query: (data) => ({
         url: `/moei/CMSMenuList/ReportResult`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     getInfraStructureReportResult: builder.mutation({
       query: (data) => ({
         url: `/moei/CMSMenuList/ReportResult`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     getGeologicalReportResult: builder.mutation({
       query: (data) => ({
         url: `/moei/CMSMenuList/ReportResult`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     getInquiryReportResult: builder.mutation({
       query: (data) => ({
         url: `/moei/CMSMenuList/ReportResult`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     postWorkDetails: builder.mutation({
       query: (data) => ({
         url: `/szhp/employerdetails/EmployerDetails`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     updateWorkDetails: builder.mutation({
       query: ({ data, id }) => ({
         url: `/szhp/employerdetails/EmployerDetails/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         data,
       }),
     }),
     postBankDetails: builder.mutation({
       query: (data) => ({
         url: `/szhp/bankDetails/BankDetails`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
     }),
     updateBankDetails: builder.mutation({
       query: ({ data, id }) => ({
         url: `/szhp/bankDetails/BankDetails/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         data,
       }),
     }),
 
-    getApplicantProfile: builder.query<CommonGetResponce<IApplicantProfile>, string>({
+    getApplicantProfile: builder.query<
+      CommonGetResponce<IApplicantProfile>,
+      string
+    >({
       query: (id) => {
-        console.log('query', id);
+        console.log("query", id);
         return {
           url: `/szhp/applicantprofile/ApplicantProfile/${id}`,
-          method: 'GET',
+          method: "GET",
         };
       },
       keepUnusedDataFor: 0,
@@ -320,17 +342,23 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     deletAttachmentbyAttachmentID: builder.mutation({
       query: (id) => ({
         url: `${
-          localStorage.getItem('token')
-            ? '/common/attachment/Attachment'
-            : '/moeimgmt/supportingservices/deleteAttachment'
+          localStorage.getItem("token")
+            ? "/common/attachment/Attachment"
+            : "/moeimgmt/supportingservices/deleteAttachment"
         }/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
     }),
     downloadContentByFilePath: builder.query({
-      query: ({ filePath, contentType }: { filePath: string; contentType: string }) => ({
+      query: ({
+        filePath,
+        contentType,
+      }: {
+        filePath: string;
+        contentType: string;
+      }) => ({
         url: `/common/attachment/GetFileContentByPath?filePath=${filePath}&contentType=application/${contentType}`,
-        method: 'GET',
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
@@ -338,11 +366,11 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     getAttachmentConfigByAttachmentID: builder.query({
       query: (id: string) => ({
         url: `${
-          localStorage.getItem('token')
-            ? '/api/adminmgmt/attachmentConfig/AttachmentConfiguration'
-            : '/api/moeimgmt/supportingservices/getAttachmentConfigById'
+          localStorage.getItem("token")
+            ? "/api/adminmgmt/attachmentConfig/AttachmentConfiguration"
+            : "/api/moeimgmt/supportingservices/getAttachmentConfigById"
         }/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
@@ -360,26 +388,26 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     getExistingPropertiesById: builder.query({
       query: (id: string) => ({
         url: `/moei/integration/PropertiesByEmirate?id=${id}`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
 
     uploadAttchment: builder.mutation({
       query: (data) => ({
-        url: localStorage.getItem('token')
-          ? '/api/common/attachment/Attachment'
-          : '/api/moeimgmt/supportingservices/uploadAttachment',
-        method: 'POST',
+        url: localStorage.getItem("token")
+          ? "/api/common/attachment/Attachment"
+          : "/api/moeimgmt/supportingservices/uploadAttachment",
+        method: "POST",
         data,
       }),
     }),
 
     downloadFile: builder.query({
       query: (id: string) => ({
-        url: localStorage.getItem('token')
+        url: localStorage.getItem("token")
           ? `/api/common/attachment/Attachment/` + id
           : `/api/moeimgmt/supportingservices/downloadAttachment/` + id,
-        method: 'GET',
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
@@ -387,30 +415,28 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
     postFieldComment: builder.mutation({
       query: (data) => ({
         url: `/adminmgmt/fieldcomments/FieldComments`,
-        method: 'POST',
+        method: "POST",
         data,
       }),
-
     }),
     getFieldComments: builder.query<any, string>({
       query: (id) => ({
         url: `/adminmgmt/fieldcomments/FieldComments?requestId=${id}`,
-        method: 'GET',
+        method: "GET",
       }),
-      keepUnusedDataFor:0
-
+      keepUnusedDataFor: 0,
     }),
     getApplicationByReqID: builder.query<any, string>({
       query: (reqId) => ({
         url: `/gateway/Investbankpoc/InvestBankPoc/${reqId}`,
-        method: 'GET',
+        method: "GET",
       }),
-      keepUnusedDataFor:0
+      keepUnusedDataFor: 0,
     }),
     updateApplicantProfile: builder.mutation({
       query: ({ id, data }) => ({
         url: `/szhp/applicantprofile/ApplicantProfile/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         data,
       }),
     }),
@@ -463,5 +489,5 @@ export const {
   useGetApplicationByReqIDQuery,
   usePostFieldCommentMutation,
   useGetFieldCommentsQuery,
-  useDownloadRDLMutation
+  useDownloadRDLMutation,
 } = hostApiServices;

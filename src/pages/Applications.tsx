@@ -2,9 +2,21 @@
 
 import Commontable from "./Commontable";
 import { Link } from "react-router-dom";
-import { TagChevron, XCircle } from "@phosphor-icons/react";
-import { useDownloadRDLMutation, useGetMyApplicationsQuery } from "../services/hostApiServices";
-import { Empty, Tag } from "antd";
+import {
+  Bank,
+  CaretDown,
+  FilePdf,
+  FileXls,
+  TagChevron,
+  XCircle,
+} from "@phosphor-icons/react";
+import {
+  useDownloadRDLMutation,
+  useGetMyApplicationsQuery,
+} from "../services/hostApiServices";
+import { useGetInterfaceByIDQuery } from "../services/hostApiServices";
+import useLanguage from "../hooks/useLanguage";
+import { Badge, Empty, Tag } from "antd";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
@@ -24,11 +36,17 @@ type ApplicationsProps = {
   isMyapplications?: boolean;
 };
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
-  const [params, setParams] = useState("");
+  const [params, setParams] = useState<any>(null);
+  const [params1, setParams1] = useState<any>(null);
+  const [params2, setParams2] = useState<any>(null);
+
   const apiData = useGetMyApplicationsQuery(params as any);
-  const[downLoadRDl]=useDownloadRDLMutation()
+  const [downLoadRDl,downloadRes] = useDownloadRDLMutation();
   const navigate = useNavigate();
   const { data, isFetching, isLoading, isSuccess } = apiData;
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
 
   function capitalizeFirstLetter(string) {
     if ([null, undefined, ""].includes(string)) return "";
@@ -47,13 +65,13 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
     const byteCharacters = atob(base64String);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+    const blob = new Blob([byteArray], { type: "application/octet-stream" });
 
     // Create a link element
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
 
@@ -63,7 +81,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
 
     // Clean up
     document.body.removeChild(link);
-}
+  }
 
   const sortedDataSource = (source) =>
     [...structuredClone(source)].sort((a, b) => {
@@ -80,7 +98,11 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
     });
   const columns = [
     {
-      title: <span className="pl-4">Request Id</span>,
+      title: (
+        <span className="pl-4">
+          {uiConfiguration?.UI_LABELS?.REQUEST_ID || "Request Id"}
+        </span>
+      ),
       dataIndex: "requestId",
       render: (text: any, record: any, idx: any) => (
         <div className={"flex items-center gap-1"}>
@@ -100,36 +122,36 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
     {
-      title: "Name",
+      title: uiConfiguration?.UI_LABELS?.NAME || "Name",
       dataIndex: "fullNameEn",
       render: (item) => (
         <span className="capitalize">{capitalizeFirstLetter(item)}</span>
       ),
     },
     {
-      title: "Mobile",
+      title: uiConfiguration?.UI_LABELS?.MOBILE || "Mobile",
       dataIndex: "mobileNo",
     },
     {
-      title: "Nationality",
+      title: uiConfiguration?.UI_LABELS?.NATIONALITY || "Nationality",
       dataIndex: "nationality",
       render: (item) => (
         <span className="capitalize">{capitalizeFirstLetter(item)}</span>
       ),
     },
     {
-      title: "Prime Customer",
+      title: uiConfiguration?.UI_LABELS?.PRIME_CUSTOMER || "Prime Customer",
       dataIndex: "primeCustomer",
 
       render: (status) => (
         <span>
           {status === "yes" ? (
             <Tag color="green" icon={<CheckCircleOutlined />}>
-              {capitalizeFirstLetter(status)}
+              {capitalizeFirstLetter(uiConfiguration?.UI_LABELS?.YES || status)}
             </Tag>
           ) : status === "no" ? (
             <Tag color="red" icon={<CloseCircleOutlined />}>
-              {capitalizeFirstLetter(status)}
+              {capitalizeFirstLetter(uiConfiguration?.UI_LABELS?.NO || status)}
             </Tag>
           ) : (
             <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>
@@ -138,18 +160,30 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
     {
-      title: "Status",
+      title: uiConfiguration?.UI_LABELS?.STATUS || "Status",
       dataIndex: "status",
       render: (status) => (
         <span>
           {capitalizeFirstLetter(status) === "Approved" && (
-            <Tag color="green">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="green">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.APPROVAL || status
+              )}
+            </Tag>
           )}
           {capitalizeFirstLetter(status) === "Submitted" && (
-            <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="blue">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.SUBMITTED || status
+              )}
+            </Tag>
           )}
           {capitalizeFirstLetter(status) === "Rejected" && (
-            <Tag color="red">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="red">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.REJECTED || status
+              )}
+            </Tag>
           )}
 
           {capitalizeFirstLetter(status) !== "Approved" &&
@@ -160,25 +194,29 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
   ];
-  if (isLoading || isFetching)
-    return (
-      <div className="flex h-[50vh] justify-center items-center">
-        <Loader />
-      </div>
-    );
+  // if (isLoading || isFetching)
+  //   return (
+  //     <div className="flex h-[50vh] justify-center items-center">
+  //       <Loader />
+  //     </div>
+  //   );
   return (
     <>
       <div className="flex flex-col items-start md:flex-row md:items-center justify-between py-3">
         <div className="flex gap-2 items-center">
           <h2 className="text-lg text-blue-600 text-primary-600">
-            {isMyapplications ? "My Tasks" : "Applications"}
+            {isMyapplications
+              ? uiConfiguration?.UI_LABELS?.MY_TASKS || "My Tasks"
+              : uiConfiguration?.UI_LABELS?.APPLICATIONS || "Applications"}
           </h2>
         </div>{" "}
         <div className="flex items-center space-x-2">
           <BreadCrumbs
             itemFeed={[
               {
-                label: isMyapplications ? "My Tasks" : "Applications",
+                label: isMyapplications
+                  ? uiConfiguration?.UI_LABELS?.MY_TASKS || "My Tasks"
+                  : uiConfiguration?.UI_LABELS?.APPLICATIONS || "Applications",
                 path: "#",
               },
             ]}
@@ -189,13 +227,38 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       {data?.data?.output?.length > 0 && isSuccess ? (
         <div className="flex flex-col gap-2 ">
           <div className="flex gap-2 justify-end items-center">
+            {params2 ? (
+              <div
+                onClick={() => {
+                  setParams("");
+                  setParams1("");
+                }}
+              >
+                <Tag
+                  onClick={() => {
+                    setParams("");
+                    setParams2("");
+                    setParams1("");
+                  }}
+                  color="cyan-inverse"
+                >
+                  <div className="flex gap-2 items-center justify-center">
+                    {uiConfiguration?.UI_LABELS?.CLEAR_SEARCH || "Clear Search"}{" "}
+                    <XCircle size={18} />
+                  </div>
+                </Tag>
+              </div>
+            ) : null}
             <SearchBar
+              input={params1}
               onSearch={function (value: string): void {
                 debounceSearch(value);
+                setParams1(value);
               }}
               onAdvancedSearch={function (val): void {
                 console.log(val);
                 setParams(`&${val}`);
+                setParams2(val);
               }}
             />
             {isSales() && !isMyapplications ? (
@@ -206,33 +269,54 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                   }}
                   sizeVariant="xs"
                 >
-                  Open Account
+                  <span className="flex gap-2 items-center justify-center">
+                    {uiConfiguration?.UI_LABELS?.OPEN_ACCOUNT || "Open Account"}
+                    <Bank size={16} />
+                  </span>{" "}
                 </Button>
                 <MenuDropDown
-                buttonSize="xs"
-                
-    
-      buttonText='Export'
-      items={[
-        { label: 'PDF', value: 'pdf' },
-        { label: 'Excel', value: 'xls' },
-      ]}
-      onItemClick={async(e)=>
-        {
-          try{
-          const res:any=await downLoadRDl().unwrap()
-          if(isValidResponse(res))
-          {
-            console.log("ff",res?.data?.fileContent)
-          downloadBase64File(res?.data?.fileContent,`Report.${e}`)
-          }
-          }
-          catch(e)
-          {
-            console.log("ee",e)
-          }
-        }}
-    />
+                  buttonSize="xs"
+                  buttonText={
+                    <span className="flex gap-2 items-center justify-center">
+                      {downloadRes?.isLoading?uiConfiguration?.UI_LABELS?.EXPORTING || "Exporting..":uiConfiguration?.UI_LABELS?.EXPORT || "Export"}
+                      {downloadRes?.isLoading?<Loader/>:<CaretDown size={18} />}
+                    </span>
+                  }
+                  items={[
+                    {
+                      label: (
+                        <span className="flex gap-2 items-center justify-center">
+                          {uiConfiguration?.UI_LABELS?.PDF || "PDF"}
+                          <FilePdf color="red" size={8} />
+                        </span>
+                      ),
+                      value: "pdf",
+                    },
+                    {
+                      label: (
+                        <span className="flex gap-2 items-center justify-center">
+                          {uiConfiguration?.UI_LABELS?.EXCEL || "Excel"}
+                          <FileXls color="green" size={8} />
+                        </span>
+                      ),
+                      value: "xls",
+                    },
+                  ]}
+                  onItemClick={async (e) => {
+                    try {
+                      const res: any = await downLoadRDl().unwrap();
+                      if (isValidResponse(res)) {
+                        console.log("ff", res?.data?.fileContent);
+                        downloadBase64File(
+                          res?.data?.fileContent,
+                          `Report.${e}`
+                        );
+                      }
+                    } catch (e) {
+                      console.log("ee", e);
+                    }
+                  }}
+                />
               </div>
             ) : null}
           </div>
@@ -256,8 +340,11 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={
             <div className="flex flex-col gap-2">
-              <div>No Application found. </div>
-              {isSales() && !isMyapplications ? (
+              <div>
+                {uiConfiguration?.UI_LABELS?.NO_APPLICATION_FOUND ||
+                  "No Application found."}{" "}
+              </div>
+              {isSales() ? (
                 <div>
                   {!params ? (
                     <Button
@@ -266,17 +353,22 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                       }}
                       sizeVariant="xs"
                     >
-                      Open Account
+                      {uiConfiguration?.UI_LABELS?.OPEN_ACCOUNT ||
+                        "Open Account"}
                     </Button>
                   ) : (
                     <Button
                       styleVariant="secondary"
                       onClick={() => {
                         setParams("");
+                        setParams1("");
+                        setParams2("")
                       }}
                       sizeVariant="xs"
                     >
-                      Clear Search <XCircle size={32} />
+                      {uiConfiguration?.UI_LABELS?.CLEAR_SEARCH ||
+                        "Clear Search"}{" "}
+                      <XCircle size={32} />
                     </Button>
                   )}
                 </div>
