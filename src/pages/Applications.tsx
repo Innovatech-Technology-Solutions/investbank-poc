@@ -14,6 +14,12 @@ import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Loader from "../Loader";
 import AdvancedSearch from "../AdvnancedSearch";
 import SearchBar from "../SearchBar";
+import {
+  useGetInterfaceByIDQuery,
+  useGetTaskActionQuery,
+  usePerformActionMutation,
+} from "../services/hostApiServices";
+import useLanguage from "../hooks/useLanguage";
 
 // import { isValidApiResponse } from '../utils/Commonutils';
 // import emitMessage from '../services/emitMessage';
@@ -22,6 +28,11 @@ type ApplicationsProps = {
   isMyapplications?: boolean;
 };
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
+  console.log("bb", uiConfiguration);
+
   const apiData = useGetMyApplicationsQuery();
   const navigate = useNavigate();
   const { data, isFetching, isLoading, isSuccess } = apiData;
@@ -46,7 +57,11 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
     });
   const columns = [
     {
-      title: <span className="pl-4">Request Id</span>,
+      title: (
+        <span className="pl-4">
+          {uiConfiguration?.UI_LABELS?.REQUEST_ID || "Request Id"}
+        </span>
+      ),
       dataIndex: "requestId",
       render: (text: any, record: any, idx: any) => (
         <div className={"flex items-center gap-1"}>
@@ -66,36 +81,36 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
     {
-      title: "Name",
+      title: uiConfiguration?.UI_LABELS?.NAME || "Name",
       dataIndex: "fullNameEn",
       render: (item) => (
         <span className="capitalize">{capitalizeFirstLetter(item)}</span>
       ),
     },
     {
-      title: "Mobile",
+      title: uiConfiguration?.UI_LABELS?.MOBILE || "Mobile",
       dataIndex: "mobileNo",
     },
     {
-      title: "Nationality",
+      title: uiConfiguration?.UI_LABELS?.NATIONALITY || "Nationality",
       dataIndex: "nationality",
       render: (item) => (
         <span className="capitalize">{capitalizeFirstLetter(item)}</span>
       ),
     },
     {
-      title: "Prime Customer",
+      title: uiConfiguration?.UI_LABELS?.PRIME_CUSTOMER || "Prime Customer",
       dataIndex: "primeCustomer",
 
       render: (status) => (
         <span>
           {status === "yes" ? (
             <Tag color="green" icon={<CheckCircleOutlined />}>
-              {capitalizeFirstLetter(status)}
+              {capitalizeFirstLetter(uiConfiguration?.UI_LABELS?.YES || status)}
             </Tag>
           ) : status === "no" ? (
             <Tag color="red" icon={<CloseCircleOutlined />}>
-              {capitalizeFirstLetter(status)}
+              {capitalizeFirstLetter(uiConfiguration?.UI_LABELS?.NO || status)}
             </Tag>
           ) : (
             <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>
@@ -104,18 +119,30 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
     {
-      title: "Status",
+      title: uiConfiguration?.UI_LABELS?.STATUS || "Status",
       dataIndex: "status",
       render: (status) => (
         <span>
           {capitalizeFirstLetter(status) === "Approved" && (
-            <Tag color="green">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="green">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.APPROVAL || status
+              )}
+            </Tag>
           )}
           {capitalizeFirstLetter(status) === "Submitted" && (
-            <Tag color="blue">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="blue">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.SUBMITTED || status
+              )}
+            </Tag>
           )}
           {capitalizeFirstLetter(status) === "Rejected" && (
-            <Tag color="red">{capitalizeFirstLetter(status)}</Tag>
+            <Tag color="red">
+              {capitalizeFirstLetter(
+                uiConfiguration?.UI_LABELS?.REJECTED || status
+              )}
+            </Tag>
           )}
 
           {capitalizeFirstLetter(status) !== "Approved" &&
@@ -137,14 +164,18 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       <div className="flex flex-col items-start md:flex-row md:items-center justify-between py-3">
         <div className="flex gap-2 items-center">
           <h2 className="text-lg text-blue-600 text-primary-600">
-            {isMyapplications ? "My Tasks" : "Applications"}
+            {isMyapplications
+              ? uiConfiguration?.UI_LABELS?.MY_TASKS
+              : uiConfiguration?.UI_LABELS?.APPLICATIONS}
           </h2>
         </div>{" "}
         <div className="flex items-center space-x-2">
           <BreadCrumbs
             itemFeed={[
               {
-                label: isMyapplications ? "My Tasks" : "Applications",
+                label: isMyapplications
+                  ? uiConfiguration?.UI_LABELS?.MY_TASKS
+                  : uiConfiguration?.UI_LABELS?.APPLICATIONS,
                 path: "#",
               },
             ]}

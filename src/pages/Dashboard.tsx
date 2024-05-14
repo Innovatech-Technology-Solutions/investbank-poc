@@ -3,9 +3,21 @@ import BreadCrumbs from "../BreadCrumbs";
 import { Card, ConfigProvider, Progress, Select } from "antd";
 import Chart from "react-apexcharts";
 import { useNavigate } from "react-router";
+import {
+  useGetInterfaceByIDQuery,
+  useGetTaskActionQuery,
+  usePerformActionMutation,
+} from "../services/hostApiServices";
+import useLanguage from "../hooks/useLanguage";
+import { ApexOptions } from "apexcharts";
+
 const Dashboard = () => {
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
+  console.log("bb", uiConfiguration);
   const navigate = useNavigate();
-  const options = {
+  const options: ApexOptions = {
     chart: {
       type: "area",
       height: 350,
@@ -21,18 +33,18 @@ const Dashboard = () => {
     },
     xaxis: {
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        uiConfiguration?.UI_LABELS?.JAN || "Jan",
+        uiConfiguration?.UI_LABELS?.FEB || "Feb",
+        uiConfiguration?.UI_LABELS?.MAR || "Mar",
+        uiConfiguration?.UI_LABELS?.APR || "Apr",
+        uiConfiguration?.UI_LABELS?.MAY || "May",
+        uiConfiguration?.UI_LABELS?.JUN || "Jun",
+        uiConfiguration?.UI_LABELS?.JUL || "Jul",
+        uiConfiguration?.UI_LABELS?.AUG || "Aug",
+        uiConfiguration?.UI_LABELS?.SEP || "Sep",
+        uiConfiguration?.UI_LABELS?.OCT || "Oct",
+        uiConfiguration?.UI_LABELS?.NOV || "Nov",
+        uiConfiguration?.UI_LABELS?.DEC || "Dec",
       ],
     },
     yaxis: {
@@ -69,7 +81,7 @@ const Dashboard = () => {
     },
   ];
 
-  const options2 = {
+  const options2: ApexOptions = {
     chart: {
       type: "bar",
       height: 350,
@@ -100,7 +112,11 @@ const Dashboard = () => {
       colors: ["#fff"],
     },
     xaxis: {
-      categories: ["Approved", "Pending", "Rejected"],
+      categories: [
+        uiConfiguration?.UI_LABELS?.APPROVAL || "Approved",
+        uiConfiguration?.UI_LABELS?.PENDING || "Pending",
+        uiConfiguration?.UI_LABELS?.REJECTED || "Rejected",
+      ],
       tickPlacement: "between",
       min: 0,
       max: 96,
@@ -112,6 +128,7 @@ const Dashboard = () => {
     yaxis: {
       labels: {
         show: true,
+        align: `${language === "EN" ? "right" : "center"}`,
       },
     },
     fill: {
@@ -135,14 +152,14 @@ const Dashboard = () => {
       <div className="flex flex-col items-start md:flex-row md:items-center justify-between py-3">
         <div className="flex gap-2 items-center">
           <h2 className="text-lg text-blue-600 text-primary-600">
-            {"Dashboard"}
+            {uiConfiguration?.UI_LABELS?.DASHBOARD || "Dashboard"}
           </h2>
         </div>{" "}
         <div className="flex items-center space-x-2">
           <BreadCrumbs
             itemFeed={[
               {
-                label: "Dashboard",
+                label: uiConfiguration?.UI_LABELS?.DASHBOARD || "Dashboard",
                 path: "#",
               },
             ]}
@@ -181,7 +198,8 @@ const Dashboard = () => {
                     10,340
                   </div>
                   <div className="text-[#ffffff] font-[400] text-[13px]">
-                    Total Application Requests
+                    {uiConfiguration?.UI_LABELS?.TOTAL_APPLICATION_REQUESTS ||
+                      "Total Application Requests"}
                   </div>
                 </div>
                 <div
@@ -204,29 +222,45 @@ const Dashboard = () => {
             </div>
             <div className="w-full bg-[#514a43] rounded-xl px-4 py-8 flex justify-center items-center">
               <div className="flex items-center gap-4 justify-between">
-                <div className="border-r-[#EAECF0] border-r-[1px] pr-2">
+                <div
+                  className={`${
+                    language === "EN"
+                      ? "border-r-[#EAECF0] border-r-[1px] pr-2"
+                      : "border-l-[#EAECF0] border-l-[1px] pl-2"
+                  } `}
+                >
                   <div className="flex flex-col justify-between items-center">
                     <div className="text-[#ffffff] font-[400] text-[13px] whitespace-nowrap">
-                      Approved Applications
+                      {uiConfiguration?.UI_LABELS?.APPROVED_APPLICATIONS ||
+                        "Approved Applications"}
                     </div>
                     <div className="font-[600] text-[25px] text-[#76BD85]">
                       5102
                     </div>
                   </div>
                 </div>
-                <div className="border-r-[#EAECF0] border-r-[1px] pr-2">
+                <div
+                  className={`${
+                    language === "EN"
+                      ? "border-r-[#EAECF0] border-r-[1px] pr-2"
+                      : "border-l-[#EAECF0] border-l-[1px] pl-2"
+                  } `}
+                >
                   <div className="flex flex-col justify-between items-center">
                     <div className="text-[#ffffff] font-[400] text-[13px] whitespace-nowrap">
-                      Pending Applications
+                      {uiConfiguration?.UI_LABELS?.PENDING_APPLICATIONS ||
+                        "Pending Applications"}
                     </div>
                     <div className="text-[#FC7B45] font-[600] text-[25px]">
-1102                    </div>
+                      1102
+                    </div>
                   </div>
                 </div>
                 <div>
                   <div className="flex flex-col justify-between items-center">
                     <div className="text-[#ffffff] font-[400] text-[13px] whitespace-nowrap">
-                      Rejected Applications
+                      {uiConfiguration?.UI_LABELS?.REJECTED_APPLICATIONS ||
+                        "Rejected Applications"}
                     </div>
                     <div className="text-[#FD524C] font-[600] text-[25px]">
                       6340
@@ -243,11 +277,14 @@ const Dashboard = () => {
                 <div className="flex justify-between items-center">
                   <div className="flex flex-col gap-4 justify-start items-start">
                     <div className="w-full whitespace-nowrap text-[16px] font-[700] ">
-                      Total Application Requests :
-                      <span className="text-[#a1810c]"> 10,340</span>
+                      {uiConfiguration?.UI_LABELS?.TOTAL_APPLICATION_REQUESTS ||
+                        "Total Application Requests"}{" "}
+                      :<span className="text-[#a1810c]"> 10,340</span>
                     </div>
                     <div className="w-full whitespace-nowrap text-[12px] text-[#8D8E90] font-[500] translate-y-[-7px]">
-                      Total applications over the period of time
+                      {uiConfiguration?.UI_LABELS
+                        ?.TOTAL_APPLICATIONS_OVER_THE_PERIOD_OF_TIME ||
+                        "Total applications over the period of time"}
                     </div>
                   </div>
                   <ConfigProvider
@@ -296,7 +333,9 @@ const Dashboard = () => {
           <Card className="w-full  h-full" bodyStyle={{ padding: "10px" }}>
             <div>
               <div className="text-[16px] font-[700] text-[#323438] ml-4">
-                Average Application Processing Time
+                {uiConfiguration?.UI_LABELS
+                  ?.AVERAGE_APPLICATION_PROCESSING_TIME ||
+                  "Average Application Processing Time"}
               </div>
               <Chart
                 options={options2}
@@ -305,10 +344,21 @@ const Dashboard = () => {
                 height={230}
               />
             </div>
-            <div className="text-[12px] font-[400] text-[#323438] line-clamp-2 ml-4" style={{    border: '1px solid #bdbdbd',padding: '2%',
-    borderRadius: '5px'}}>
-              Total no of Applications experiencing delay in response :{" "}
-              <span className="text-[#F24747] text-[18px] font-[500] ">1293</span>
+            <div
+              className="text-[12px] font-[400] text-[#323438] line-clamp-2 ml-4"
+              style={{
+                border: "1px solid #bdbdbd",
+                padding: "2%",
+                borderRadius: "5px",
+              }}
+            >
+              {uiConfiguration?.UI_LABELS
+                ?.TOTAL_NO_OF_APPLICATIONS_EXPERIENCING_DELAY_IN_RESPONSE ||
+                "Total no of Applications experiencing delay in response"}{" "}
+              :{" "}
+              <span className="text-[#F24747] text-[18px] font-[500] ">
+                1293
+              </span>
             </div>
           </Card>
           <Card className="w-full  h-full" bodyStyle={{ padding: "10px" }}>
@@ -316,10 +366,13 @@ const Dashboard = () => {
               <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-2 justify-start items-start ml-4">
                   <div className="w-full whitespace-nowrap text-[16px] font-[700] ">
-                    Pending Tasks :<span className="text-[#a1810c]"> 6</span>
+                    {uiConfiguration?.UI_LABELS?.PENDING_TASKS ||
+                      "Pending Tasks"}{" "}
+                    :<span className="text-[#a1810c]"> 6</span>
                   </div>
                   <div className="w-full whitespace-nowrap text-[12px] text-[#8D8E90] font-[500] translate-y-[-7px]">
-                    Tasks pending for today
+                    {uiConfiguration?.UI_LABELS?.TASKS_PENDING_FOR_TODAY ||
+                      "Tasks pending for today"}
                   </div>
                 </div>
                 <ConfigProvider
@@ -335,11 +388,13 @@ const Dashboard = () => {
                     style={{ width: 120 }}
                     options={[
                       {
-                        label: "This Week",
+                        label:
+                          uiConfiguration?.UI_LABELS?.THIS_WEEK || "This Week",
                         value: "this_week",
                       },
                       {
-                        label: "Last Week",
+                        label:
+                          uiConfiguration?.UI_LABELS?.LAST_WEEK || "Last Week",
                         value: "last_week",
                       },
                     ]}
@@ -367,10 +422,14 @@ const Dashboard = () => {
                     </div>
                     <div className="flex flex-col justify-start items-start ml-2">
                       <div className="text-[#323438] font-[700] text-[12px]">
-                        Submit application for further approval
+                        {uiConfiguration?.UI_LABELS
+                          ?.SUBMIT_APPLICATION_FOR_FURTHER_APPROVAL ||
+                          "Submit application for further approval"}
                       </div>
                       <div className="text-[#8D8E90] font-[400] text-[10px]">
-                        Forward approval request to xyz team
+                        {uiConfiguration?.UI_LABELS
+                          ?.FORWARD_APPROVAL_REQUEST_TO_XYZ_TEAM ||
+                          "Forward approval request to xyz team"}
                       </div>
                     </div>
                     <div className="rounded-full bg-[#202020]  flex justify-center items-center w-[30px] h-[30px]">
@@ -407,10 +466,14 @@ const Dashboard = () => {
                     </div>
                     <div className="flex flex-col justify-start items-start ml-2">
                       <div className="text-[#323438] font-[700] text-[12px]">
-                        Submit application for further approval
+                        {uiConfiguration?.UI_LABELS
+                          ?.SUBMIT_APPLICATION_FOR_FURTHER_APPROVAL ||
+                          "Submit application for further approval"}
                       </div>
                       <div className="text-[#8D8E90] font-[400] text-[10px]">
-                        Forward approval request to xyz team
+                        {uiConfiguration?.UI_LABELS
+                          ?.FORWARD_APPROVAL_REQUEST_TO_XYZ_TEAM ||
+                          "Forward approval request to xyz team"}
                       </div>
                     </div>
                     <div className="rounded-full bg-[#202020]  flex justify-center items-center w-[30px] h-[30px]">
