@@ -13,7 +13,7 @@ interface InputTextProps extends ComponentPropsWithoutRef<'input'> {
   id: string;
   value: string;
   name: string;
-  placeholder?: string;
+  placeholder?: ReactNode;
   isSecondary?: boolean;
   disabled?: boolean;
   type?: string;

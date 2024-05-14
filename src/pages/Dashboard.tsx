@@ -220,8 +220,7 @@ const Dashboard = () => {
                       Pending Applications
                     </div>
                     <div className="text-[#FC7B45] font-[600] text-[25px]">
-                      10,340
-                    </div>
+1102                    </div>
                   </div>
                 </div>
                 <div>
@@ -230,7 +229,7 @@ const Dashboard = () => {
                       Rejected Applications
                     </div>
                     <div className="text-[#FD524C] font-[600] text-[25px]">
-                      10,340
+                      6340
                     </div>
                   </div>
                 </div>
@@ -260,9 +259,13 @@ const Dashboard = () => {
                     }}
                   >
                     <Select
-                      defaultValue={"2023"}
+                      defaultValue={"2024"}
                       style={{ width: 120 }}
                       options={[
+                        {
+                          label: "2024",
+                          value: "2024",
+                        },
                         {
                           label: "2023",
                           value: "2023",
@@ -270,10 +273,6 @@ const Dashboard = () => {
                         {
                           label: "2022",
                           value: "2022",
-                        },
-                        {
-                          label: "2021",
-                          value: "2021",
                         },
                       ]}
                     />

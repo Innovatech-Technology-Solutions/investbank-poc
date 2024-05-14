@@ -11,6 +11,7 @@ export const getBaseURL = () => getEnv()?.VITE_BASE_URL;
 export const logout = (callback?: () => void) => {
   localStorage.clear();
   sessionStorage.clear();
+  window.location.reload()
   if (callback) {
     callback();
   }

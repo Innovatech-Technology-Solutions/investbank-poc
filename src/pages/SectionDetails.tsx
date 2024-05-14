@@ -11,7 +11,7 @@ const SectionDetails = ({
   stepId
   
 }: {
-  sectionData: { key: ReactNode; value: ReactNode;fieldKey?:any }[];
+  sectionData: { key: ReactNode; value: ReactNode;fieldKey?:any,direction?:string }[];
   sectionHeader?: ReactNode;
   className?: string;
   stepId?:string
@@ -27,7 +27,7 @@ const SectionDetails = ({
       
         className={` ${className ? className : 'md:col-span-3 grid grid-cols-1 gap-x-[0rem] gap-y-8 md:grid-cols-3 pb-[0.5rem] mt-4'}`}
       >
-        {sectionData?.map((item) => <RenderLabelAndValue fieldKey={item.fieldKey} label={item.key} value={item.value} />)}
+        {sectionData?.map((item) => <RenderLabelAndValue fieldKey={item.fieldKey} direction={item?.direction} label={item.key} value={item.value} />)}
       </div>
     </>
   );

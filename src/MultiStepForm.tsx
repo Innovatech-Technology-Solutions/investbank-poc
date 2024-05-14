@@ -38,6 +38,7 @@ import TaskManagement from "./TaskManagement";
 import BreadCrumbs from "./BreadCrumbs";
 import RecordVideo from "./RecordVideo";
 import SectionHeader from "./pages/SectionHeader";
+import Loader from "./Loader";
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -167,6 +168,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
     isMandatory?: boolean;
     isNumeric?: boolean;
     options?: Array<any>;
+    dir?:string
   };
   const formControlsConfig: formType[] = [
     {
@@ -178,6 +180,7 @@ const{data:fieldcomments,refetch}=useGetFieldCommentsQuery(requestIDSlug as any,
       type: "text",
       show: true,
       isMandatory: true,
+      dir:"rtl"
     },
     {
       order: 2,
@@ -870,7 +873,7 @@ payload.attachments = [{ requestId: data?.requestId }];
     ))
   }
   const auditHistory = orderBy(auditHistoryData?.data?.auditHistory, 'queuedDate', 'desc');
-
+if(isLoading||isFetching) return <div className="flex items-center justify-center h-[70vh]"><Loader/></div>
   return (
     <ConfigProvider
       theme={{
@@ -1051,6 +1054,7 @@ payload.attachments = [{ requestId: randID }];
                                 isMandatory = false,
                                 isNumeric,
                                 options = [],
+                                dir='ltr'
                               }) =>
                                 show ? (
                                   <>

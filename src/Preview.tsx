@@ -16,6 +16,7 @@ const Preview = ({ data }: any) => {
             key: "Full Name in Arabic",
             fieldKey: "fullNameAr",
             value: data?.fullNameAr,
+            direction:"rtl"
           },
           {
             key: "Full Name in English",

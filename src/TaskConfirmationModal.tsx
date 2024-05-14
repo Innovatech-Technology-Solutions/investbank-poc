@@ -3,6 +3,8 @@ import ReactQuill from 'react-quill';
 import { useRef } from 'react';
 import Modal from './Modal';
 import { CircleNotch } from '@phosphor-icons/react';
+import { Tag } from 'antd';
+import React from 'react';
 
 type IProps = {
   show: boolean;
@@ -86,9 +88,10 @@ console.log(uiConfiguration)
                 action === 'ADD_ADJUSTMENTS') && (
                 <p className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
-                  <span className='text-aeblack-100'>
+ <Tag color='cyan'>
                     {uiConfiguration?.UI_LABELS[action] || action}
-                  </span>{' '}
+                
+                  </Tag>  
                   {uiConfiguration?.UI_LABELS?.CLICK_OK_TO_PROCEED}
                 </p>
               )}
@@ -96,13 +99,13 @@ console.log(uiConfiguration)
                 <p className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_||'You are about to'}{' '}
                   <span className='text-aeblack-100'>
-                    {uiConfiguration?.UI_LABELS[action] || action}
-                  </span>{' '}
+                   <Tag color='blue'> {uiConfiguration?.UI_LABELS[action] || action}</Tag>
+                  </span>
                   {uiConfiguration?.UI_LABELS?.FOR_THIS_REQUEST_PLEASE_COMPOSE_MSG_TO_CONTINUE}
                 </p>
               )}
               {(action === 'APPROVE' || action === 'APPROVED') && (
-                <span>
+                <span className='text-aeblack-100'>
                   {uiConfiguration?.UI_LABELS?.YOU_ARE_ABOUT_TO_}{' '}
                   {buttonName === 'CANCEL_APPLICATION' ? (
                     <span className='text-aeblack-100'>
@@ -110,10 +113,11 @@ console.log(uiConfiguration)
                     </span>
                   ) : (
                     <span className='text-aeblack-100'>
-                      {uiConfiguration?.UI_LABELS[action] || action}
+                      <Tag color='green'>                      {uiConfiguration?.UI_LABELS[action] || action}
+</Tag>
                     </span>
-                  )}{' '}
-                  <span>{uiConfiguration?.UI_LABELS?.TO}</span>{' '}
+                  )}
+                  {/* <span>{uiConfiguration?.UI_LABELS?.TO}</span>{' '} */}
                   {uiConfiguration?.UI_LABELS?.CLICK_OK_TO_PROCEED}
                 </span>
               )}
@@ -126,9 +130,11 @@ console.log(uiConfiguration)
                     </span>
                   ) : (
                     <span className='text-aeblack-100'>
+                      <Tag color='red'> 
                       {uiConfiguration?.UI_LABELS[action] || action}
+                      </Tag>
                     </span>
-                  )}{' '}
+                  )}
                   {uiConfiguration?.UI_LABELS?.FOR_THIS_REQUEST_PLEASE_COMPOSE_MSG_TO_CONTINUE}
                 </p>
               )}

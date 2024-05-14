@@ -18,6 +18,7 @@ const RenderLabelAndValue = ({
   className,
   fieldKey,
   valueStyles,
+  direction='ltr',
   tooltip = false,
 }: {
   label: ReactNode;
@@ -26,6 +27,7 @@ const RenderLabelAndValue = ({
   valueStyles?: string;
   tooltip?: boolean;
   fieldKey?: string;
+  direction?:string
 }) => {
   const [showCommentIcon, setShowCommentIcon] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -147,9 +149,9 @@ const[postFieldComment]=usePostFieldCommentMutation()
             </div>
           </Tooltip>
         ) : (
-          <div
-            className={`font-medium font-size-responsive text-[#323438] font-roboto line-height-[16.41px] ${
-              valueStyles ? valueStyles : "text-justify"
+          <div  dir={direction}
+            className={` ${direction==='rtl'?'pr-6 ':''}font-medium font-size-responsive text-[#323438] font-roboto line-height-[16.41px] ${
+              valueStyles ? valueStyles : "text-justify" 
             }`}
           >
 <span id={`${fieldKey}`}>{value}</span>          </div>

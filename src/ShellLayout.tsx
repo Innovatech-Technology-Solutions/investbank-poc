@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { Avatar, Col, Dropdown, Layout, Menu, Row, theme } from "antd";
+import React, { useState } from "react";
+import { Avatar, Badge, Col, Drawer, Dropdown,Button as ANTBUTTON, Layout, List, Menu, Row, Tag, Typography, theme } from "antd";
 import MultiStepForm from "./MultiStepForm";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { decodeToken } from "./commonuitils";
+import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+
 import AppFooter from "./AppFooter";
 const { Header, Content, Footer } = Layout;
 import {
@@ -15,7 +17,12 @@ import {
 } from "react-router-dom";
 import Button from "./Button";
 import Popover from "./pages/Popover";
-import { SignOut, User } from "@phosphor-icons/react";
+import { ArrowSquareOut, Bell, SignOut, User } from "@phosphor-icons/react";
+import { useGetMyApplicationsQuery } from "./services/hostApiServices";
+import LanguageModal from "./LanguageModal";
+import { LanguageSVG } from "./constants/SVGS";
+import useLanguage from "./hooks/useLanguage";
+const { Text } = Typography;
 
 // const items = new Array(3).fill(null).map((_, index) => ({
 //   key: index + 1,
@@ -23,10 +30,23 @@ import { SignOut, User } from "@phosphor-icons/react";
 // }));
 
 const ShellLayout: React.FC = () => {
+  const[show,setShow]=useState(false)
+  const{language}=useLanguage()
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const user = decodeToken(localStorage.getItem("token") as any) as any;
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  // Example function to increment notification count
+  const incrementNotificationCount = () => {
+    setNotificationCount(notificationCount + 1);
+  };
+
+  // Example function to reset notification count
+  const resetNotificationCount = () => {
+    setNotificationCount(0);
+  };
   function getShortName(username) {
     // Split the username into words
     const words = username.trim().split(/\s+/);
@@ -39,6 +59,10 @@ const ShellLayout: React.FC = () => {
   }
   const navigate = useNavigate();
   console.log(user);
+
+  const apiData = useGetMyApplicationsQuery();
+  const { data } = apiData;
+  const[drawerVisible,setDrawerVisible]=useState(false)
   if (user === null) return <Navigate to="/login" />;
   return (
     <Layout>
@@ -54,21 +78,13 @@ const ShellLayout: React.FC = () => {
             </Col>
             <Col>
               <div className="header-navs-right">
-                <div className="flex gap-4 items-center">
-                  <div className="cursor-pointer relative">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="#a1810c"
-                      viewBox="0 0 256 256"
-                    >
-                      <path d="M225.29,165.93C216.61,151,212,129.57,212,104a84,84,0,0,0-168,0c0,25.58-4.59,47-13.27,61.93A20.08,20.08,0,0,0,30.66,186,19.77,19.77,0,0,0,48,196H84.18a44,44,0,0,0,87.64,0H208a19.77,19.77,0,0,0,17.31-10A20.08,20.08,0,0,0,225.29,165.93ZM128,212a20,20,0,0,1-19.6-16h39.2A20,20,0,0,1,128,212ZM54.66,172C63.51,154,68,131.14,68,104a60,60,0,0,1,120,0c0,27.13,4.48,50,13.33,68Z"></path>
-                    </svg>
-                    <div className="absolute top-[-5px] right-[-2px] h-4 w-4 rounded-full bg-[#ff4D4F] flex justify-center items-center text-[#ffffff] text-[10px]">
-                      8
-                    </div>
-                  </div>
+                <div  className="flex gap-4 items-center">
+      <Badge  count={data?.data?.output?.filter(i=>i.taskId?.length>0)?.length} offset={[0, 0]}>
+      <Bell onClick={()=>setDrawerVisible(true)} size={29} />
+
+
+     </Badge>
+      {/* Conditionally display notification count */}
                   <ul className="flex items-center">
                     <li className="flex gap-2 item-center justify-center ">
                       <a className="lg:h-12 xl:h-14  gap-2 lg:px-2 xl:px-3 flex items-center justify-center flex-shrink-0 no-underline !text-lg !font-normal cursor-pointer">
@@ -90,7 +106,9 @@ const ShellLayout: React.FC = () => {
                               <Button
                                 onClick={() => {
                                   localStorage.clear();
+                                  
                                   navigate("/login");
+                                  window.location.reload()
                                 }}
                                 styleVariant="link"
                                 className="!px-[0.5rem]"
@@ -106,6 +124,23 @@ const ShellLayout: React.FC = () => {
                         />
                       </a>
                     </li>
+                    <div className='header-navs-right float-right'>
+      <ul className='flex items-center'>
+      
+      
+        <li>
+          <a
+            onClick={() => setShow(true)}
+            className='lg:h-12 xl:h-14 lg:px-2 xl:px-3 flex items-center justify-center flex-shrink-0 no-underline !text-lg !font-normal cursor-pointer'
+          >
+            {language?.toLowerCase() === 'en' ? 'EN' : `عربي`}
+            <LanguageSVG />
+          </a>
+        
+        </li>
+      </ul>
+      <LanguageModal isVisible={show} onClose={() => setShow(false)} />
+    </div>
                   </ul>
                 </div>
               </div>
@@ -142,7 +177,15 @@ const ShellLayout: React.FC = () => {
                           <span>{"Home"}</span>
                         </Link>
                       </li>
-
+                      <li className="menu-item lg:inline-flex lg:items-center">
+                        {" "}
+                        <Link
+                          to="/investbank/mytasks"
+                          className="hover:!text-primary-800 hover:!border-primary-800"
+                        >
+                          {"My Tasks"}
+                        </Link>{" "}
+                      </li>
                       <li className="menu-item lg:inline-flex lg:items-center">
                         {" "}
                         <Link
@@ -155,7 +198,9 @@ const ShellLayout: React.FC = () => {
                     </ul>
                   </div>
                 </nav>
+            
               </div>
+              
             </div>
           </div>
         </Row>
@@ -181,7 +226,43 @@ const ShellLayout: React.FC = () => {
           Copyright © 2024 INVESTBANK. All rights reserved.
         </Footer> */}
         <AppFooter />
+        <Drawer
+        title="Notifications"
+        placement="right"
+        onClose={() => setDrawerVisible(false)}
+        open={drawerVisible&&data?.data?.output?.filter(i=>i.taskId?.length>0)?.length>0}
+        width={400}
+      >
+        <List
+          dataSource={data?.data?.output?.filter(i=>i.taskId?.length>0)}
+          renderItem={(item:any) => (
+            <List.Item
+              key={item.taskId}
+              onClick={()=>setDrawerVisible(false)}
+              style={{ cursor: 'pointer' }}
+            >
+              <List.Item.Meta
+                title={<Link to={`/investbank/account-request/${item.requestId}`} style={{ color: 'inherit' }}>{item.requestId}</Link>}
+                description={
+                  <div>
+                    <Text type="secondary">Task&nbsp;</Text>
+                    <Tag color='cyan'>{item.taskId}</Tag>
+                    <Text type="secondary">has been assigned to you. </Text>
+                    <Link to={`/investbank/account-request/${item.requestId}`} style={{ color: 'inherit' }}><ArrowSquareOut size={16} />
+
+</Link>
+                 
+                  </div>
+                }
+              />
+            </List.Item>
+          )}
+        />
+        {/* Show message if there are no notifications */}
+        {data?.data?.output?.filter(i=>i.taskId?.length>0)?.length=== 0 && <p>No notifications</p>}
+      </Drawer>
       </>
+
     </Layout>
   );
 };

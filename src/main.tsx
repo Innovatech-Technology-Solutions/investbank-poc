@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./context/AuthProvider";
 import LanguageProvider from "./context/LanguageProvider.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import SessionExpiryModal from "./SessionexpiryModal.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "applications",
         element: <Applications />,
+      },
+      {
+        path: "mytasks",
+        element: <Applications isMyapplications={true} />,
       },
       {
         path: "account-request",
@@ -65,6 +70,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <LanguageProvider>
           {" "}
           <RouterProvider router={router} />
+          <SessionExpiryModal/>
         </LanguageProvider>
       </Provider>
     </AuthProvider>

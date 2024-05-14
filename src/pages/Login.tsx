@@ -1,7 +1,7 @@
 import "../index.css";
 import Logo from "../assets/Logo.png";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input, Spin } from "antd";
+import { Button, Checkbox, Form, Input, Spin, notification } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -45,9 +45,11 @@ const Login = () => {
       if (response.data?.output?.jwtToken) {
         localStorage.setItem("token", response.data?.output?.jwtToken);
         navigate("/investbank/dashboard");
+      } else {
+        notification.error({ message: "Invalid Username or password" });
       }
     } catch (error) {
-      console.error("Failed to fetch data:", error);
+      notification.error({ message: "Login failed",description:"Unable to login at the moment" });
     } finally {
       setSpin(false);
     }

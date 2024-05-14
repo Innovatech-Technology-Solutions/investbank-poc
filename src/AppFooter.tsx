@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { footerData } from './utils/Commonutils';
+import React from 'react';
+import { useLoginConfigurationQuery } from './services/hostApiServices';
+import useLanguage from './hooks/useLanguage';
+import { Link } from 'react-router-dom';
 const AppFooter = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const language = 'EN'
-  const uiConfiguration:any={};
-  const commonData:any={}
+  const {data:commonData}=useLoginConfigurationQuery()
+    const {language}=useLanguage()
+    const uiConfiguration=commonData?.[language]?.UI_LABELS
   return (
     <footer className='aegov-footer'>
       <div className='footer-top sm:py-6 md:py-12'>
@@ -68,7 +72,7 @@ const AppFooter = () => {
               {
                 return (
                 <li>
-                <a target='_blank' rel='noopener noreferrer' href={commonData?.[language]?.EXTENDED_SETTING?.[sub?.redirectPath as any]}>{language==="EN"?sub?.title?.en:sub?.title?.ar}</a>
+                <Link  rel='noopener noreferrer' to={'#'}>{language==="EN"?sub?.title?.en:sub?.title?.ar}</Link>
               </li>)
             
               })}
@@ -153,7 +157,7 @@ const AppFooter = () => {
               <span className='text-sm text-aeblack-700 max-sm:hidden'>{uiConfiguration?.["FOLLOWUS_ON"]||"Follow us on:"} </span>
               <ul className='flex items-center gap-6'>
                 <li>
-                  <a  target='_blank' rel='noopener noreferrer' href={commonData?.[language]?.EXTENDED_SETTING?.['MOEI_FB_URL']}>
+                  <a  target='_blank' rel='noopener noreferrer' href={commonData?.[language]?.EXTENDED_SETTING?.['IB_FB_URL']}>
                     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'>
                       <rect width='256' height='256' fill='none' />
                       <circle
@@ -190,7 +194,7 @@ const AppFooter = () => {
                   </a>
                 </li>
                 <li>
-                  <a  target='_blank' rel='noopener noreferrer' href={commonData?.[language]?.EXTENDED_SETTING?.['MOEI_INSTA_URL']}>
+                  <a  target='_blank' rel='noopener noreferrer' href={commonData?.[language]?.EXTENDED_SETTING?.['IB_INSTA_URL']}>
                     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'>
                       <rect width='256' height='256' fill='none' />
                       <circle
@@ -220,7 +224,7 @@ const AppFooter = () => {
                   </a>
                 </li>
                 <li>
-                  <a target='_blank' rel='noopener noreferrer'  href={commonData?.[language]?.EXTENDED_SETTING?.['MOEI_LINKEDIN_URL']}>
+                  <a target='_blank' rel='noopener noreferrer'  href={commonData?.[language]?.EXTENDED_SETTING?.['IB_LINKEDIN_URL']}>
                     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'>
                       <rect width='256' height='256' fill='none' />
                       <rect
@@ -271,7 +275,7 @@ const AppFooter = () => {
                   </a>
                 </li>
                 <li>
-                  <a target='_blank' rel='noopener noreferrer'  href={commonData?.[language]?.EXTENDED_SETTING?.['MOEI_TWITTER_URL']}>
+                  <a target='_blank' rel='noopener noreferrer'  href={commonData?.[language]?.EXTENDED_SETTING?.['IB_TWITTER_URL']}>
                     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'>
                       <rect width='256' height='256' fill='none' />
                       <path
@@ -287,7 +291,7 @@ const AppFooter = () => {
                   </a>
                 </li>
                 <li>
-                  <a  target='_blank' rel='noopener noreferrer' href={commonData?.[language]?.EXTENDED_SETTING?.['MOEI_YOUTUBE_URL']}>
+                  <a  target='_blank' rel='noopener noreferrer' href={commonData?.[language]?.EXTENDED_SETTING?.['IB_YOUTUBE_URL']}>
                     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'>
                       <rect width='256' height='256' fill='none' />
                       <polygon
