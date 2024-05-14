@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import AdvancedSearch from "./AdvnancedSearch";
 import InputText from "./InputText";
-import { Faders, MagnifyingGlass } from "@phosphor-icons/react";
+import { Faders, MagnifyingGlass, XCircle } from "@phosphor-icons/react";
 import Button from "./Button";
 import { Col, Row } from "antd";
 import { useGetInterfaceByIDQuery } from "./services/hostApiServices";
@@ -10,13 +11,15 @@ import useLanguage from "./hooks/useLanguage";
 const SearchBar: React.FC<{
   onSearch: (value: string) => void;
   onAdvancedSearch: (value: string) => void;
-}> = ({ onSearch, onAdvancedSearch }) => {
+  input:any
+}> = ({ onSearch, onAdvancedSearch,input }) => {
   const { data: uiData } = useGetInterfaceByIDQuery("159");
   const { language } = useLanguage();
   const uiConfiguration = uiData?.[language || "EN"];
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(input||undefined);
+  const [width, setWidth] = useState("10.2rem");
 
   const handleBasicSearch = (value: string) => {
     setSearchText(value);
@@ -27,11 +30,13 @@ const SearchBar: React.FC<{
       <div className="flex justify-normal  gap-2 items-center">
         <div className="flex">
           <InputText
-            style={{ height: "2.2rem" }}
+            style={{ height: "2.2rem",width:width }}
             sizeVariant={"sm"}
             placeholder={uiConfiguration?.UI_LABELS?.SEARCH || "Search..."}
             value={searchText}
-            suffxIcon={<MagnifyingGlass onClick={() => onSearch(searchText)} />}
+          
+
+            suffxIcon={!input?<MagnifyingGlass onClick={() => onSearch(searchText)} />: <XCircle onClick={() => onSearch('' as any)} size={16} />}
             onChange={(e) => handleBasicSearch(e.target.value)}
             isError={false}
             id={""}

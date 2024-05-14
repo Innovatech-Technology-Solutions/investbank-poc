@@ -2,7 +2,7 @@
 
 import Commontable from "./Commontable";
 import { Link } from "react-router-dom";
-import { TagChevron, XCircle } from "@phosphor-icons/react";
+import { Bank, CaretDown, FilePdf, FileXls, TagChevron, XCircle } from "@phosphor-icons/react";
 import {
   useDownloadRDLMutation,
   useGetMyApplicationsQuery,
@@ -29,7 +29,8 @@ type ApplicationsProps = {
   isMyapplications?: boolean;
 };
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
-  const [params, setParams] = useState("");
+  const [params, setParams] = useState<any>(null);
+  const [params1, setParams1] = useState<any>(null);
   const apiData = useGetMyApplicationsQuery(params as any);
   const [downLoadRDl] = useDownloadRDLMutation();
   const navigate = useNavigate();
@@ -184,12 +185,12 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       ),
     },
   ];
-  if (isLoading || isFetching)
-    return (
-      <div className="flex h-[50vh] justify-center items-center">
-        <Loader />
-      </div>
-    );
+  // if (isLoading || isFetching)
+  //   return (
+  //     <div className="flex h-[50vh] justify-center items-center">
+  //       <Loader />
+  //     </div>
+  //   );
   return (
     <>
       <div className="flex flex-col items-start md:flex-row md:items-center justify-between py-3">
@@ -218,8 +219,11 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
         <div className="flex flex-col gap-2 ">
           <div className="flex gap-2 justify-end items-center">
             <SearchBar
+            input={params1}
               onSearch={function (value: string): void {
                 debounceSearch(value);
+                setParams1(value)
+
               }}
               onAdvancedSearch={function (val): void {
                 console.log(val);
@@ -234,14 +238,21 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                   }}
                   sizeVariant="xs"
                 >
-                  Open Account
-                </Button>
+<span className="flex gap-2 items-center justify-center">Open Account<Bank size={16} />
+
+</span>            </Button>
                 <MenuDropDown
                   buttonSize="xs"
-                  buttonText="Export"
+                  buttonText={<span className="flex gap-2 items-center justify-center">Export<CaretDown size={18} /></span>
+
+                }
                   items={[
-                    { label: "PDF", value: "pdf" },
-                    { label: "Excel", value: "xls" },
+                    { label: <span className="flex gap-2 items-center justify-center">{"PDF"}<FilePdf color="red" size={8} />
+
+                    </span>, value: "pdf" },
+                    { label: <span className="flex gap-2 items-center justify-center">{"Excel"}<FileXls  color='green'size={8} />
+
+                    </span> ,value: "xls" },
                   ]}
                   onItemClick={async (e) => {
                     try {
@@ -282,7 +293,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
           description={
             <div className="flex flex-col gap-2">
               <div>No Application found. </div>
-              {isSales() && !isMyapplications ? (
+              {isSales()  ? (
                 <div>
                   {!params ? (
                     <Button
@@ -298,6 +309,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                       styleVariant="secondary"
                       onClick={() => {
                         setParams("");
+                        setParams1('')
                       }}
                       sizeVariant="xs"
                     >

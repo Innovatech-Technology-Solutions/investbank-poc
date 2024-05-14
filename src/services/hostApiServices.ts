@@ -162,7 +162,7 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
 
     getMyApplications: builder.query<CommonGetResponce<any>, void>({
       query: (params:any) => ({
-        url: `/gateway/Investbankpoc/InvestBankPoc?pageNumber=0&pageSize=1000${params}`,
+        url: `/gateway/Investbankpoc/InvestBankPoc?pageNumber=0&pageSize=1000${params?params:''}`,
         method: 'GET',
       }),
       keepUnusedDataFor: 0,

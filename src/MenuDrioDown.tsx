@@ -5,7 +5,7 @@ import { CircleNotch } from '@phosphor-icons/react';
 import React from 'react';
 
 type Item = {
-  label: string;
+  label: ReactNode;
   value: string;
 };
 interface DropdownProps {
