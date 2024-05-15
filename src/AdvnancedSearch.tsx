@@ -47,7 +47,11 @@ const AdvancedSearch: React.FC<{
     <Drawer
       title={
         <div className="flex gap-2 justify-between">
-          <SectionHeader title="Advanced Search" />
+          <SectionHeader
+            title={
+              uiConfiguration?.UI_LABELS?.ADVANCED_SEARCH || "Advanced Search"
+            }
+          />
           <Button onClick={onClose} styleVariant="soft">
             <X size="16" />
           </Button>
@@ -78,7 +82,10 @@ const AdvancedSearch: React.FC<{
           <Col span={24}>
             <InputText
               style={{ height: "2.2rem" }}
-              placeholder="Search Something..."
+              placeholder={
+                uiConfiguration?.UI_LABELS?.SEARCH_SOMETHING ||
+                "Search Something..."
+              }
               onChange={(e) =>
                 setSearchParams({ ...searchParams, name: e.target.value })
               }
@@ -94,13 +101,19 @@ const AdvancedSearch: React.FC<{
             <Select
               allowClear
               style={{ width: "100%" }}
-              placeholder= { uiConfiguration?.UI_LABELS?.SELECT_GENDER || "Select Gender"}
+              placeholder={
+                uiConfiguration?.UI_LABELS?.SELECT_GENDER || "Select Gender"
+              }
               onChange={(value: string[]) =>
                 setSearchParams({ ...searchParams, gender: value })
               }
             >
-              <Option value="1">{uiConfiguration?.UI_LABELS?.MALE || "Male"}</Option>
-              <Option value="0">{uiConfiguration?.UI_LABELS?.FEMALE || "Female"}</Option>
+              <Option value="1">
+                {uiConfiguration?.UI_LABELS?.MALE || "Male"}
+              </Option>
+              <Option value="0">
+                {uiConfiguration?.UI_LABELS?.FEMALE || "Female"}
+              </Option>
             </Select>
           </Col>
         </Row>
@@ -109,16 +122,26 @@ const AdvancedSearch: React.FC<{
             <Select
               allowClear
               style={{ width: "100%" }}
-              placeholder="Select marital status"
+              placeholder={
+                uiConfiguration?.UI_LABELS?.SELECT_MARITAL_STATUS ||
+                "Select marital status"
+              }
               onChange={(value: string[]) =>
                 setSearchParams({ ...searchParams, maritalStatus: value })
               }
             >
-              <Option value="single">Single</Option>
-              <Option value="married">Married</Option>
-              <Option value="divorced">Divorced</Option>
-              <Option value="widowed">Widowed</Option>
-              
+              <Option value="single">
+                {uiConfiguration?.UI_LABELS?.SINGLE || "Single"}
+              </Option>
+              <Option value="married">
+                {uiConfiguration?.UI_LABELS?.MARRIED || "Married"}
+              </Option>
+              <Option value="divorced">
+                {uiConfiguration?.UI_LABELS?.DIVORCED || "Divorced"}
+              </Option>
+              <Option value="widowed">
+                {uiConfiguration?.UI_LABELS?.WIDOWED || "Widowed"}
+              </Option>
             </Select>
           </Col>
         </Row>
@@ -127,13 +150,20 @@ const AdvancedSearch: React.FC<{
             <Select
               allowClear
               style={{ width: "100%" }}
-              placeholder="Is Prime customer?"
+              placeholder={
+                uiConfiguration?.UI_LABELS?.IS_PRIME_CUSTOMER ||
+                "Is Prime customer?"
+              }
               onChange={(value: string[]) =>
                 setSearchParams({ ...searchParams, primeCustomer: value })
               }
             >
-              <Option value="yes">Yes</Option>
-              <Option value="no">No</Option>
+              <Option value="yes">
+                {uiConfiguration?.UI_LABELS?.YES || "Yes"}
+              </Option>
+              <Option value="no">
+                {uiConfiguration?.UI_LABELS?.NO || "No"}
+              </Option>
             </Select>
           </Col>
         </Row>
@@ -142,14 +172,20 @@ const AdvancedSearch: React.FC<{
             <Select
               allowClear
               style={{ width: "100%" }}
-              placeholder="Status"
+              placeholder={uiConfiguration?.UI_LABELS?.STATUS || "Status"}
               onChange={(value: string[]) =>
                 setSearchParams({ ...searchParams, status: value })
               }
             >
-              <Option value="APPROVED">Approved</Option>
-              <Option value="REJECTED">Rejected</Option>
-              <Option value="SUBMITTED">Submitted</Option>
+              <Option value="APPROVED">
+                {uiConfiguration?.UI_LABELS?.APPROVAL || "Approved"}
+              </Option>
+              <Option value="REJECTED">
+                {uiConfiguration?.UI_LABELS?.REJECTED || "Rejected"}
+              </Option>
+              <Option value="SUBMITTED">
+                {uiConfiguration?.UI_LABELS?.SUBMITTED || "Submitted"}
+              </Option>
             </Select>
           </Col>
         </Row>
