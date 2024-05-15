@@ -190,10 +190,14 @@ const MultiStepForm = () => {
   const formControlsConfig: formType[] = [
     {
       order: 1,
-      label: "Full Name in Arabic",
+      label:
+        uiConfiguration?.UI_LABELS?.FULL_NAME_IN_ARABIC ||
+        "Full Name in Arabic",
       name: "fullNameAr",
       id: "fullNameAr",
-      placeholder: "Full Name in Arabic",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.FULL_NAME_IN_ARABIC ||
+        "Full Name in Arabic",
       type: "text",
       show: true,
       isMandatory: true,
@@ -201,20 +205,24 @@ const MultiStepForm = () => {
     },
     {
       order: 2,
-      label: "Full Name in English",
+      label:
+        uiConfiguration?.UI_LABELS?.FULL_NAME_IN_ENGLISH ||
+        "Full Name in English",
       name: "fullNameEn",
       id: "fullNameEn",
-      placeholder: "Full Name in English",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.FULL_NAME_IN_ENGLISH ||
+        "Full Name in English",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 3,
-      label: "Mobile Number",
+      label: uiConfiguration?.UI_LABELS?.MOBILE_NUMBER || "Mobile Number",
       name: "mobileNo",
       id: "mobileNo",
-      placeholder: "Mobile Number",
+      placeholder: uiConfiguration?.UI_LABELS?.MOBILE_NUMBER || "Mobile Number",
       type: "text",
       show: true,
       isMandatory: true,
@@ -222,29 +230,29 @@ const MultiStepForm = () => {
     },
     {
       order: 4,
-      label: "Email",
+      label: uiConfiguration?.UI_LABELS?.EMAIL || "Email",
       name: "email",
       id: "email",
-      placeholder: "Email",
+      placeholder: uiConfiguration?.UI_LABELS?.EMAIL || "Email",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 5,
-      label: "Mother Name",
+      label: uiConfiguration?.UI_LABELS?.MOTHER_NAME || "Mother Name",
       name: "motherName",
       id: "motherName",
-      placeholder: "Mother Name",
+      placeholder: uiConfiguration?.UI_LABELS?.MOTHER_NAME || "Mother Name",
       type: "text",
       show: true,
     },
     {
       order: 6,
-      label: "Sex",
+      label: uiConfiguration?.UI_LABELS?.SEX || "Sex",
       name: "sex",
       id: "sex",
-      placeholder: "Sex",
+      placeholder: uiConfiguration?.UI_LABELS?.SEX || "Sex",
       type: "select",
       show: true,
       options: [
@@ -254,19 +262,19 @@ const MultiStepForm = () => {
     },
     {
       order: 7,
-      label: "Date of Birth",
+      label: uiConfiguration?.UI_LABELS?.DATE_OF_BIRTH || "Date of Birth",
       name: "dateOfBirth",
       id: "dateOfBirth",
-      placeholder: "Date of Birth",
+      placeholder: uiConfiguration?.UI_LABELS?.DATE_OF_BIRTH || "Date of Birth",
       type: "date",
       show: true,
     },
     {
       order: 8,
-      label: "Nationality",
+      label: uiConfiguration?.UI_LABELS?.NATIONALITY || "Nationality",
       name: "nationality",
       id: "nationality",
-      placeholder: "Nationality",
+      placeholder: uiConfiguration?.UI_LABELS?.NATIONALITY || "Nationality",
       type: "select",
       options: [
         { label: "-- select one --", value: "" },
@@ -470,59 +478,74 @@ const MultiStepForm = () => {
     },
     {
       order: 9,
-      label: "National ID",
+      label: uiConfiguration?.UI_LABELS?.NATIONAL_ID || "National ID",
       name: "nationalId",
       id: "nationalId",
-      placeholder: "National ID",
+      placeholder: uiConfiguration?.UI_LABELS?.NATIONAL_ID || "National ID",
       type: "text",
       show: true,
     },
     {
       order: 10,
-      label: "National ID Date",
+      label: uiConfiguration?.UI_LABELS?.NATIONAL_ID_DATE || "National ID Date",
       name: "nationalIdDate",
       id: "nationalIdDate",
-      placeholder: "National ID Date",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.NATIONAL_ID_DATE || "National ID Date",
       type: "date",
       show: true,
     },
     {
       order: 11,
-      label: "National ID Expiry Date",
+      label:
+        uiConfiguration?.UI_LABELS?.NATIONAL_ID_EXPIRY_DATE ||
+        "National ID Expiry Date",
       name: "nationalIdExpiryDate",
       id: "nationalIdExpiryDate",
-      placeholder: "National ID Expiry Date",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.NATIONAL_ID_EXPIRY_DATE ||
+        "National ID Expiry Date",
       type: "date",
       show: true,
     },
     {
       order: 12,
-      label: "Is Bank Blacklisted?",
+      label:
+        uiConfiguration?.UI_LABELS?.IS_BANK_BLACKLISTED ||
+        "Is Bank Blacklisted?",
       name: "isBankBlacklisted",
       id: "isBankBlacklisted",
-      placeholder: "Is Bank Blacklisted?",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.IS_BANK_BLACKLISTED ||
+        "Is Bank Blacklisted?",
       type: "select",
       show: true,
       options: [
-        { label: "Yes", value: 1 },
-        { label: "No", value: 0 },
+        {
+          label: uiConfiguration?.UI_LABELS?.YES || "Yes",
+          value: 1,
+        },
+        {
+          label: uiConfiguration?.UI_LABELS?.NO || "No",
+          value: 0,
+        },
       ],
     },
     {
       order: 13,
-      label: "Birth Country",
+      label: uiConfiguration?.UI_LABELS?.BIRTH_COUNTRY || "Birth Country",
       name: "birthCountry",
       id: "birthCountry",
-      placeholder: "Birth Country",
+      placeholder: uiConfiguration?.UI_LABELS?.BIRTH_COUNTRY || "Birth Country",
       type: "text",
       show: true,
     },
     {
       order: 14,
-      label: "Birth City",
+      label: uiConfiguration?.UI_LABELS?.BIRTH_CITY || "Birth City",
       name: "birthCity",
       id: "birthCity",
-      placeholder: "Birth City",
+      placeholder: uiConfiguration?.UI_LABELS?.BIRTH_CITY || "Birth City",
       type: "text",
       show: true,
     },
@@ -530,46 +553,68 @@ const MultiStepForm = () => {
   const maritalStatusControlsConfig = [
     {
       order: 1,
-      label: "Marital Status",
+      label: uiConfiguration?.UI_LABELS?.MARTIAL_STATUS || "Marital Status",
       name: "maritalStatus",
       id: "maritalStatus",
-      placeholder: "Marital Status",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.MARTIAL_STATUS || "Marital Status",
       type: "select",
       show: true,
       options: [
-        { label: "Single", value: "single" },
-        { label: "Married", value: "married" },
-        { label: "Divorced", value: "divorced" },
-        { label: "Widowed", value: "widowed" },
+        {
+          label: uiConfiguration?.UI_LABELS?.SINGLE || "Single",
+          value: "single",
+        },
+        {
+          label: uiConfiguration?.UI_LABELS?.MARRIED || "Married",
+          value: "married",
+        },
+        {
+          label: uiConfiguration?.UI_LABELS?.DIVORCED || "Divorced",
+          value: "divorced",
+        },
+        {
+          label: uiConfiguration?.UI_LABELS?.WIDOWED || "Widowed",
+          value: "widowed",
+        },
       ],
       isMandatory: true,
     },
     {
       order: 2,
-      label: "Residence Status",
+      label: uiConfiguration?.UI_LABELS?.RESIDENCE_STATUS || "Residence Status",
       name: "residenceStatus",
       id: "residenceStatus",
-      placeholder: "Residence Status",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.RESIDENCE_STATUS || "Residence Status",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 3,
-      label: "Personal Identity Issuance Location",
+      label:
+        uiConfiguration?.UI_LABELS?.PERSONAL_IDENTITY_ISSUANCE_LOCATION ||
+        "Personal Identity Issuance Location",
       name: "personalIdentityIssuanceLocation",
       id: "personalIdentityIssuanceLocation",
-      placeholder: "Personal Identity Issuance Location",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.PERSONAL_IDENTITY_ISSUANCE_LOCATION ||
+        "Personal Identity Issuance Location",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 4,
-      label: "Personal Identity Type",
+      label:
+        uiConfiguration?.UI_LABELS?.PERSONAL_IDENTITY_TYPE ||
+        "Personal Identity Type",
       name: "personalIdentityType",
       id: "personalIdentityType",
-      placeholder: "Personal Identity Type",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.PERSONAL_IDENTITY_TYPE ||
+        "Personal Identity Type",
       type: "text",
       show: true,
       isMandatory: true,
@@ -579,60 +624,60 @@ const MultiStepForm = () => {
   const residenceAddressControlsConfig = [
     {
       order: 1,
-      label: "City Name",
+      label: uiConfiguration?.UI_LABELS?.CITY_NAME || "City Name",
       name: "cityName",
       id: "cityName",
-      placeholder: "City Name",
+      placeholder: uiConfiguration?.UI_LABELS?.CITY_NAME || "City Name",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 2,
-      label: "Area Name",
+      label: uiConfiguration?.UI_LABELS?.AREA_NAME || "Area Name",
       name: "areaName",
       id: "areaName",
-      placeholder: "Area Name",
+      placeholder: uiConfiguration?.UI_LABELS?.AREA_NAME || "Area Name",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 3,
-      label: "Street Name",
+      label: uiConfiguration?.UI_LABELS?.STREET_NAME || "Street Name",
       name: "streetName",
       id: "streetName",
-      placeholder: "Street Name",
+      placeholder: uiConfiguration?.UI_LABELS?.STREET_NAME || "Street Name",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 4,
-      label: "Apartment No",
+      label: uiConfiguration?.UI_LABELS?.APARTMENT_NO || "Apartment No",
       name: "apartmentNo",
       id: "apartmentNo",
-      placeholder: "Apartment No",
+      placeholder: uiConfiguration?.UI_LABELS?.APARTMENT_NO || "Apartment No",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 5,
-      label: "Postal Code",
+      label: uiConfiguration?.UI_LABELS?.POSTAL_CODE || "Postal Code",
       name: "postalCode",
       id: "postalCode",
-      placeholder: "Postal Code",
+      placeholder: uiConfiguration?.UI_LABELS?.POSTAL_CODE || "Postal Code",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 6,
-      label: "Home Landline",
+      label: uiConfiguration?.UI_LABELS?.HOME_LANDLINE || "Home Landline",
       name: "homeLandLine",
       id: "homeLandLine",
-      placeholder: "Home Landline",
+      placeholder: uiConfiguration?.UI_LABELS?.HOME_LANDLINE || "Home Landline",
       type: "text",
       show: true,
     },
@@ -641,30 +686,31 @@ const MultiStepForm = () => {
   const employmentFinancialControlsConfig = [
     {
       order: 1,
-      label: "Job",
+      label: uiConfiguration?.UI_LABELS?.JOB || "Job",
       name: "job",
       id: "job",
-      placeholder: "Job",
+      placeholder: uiConfiguration?.UI_LABELS?.JOB || "Job",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 2,
-      label: "Job Location",
+      label: uiConfiguration?.UI_LABELS?.JOB_LOCATION || "Job Location",
       name: "jobLocation",
       id: "jobLocation",
-      placeholder: "Job Location",
+      placeholder: uiConfiguration?.UI_LABELS?.JOB_LOCATION || "Job Location",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 3,
-      label: "Monthly Salary",
+      label: uiConfiguration?.UI_LABELS?.MONTLY_SALARY || "Monthly Salary",
       name: "monthlySalary",
       id: "monthlySalary",
-      placeholder: "Monthly Salary",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.MONTLY_SALARY || "Monthly Salary",
       type: "number",
       show: true,
       isMandatory: true,
@@ -672,39 +718,51 @@ const MultiStepForm = () => {
     },
     {
       order: 4,
-      label: "Income Source",
+      label: uiConfiguration?.UI_LABELS?.INCOME_SOURCE || "Income Source",
       name: "incomeSource",
       id: "incomeSource",
-      placeholder: "Income Source",
+      placeholder: uiConfiguration?.UI_LABELS?.INCOME_SOURCE || "Income Source",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 5,
-      label: "Other Income Sources",
+      label:
+        uiConfiguration?.UI_LABELS?.OTHER_INCOME_SOURCES ||
+        "Other Income Sources",
       name: "otherIncomeSources",
       id: "otherIncomeSources",
-      placeholder: "Other Income Sources",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.OTHER_INCOME_SOURCES ||
+        "Other Income Sources",
       type: "text",
       show: true,
     },
     {
       order: 6,
-      label: "Transaction Size Per Account",
+      label:
+        uiConfiguration?.UI_LABELS?.TRANSACTION_SIZE_PER_ACCOUNT ||
+        "Transaction Size Per Account",
       name: "transactionSizePerAccount",
       id: "transactionSizePerAccount",
-      placeholder: "Transaction Size Per Account",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.TRANSACTION_SIZE_PER_ACCOUNT ||
+        "Transaction Size Per Account",
       type: "number",
       show: true,
       isNumeric: true,
     },
     {
       order: 7,
-      label: "Account Opening Purpose",
+      label:
+        uiConfiguration?.UI_LABELS?.ACCOUNT_OPENING_PURPOSE ||
+        "Account Opening Purpose",
       name: "accountOpeningPurpose",
       id: "accountOpeningPurpose",
-      placeholder: "Account Opening Purpose",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.ACCOUNT_OPENING_PURPOSE ||
+        "Account Opening Purpose",
       type: "text",
       show: true,
     },
@@ -713,34 +771,42 @@ const MultiStepForm = () => {
   const customerInformationControlsConfig = [
     {
       order: 1,
-      label: "Prime Customer",
+      label: uiConfiguration?.UI_LABELS?.PRIME_CUSTOMER || "Prime Customer",
       name: "primeCustomer",
       id: "primeCustomer",
-      placeholder: "Prime Customer",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.PRIME_CUSTOMER || "Prime Customer",
       type: "select",
       show: true,
       options: [
-        { label: "Yes", value: "yes" },
-        { label: "No", value: "no" },
+        {
+          label: uiConfiguration?.UI_LABELS?.YES || "Yes",
+          value: "yes",
+        },
+        {
+          label: uiConfiguration?.UI_LABELS?.NO || "No",
+          value: "no",
+        },
       ],
       isMandatory: true,
     },
     {
       order: 2,
-      label: "Customer Number",
+      label: uiConfiguration?.UI_LABELS?.CUSTOMER_NUMBER || "Customer Number",
       name: "customerNumber",
       id: "customerNumber",
-      placeholder: "Customer Number",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.CUSTOMER_NUMBER || "Customer Number",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 3,
-      label: "Branch Name",
+      label: uiConfiguration?.UI_LABELS?.BRANCH_NAME || "Branch Name",
       name: "branchName",
       id: "branchName",
-      placeholder: "Branch Name",
+      placeholder: uiConfiguration?.UI_LABELS?.BRANCH_NAME || "Branch Name",
       type: "text",
       show: true,
       isMandatory: true,
@@ -750,40 +816,42 @@ const MultiStepForm = () => {
   const accountInformationControlsConfig = [
     {
       order: 1,
-      label: "Account Type",
+      label: uiConfiguration?.UI_LABELS?.ACCOUNT_TYPE || "Account Type",
       name: "accountType",
       id: "accountType",
-      placeholder: "Account Type",
+      placeholder: uiConfiguration?.UI_LABELS?.ACCOUNT_TYPE || "Account Type",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 2,
-      label: "Account Currency",
+      label: uiConfiguration?.UI_LABELS?.ACCOUNT_CURRENCY || "Account Currency",
       name: "accountCurrency",
       id: "accountCurrency",
-      placeholder: "Account Currency",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.ACCOUNT_CURRENCY || "Account Currency",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 3,
-      label: "Account Number",
+      label: uiConfiguration?.UI_LABELS?.ACCOUNT_NUMBER || "Account Number",
       name: "accountNumber",
       id: "accountNumber",
-      placeholder: "Account Number",
+      placeholder:
+        uiConfiguration?.UI_LABELS?.ACCOUNT_NUMBER || "Account Number",
       type: "text",
       show: true,
       isMandatory: true,
     },
     {
       order: 4,
-      label: "Account IBAN",
+      label: uiConfiguration?.UI_LABELS?.ACCOUNT_IBAN || "Account IBAN",
       name: "accountIban",
       id: "accountIban",
-      placeholder: "Account IBAN",
+      placeholder: uiConfiguration?.UI_LABELS?.ACCOUNT_IBAN || "Account IBAN",
       type: "text",
       show: true,
       isMandatory: true,
@@ -1078,7 +1146,9 @@ const MultiStepForm = () => {
                   clickedAccordion={(e: any) => setActiveIndex(e)}
                   accordionItems={[
                     {
-                      title: "Applicant Details",
+                      title:
+                        uiConfiguration?.UI_LABELS?.APPLICANT_DETAILS ||
+                        "Applicant Details",
                       accordianIndex: 1,
                       content: (
                         <>
@@ -1209,7 +1279,9 @@ const MultiStepForm = () => {
                       ),
                     },
                     {
-                      title: "Marital Status",
+                      title:
+                        uiConfiguration?.UI_LABELS?.MARTIAL_STATUS ||
+                        "Marital Status",
                       accordianIndex: 2,
                       content: (
                         <>
@@ -1332,7 +1404,9 @@ const MultiStepForm = () => {
                       ),
                     },
                     {
-                      title: "Residence Address",
+                      title:
+                        uiConfiguration?.UI_LABELS?.RESIDENCE_ADDRESS ||
+                        "Residence Address",
                       accordianIndex: 3,
                       content: (
                         <div
@@ -1451,7 +1525,10 @@ const MultiStepForm = () => {
                       ),
                     },
                     {
-                      title: "Employment and Financial Details",
+                      title:
+                        uiConfiguration?.UI_LABELS
+                          ?.EMPLOYEMENT_AND_FINANCIAL_DETAILS ||
+                        "Employment and Financial Details",
                       accordianIndex: 4,
                       content: (
                         <div
@@ -1601,7 +1678,9 @@ const MultiStepForm = () => {
                       ),
                     },
                     {
-                      title: "Customer Information",
+                      title:
+                        uiConfiguration?.UI_LABELS?.CUSTOMER_INFORMATION ||
+                        "Customer Information",
                       accordianIndex: 5,
                       content: (
                         <div>
@@ -1740,7 +1819,13 @@ const MultiStepForm = () => {
                                   ) : null
                               )}
                           </div>
-                          <SectionHeader title="Capture Customer Signing Process" />
+                          <SectionHeader
+                            title={
+                              uiConfiguration?.UI_LABELS
+                                ?.CAPTURE_CUSTOMER_SIGNING_PROCESS ||
+                              "Capture Customer Signing Process"
+                            }
+                          />
                           <div className="flex pt-2">
                             <RecordVideo randID={randID as any} />
                           </div>
@@ -1748,7 +1833,9 @@ const MultiStepForm = () => {
                       ),
                     },
                     {
-                      title: "Account Information",
+                      title:
+                        uiConfiguration?.UI_LABELS?.ACCOUNT_INFORMATION ||
+                        "Account Information",
                       accordianIndex: 6,
                       content: (
                         <div

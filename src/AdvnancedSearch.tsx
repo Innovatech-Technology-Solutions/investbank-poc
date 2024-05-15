@@ -63,108 +63,147 @@ const AdvancedSearch: React.FC<{
 
     // </Modal>
 
-    visible&&<Modal
-      showFooter={false}
-      body={
-        <div className="flex flex-col gap-4">
+    visible && (
+      <Modal
+        showFooter={false}
+        body={
+          <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-between">
-          <SectionHeader title="Advanced Search" />
-          <Button               onClick={onClose}
-styleVariant="soft">
-            <X size='16'/>
-          </Button>
-          </div>
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <InputText
-                style={{ height: "2.2rem" }}
-                placeholder="Search Something..."
-                onChange={(e) =>
-                  setSearchParams({ ...searchParams, name: e.target.value })
+              <SectionHeader
+                title={
+                  uiConfiguration?.UI_LABELS?.ADVANCED_SEARCH ||
+                  "Advanced Search"
                 }
-                isError={false}
-                id={""}
-                value={searchParams.name as any}
-                name={""}
               />
-            </Col>
-            <Col span={12}>
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Select Gender"
-                onChange={(value: string[]) =>
-                  setSearchParams({ ...searchParams, gender: value })
-                }
-              >
-                <Option value="1">Male</Option>
-                <Option value="0">Female</Option>
-              </Select>
-            </Col>
+              <Button onClick={onClose} styleVariant="soft">
+                <X size="16" />
+              </Button>
+            </div>
+            <Row gutter={[16, 16]}>
+              <Col span={12}>
+                <InputText
+                  style={{ height: "2.2rem" }}
+                  placeholder={
+                    uiConfiguration?.UI_LABELS?.SEARCH_SOMETHING ||
+                    "Search Something..."
+                  }
+                  onChange={(e) =>
+                    setSearchParams({ ...searchParams, name: e.target.value })
+                  }
+                  isError={false}
+                  id={""}
+                  value={searchParams.name as any}
+                  name={""}
+                />
+              </Col>
+              <Col span={12}>
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: "100%" }}
+                  placeholder={
+                    uiConfiguration?.UI_LABELS?.SELECT_GENDER || "Select Gender"
+                  }
+                  onChange={(value: string[]) =>
+                    setSearchParams({ ...searchParams, gender: value })
+                  }
+                >
+                  <Option value="1">
+                    {uiConfiguration?.UI_LABELS?.MALE || "Male"}
+                  </Option>
+                  <Option value="0">
+                    {uiConfiguration?.UI_LABELS?.FEMALE || "Female"}
+                  </Option>
+                </Select>
+              </Col>
 
-            <Col span={12}>
-              <Select
-                // mode="multiple"
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Select marital status"
-                onChange={(value: string[]) =>
-                  setSearchParams({ ...searchParams, maritalStatus: value })
-                }
-              >
-                <Option value="single">Single</Option>
-                <Option value="married">Married</Option>
-                <Option value="divorced">Divorced</Option>
-                <Option value="widowed">Widowed</Option>
-              </Select>
-            </Col>
+              <Col span={12}>
+                <Select
+                  // mode="multiple"
+                  allowClear
+                  style={{ width: "100%" }}
+                  placeholder={
+                    uiConfiguration?.UI_LABELS?.SELECT_MARITAL_STATUS ||
+                    "Select marital status"
+                  }
+                  onChange={(value: string[]) =>
+                    setSearchParams({ ...searchParams, maritalStatus: value })
+                  }
+                >
+                  <Option value="single">
+                    {uiConfiguration?.UI_LABELS?.SINGLE || "Single"}
+                  </Option>
+                  <Option value="married">
+                    {uiConfiguration?.UI_LABELS?.MARRIED || "Married"}
+                  </Option>
+                  <Option value="divorced">
+                    {uiConfiguration?.UI_LABELS?.DIVORCED || "Divorced"}
+                  </Option>
+                  <Option value="widowed">
+                    {uiConfiguration?.UI_LABELS?.WIDOWED || "Widowed"}
+                  </Option>
+                </Select>
+              </Col>
 
-            <Col span={12}>
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Is Prime customer?"
-                onChange={(value: string[]) =>
-                  setSearchParams({ ...searchParams, primeCustomer: value })
-                }
+              <Col span={12}>
+                <Select
+                  allowClear
+                  style={{ width: "100%" }}
+                  placeholder={
+                    uiConfiguration?.UI_LABELS?.IS_PRIME_CUSTOMER ||
+                    "Is Prime customer?"
+                  }
+                  onChange={(value: string[]) =>
+                    setSearchParams({ ...searchParams, primeCustomer: value })
+                  }
+                >
+                  <Option value="yes">
+                    {uiConfiguration?.UI_LABELS?.YES || "Yes"}
+                  </Option>
+                  <Option value="no">
+                    {uiConfiguration?.UI_LABELS?.NO || "No"}
+                  </Option>
+                </Select>
+              </Col>
+              <Col span={12}>
+                <Select
+                  allowClear
+                  style={{ width: "100%" }}
+                  placeholder={uiConfiguration?.UI_LABELS?.STATUS || "Status"}
+                  onChange={(value: string[]) =>
+                    setSearchParams({ ...searchParams, status: value })
+                  }
+                >
+                  <Option value="APPROVED">
+                    {uiConfiguration?.UI_LABELS?.APPROVAL || "Approved"}
+                  </Option>
+                  <Option value="REJECTED">
+                    {uiConfiguration?.UI_LABELS?.REJECTED || "Rejected"}
+                  </Option>
+                  <Option value="SUBMITTED">
+                    {uiConfiguration?.UI_LABELS?.SUBMITTED || "Submitted"}
+                  </Option>
+                </Select>
+              </Col>
+            </Row>
+            <div className="flex gap-2 justify-end">
+              <Button
+                sizeVariant="xs"
+                key="cancel"
+                styleVariant="secondary"
+                onClick={onClose}
               >
-                <Option value="yes">Yes</Option>
-                <Option value="no">No</Option>
-              </Select>
-            </Col>
-            <Col span={12}>
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Status"
-                onChange={(value: string[]) =>
-                  setSearchParams({ ...searchParams, status: value })
-                }
-              >
-                <Option value="APPROVED">Approved</Option>
-                <Option value="REJECTED">Rejected</Option>
-                <Option value="SUBMITTED">Submitted</Option>
-              </Select>
-            </Col>
-          </Row>
-          <div className="flex gap-2 justify-end">
-            <Button
-              sizeVariant="xs"
-              key="cancel"
-              styleVariant="secondary"
-              onClick={onClose}
-            >
-              {uiConfiguration?.UI_LABELS?.CANCEL || "Cancel"}
-            </Button>
-            
-            <Button sizeVariant="xs" key="search" onClick={handleSearch}>
-              {uiConfiguration?.UI_LABELS?.SEARCH || "Search"}
-            </Button>
+                {uiConfiguration?.UI_LABELS?.CANCEL || "Cancel"}
+              </Button>
+
+              <Button sizeVariant="xs" key="search" onClick={handleSearch}>
+                {uiConfiguration?.UI_LABELS?.SEARCH || "Search"}
+              </Button>
+            </div>
           </div>
-        </div>
-      }
-    />
+        }
+      />
+    )
   );
 };
 
