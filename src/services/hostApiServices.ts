@@ -122,6 +122,10 @@ export const hostApiServices = shellHttpClient().injectEndpoints({
       query: (id: string) => ({
         url: `${ENDPOINTS.INTERFACE.url}/${id}`,
         method: "GET",
+        headers: {
+          "X-TOKEN-REQ": false,
+        },
+        
       }),
       transformResponse: (response: any) => {
         return { ...prepareUIConfiguration(response?.data?.output) };

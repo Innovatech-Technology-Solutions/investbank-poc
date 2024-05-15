@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useGetInterfaceByIDQuery } from "../services/hostApiServices";
 import useLanguage from "../hooks/useLanguage";
+import { LanguageSVG } from "../constants/SVGS";
 
 const Login = () => {
   const { data: uiData } = useGetInterfaceByIDQuery("159");
@@ -70,7 +71,7 @@ const Login = () => {
   return (
     <section className="grid grid-cols-[1fr_530px] h-[100vh] max-lg:grid-cols-1">
       <div className="background-container max-lg:hidden">
-        <div className="text-center ml-20 flex flex-col gap-6 items-start font-[400] text-[40px] text-[#BD982E] mb-36">
+        <div className={`text-center ${language==='EN'?'ml-20':'mr-20'} flex flex-col gap-6 items-start font-[400] text-[40px] text-[#BD982E] mb-36`}>
           <div className="font-[400] text-[40px] text-[#BD982E]">
             {uiConfiguration?.UI_LABELS?.WELCOME || "Welcome to"}{" "}
             <span className="font-[500] text-[46px] text-[#BD982E]">
@@ -207,6 +208,10 @@ const Login = () => {
                 "Forgot Password?"}
             </label>
           </Form.Item>
+          {/* <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
+       
+        
+          </Form.Item> */}
         </div>
       </div>
     </section>

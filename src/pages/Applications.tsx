@@ -344,10 +344,10 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                 {uiConfiguration?.UI_LABELS?.NO_APPLICATION_FOUND ||
                   "No Application found."}{" "}
               </div>
-              {isSales() ? (
+              
                 <div>
                   {!params ? (
-                    <Button
+                    isSales() ? <Button
                       onClick={() => {
                         navigate("/investbank/account-request");
                       }}
@@ -355,7 +355,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                     >
                       {uiConfiguration?.UI_LABELS?.OPEN_ACCOUNT ||
                         "Open Account"}
-                    </Button>
+                    </Button>:null
                   ) : (
                     <Button
                       styleVariant="secondary"
@@ -372,7 +372,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                     </Button>
                   )}
                 </div>
-              ) : null}
+              
             </div>
           }
         />
