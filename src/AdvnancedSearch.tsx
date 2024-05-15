@@ -94,13 +94,13 @@ const AdvancedSearch: React.FC<{
             <Select
               allowClear
               style={{ width: "100%" }}
-              placeholder="Select Gender"
+              placeholder= { uiConfiguration?.UI_LABELS?.SELECT_GENDER || "Select Gender"}
               onChange={(value: string[]) =>
                 setSearchParams({ ...searchParams, gender: value })
               }
             >
-              <Option value="1">Male</Option>
-              <Option value="0">Female</Option>
+              <Option value="1">{uiConfiguration?.UI_LABELS?.MALE || "Male"}</Option>
+              <Option value="0">{uiConfiguration?.UI_LABELS?.FEMALE || "Female"}</Option>
             </Select>
           </Col>
         </Row>
