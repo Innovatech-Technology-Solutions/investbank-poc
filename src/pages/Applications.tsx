@@ -123,9 +123,9 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
     },
     {
       title: uiConfiguration?.UI_LABELS?.NAME || "Name",
-      dataIndex: "fullNameEn",
+      dataIndex: language==='EN'?"fullNameEn":'fullNameAr',
       render: (item) => (
-        <span className="capitalize">{capitalizeFirstLetter(item)}</span>
+        language==='EN'?<span className="capitalize">{capitalizeFirstLetter(item)}</span>:<span>{item}</span>
       ),
     },
     {
