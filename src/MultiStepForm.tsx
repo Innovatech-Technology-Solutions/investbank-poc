@@ -42,6 +42,9 @@ import BreadCrumbs from "./BreadCrumbs";
 import RecordVideo from "./RecordVideo";
 import SectionHeader from "./pages/SectionHeader";
 import Loader from "./Loader";
+import { useGetInterfaceByIDQuery } from "./services/hostApiServices";
+import useLanguage from "./hooks/useLanguage";
+
 const { Step } = Steps;
 const { Option } = Select;
 // const uiConfiguration={}
@@ -54,6 +57,10 @@ const { Option } = Select;
 const randID = crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
 
 const MultiStepForm = () => {
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
+
   const [currentStep, setCurrentStep] = useState(0);
   const [activeIndex, setActiveIndex] = useState(1);
   const [showComments, setShowComments] = useState(0);
@@ -925,12 +932,18 @@ const MultiStepForm = () => {
               {showComments == 0 ? (
                 <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
                   <img style={{ width: "30px" }} src={cm} />
-                  <span className="font-[500]">Reviewer Comments</span>
+                  <span className="font-[500]">
+                    {uiConfiguration?.UI_LABELS?.REVIEWER_COMMENTS ||
+                      "Reviewer Comments"}
+                  </span>
                 </div>
               ) : (
                 <div className="flex gap-2 items-center text-[#5b5b5b] justify-end">
                   <img style={{ width: "30px" }} src={hcm} />
-                  <span className="font-[500]">Hide Comments</span>
+                  <span className="font-[500]">
+                    {uiConfiguration?.UI_LABELS?.HIDE_COMMENTS ||
+                      "Hide Comments"}
+                  </span>
                 </div>
               )}
             </div>
@@ -969,7 +982,7 @@ const MultiStepForm = () => {
                   });
               }}
             >
-              Submit
+              {uiConfiguration?.UI_LABELS?.SUBMIT || "Submit"}
             </Button>
           )}
         </div>
@@ -984,7 +997,9 @@ const MultiStepForm = () => {
                 }}
                 stepperItems={[
                   {
-                    label: "Applicant Details",
+                    label:
+                      uiConfiguration?.UI_LABELS?.APPLICANT_DETAILS ||
+                      "Applicant Details",
                     path: "#",
                     stage: activeIndex !== 1 ? "upcoming" : "current",
                     stepperIndex: 1,
@@ -992,7 +1007,9 @@ const MultiStepForm = () => {
                     isLastItem: false,
                   },
                   {
-                    label: "Marital Status",
+                    label:
+                      uiConfiguration?.UI_LABELS?.MARTIAL_STATUS ||
+                      "Marital Status",
                     path: "#",
                     stage: activeIndex !== 2 ? "upcoming" : "current",
                     stepperIndex: 2,
@@ -1000,7 +1017,9 @@ const MultiStepForm = () => {
                     isLastItem: false,
                   },
                   {
-                    label: "Residence Address",
+                    label:
+                      uiConfiguration?.UI_LABELS?.RESIDENCE_ADDRESS ||
+                      "Residence Address",
                     path: "#",
                     stage: activeIndex !== 3 ? "upcoming" : "current",
                     stepperIndex: 3,
@@ -1008,7 +1027,10 @@ const MultiStepForm = () => {
                     isLastItem: false,
                   },
                   {
-                    label: "Employment and Financial Details",
+                    label:
+                      uiConfiguration?.UI_LABELS
+                        ?.EMPLOYEMENT_AND_FINANCIAL_DETAILS ||
+                      "Employment and Financial Details",
                     path: "#",
                     stage: activeIndex !== 4 ? "upcoming" : "current",
                     stepperIndex: 4,
@@ -1016,7 +1038,9 @@ const MultiStepForm = () => {
                     isLastItem: false,
                   },
                   {
-                    label: "Customer Information",
+                    label:
+                      uiConfiguration?.UI_LABELS?.CUSTOMER_INFORMATION ||
+                      "Customer Information",
                     path: "#",
                     stage: activeIndex !== 5 ? "upcoming" : "current",
                     stepperIndex: 5,
@@ -1024,7 +1048,9 @@ const MultiStepForm = () => {
                     isLastItem: false,
                   },
                   {
-                    label: "Account Information",
+                    label:
+                      uiConfiguration?.UI_LABELS?.ACCOUNT_INFORMATION ||
+                      "Account Information",
                     path: "#",
                     stage: activeIndex !== 6 ? "upcoming" : "current",
                     stepperIndex: 6,
