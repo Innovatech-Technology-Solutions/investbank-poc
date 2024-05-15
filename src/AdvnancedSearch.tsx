@@ -69,7 +69,8 @@ const AdvancedSearch: React.FC<{
         <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-between">
           <SectionHeader title="Advanced Search" />
-          <Button styleVariant="soft">
+          <Button               onClick={onClose}
+styleVariant="soft">
             <X size='16'/>
           </Button>
           </div>
@@ -156,7 +157,7 @@ const AdvancedSearch: React.FC<{
             >
               {uiConfiguration?.UI_LABELS?.CANCEL || "Cancel"}
             </Button>
-            ,
+            
             <Button sizeVariant="xs" key="search" onClick={handleSearch}>
               {uiConfiguration?.UI_LABELS?.SEARCH || "Search"}
             </Button>

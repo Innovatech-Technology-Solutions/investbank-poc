@@ -11,6 +11,7 @@ const onRequest = (
   config: InternalAxiosRequestConfig,
 ): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> => {
   console.log("ggggg")
+  console.log(config)
   const authToken = localStorage.getItem(TOKEN_KEY);
   const isTokenRequired = config?.headers?.['X-TOKEN-REQ'] === false ? false : true;
   config.headers.delete('X-TOKEN-REQ');
