@@ -5,8 +5,14 @@ import { isValidResponse } from "./utils/Commonutils";
 import Button from "./Button";
 import { Record, VideoCamera } from "@phosphor-icons/react";
 import emitMessage from "./services/emitMessage";
+import { useGetInterfaceByIDQuery } from "./services/hostApiServices";
+import useLanguage from "./hooks/useLanguage";
 
 const RecordVideo = ({ randID }: { randID: any }) => {
+  const { data: uiData } = useGetInterfaceByIDQuery("159");
+  const { language } = useLanguage();
+  const uiConfiguration = uiData?.[language || "EN"];
+
   // State variables to manage component behavior
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -102,14 +108,10 @@ const RecordVideo = ({ randID }: { randID: any }) => {
     if (modalClosed) {
       stopRecording();
       setRecordedChunks([]); // Clear recorded video chunks
-      if (videoRef.current)
-        videoRef.current.srcObject = null; // Clear video source
+      if (videoRef.current) videoRef.current.srcObject = null; // Clear video source
     }
   }, [modalClosed]);
 
-
-
-  
   // Function to send recorded video to the API
   const sendRecordingToAPI = async (recordedChunks: Blob[]) => {
     try {
@@ -162,11 +164,14 @@ const RecordVideo = ({ randID }: { randID: any }) => {
   return (
     <div>
       {/* Button to initiate recording */}
-      <Button className="bg-aegreen-500 hover:bg-aegreen-500" onClick={showModal}>
+      <Button
+        className="bg-aegreen-500 hover:bg-aegreen-500"
+        onClick={showModal}
+      >
         <VideoCamera size={32} color="#f52929" />
-        Start Recording
+        {uiConfiguration?.UI_LABELS?.START_RECORDING || "Start Recording"}
       </Button>
-      
+
       {/* Modal to display recording interface */}
       <Modal
         title="Record Video"
@@ -180,7 +185,7 @@ const RecordVideo = ({ randID }: { randID: any }) => {
                 <div>
                   <video src={playRecordedVideo()} autoPlay />
                 </div>
-                
+
                 {/* Button to upload recorded video */}
                 {!(recordedChunks.length === 0) && (
                   <Button
@@ -192,7 +197,8 @@ const RecordVideo = ({ randID }: { randID: any }) => {
                     }}
                     disabled={recordedChunks.length === 0}
                   >
-                    Upload Recording
+                    {uiConfiguration?.UI_LABELS?.UPLOAD_RECORDING ||
+                      "Upload Recording"}
                   </Button>
                 )}
               </div>
@@ -225,7 +231,7 @@ const RecordVideo = ({ randID }: { randID: any }) => {
             }}
           >
             <Record size={32} color="#f52929" />
-            Recording...
+            {uiConfiguration?.UI_LABELS?.RECORDING || "Recording..."}
           </p>
         )}
 
@@ -245,7 +251,7 @@ const RecordVideo = ({ randID }: { randID: any }) => {
               onClick={stopRecording}
               style={{ backgroundColor: "#f52929", color: "white" }}
             >
-              Stop Recording
+              {uiConfiguration?.UI_LABELS?.STOP_RECORDING || "Stop Recording"}
             </Button>
           </div>
         )}
@@ -255,4 +261,3 @@ const RecordVideo = ({ randID }: { randID: any }) => {
 };
 
 export default RecordVideo;
-
