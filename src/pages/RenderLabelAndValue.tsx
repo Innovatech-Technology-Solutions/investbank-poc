@@ -12,6 +12,7 @@ import { isValidApiResponse, isValidResponse } from "../utils/Commonutils";
 import emitMessage from "../services/emitMessage";
 import { isOperation } from "../commonuitils";
 import React from "react";
+import useLanguage from "../hooks/useLanguage";
 const RenderLabelAndValue = ({
   label,
   value,
@@ -36,6 +37,7 @@ const RenderLabelAndValue = ({
   const [field, setField] = useState("");
   const{requestIDSlug}=useParams()
 
+  const {language}=useLanguage()
   const{refetch}=useGetFieldCommentsQuery(requestIDSlug as any,{skip:[null,undefined,''].includes(requestIDSlug)})
 
 const[postFieldComment]=usePostFieldCommentMutation()
@@ -149,7 +151,7 @@ const[postFieldComment]=usePostFieldCommentMutation()
             </div>
           </Tooltip>
         ) : (
-          <div  dir={direction}
+          <div  
             className={` ${direction==='rtl'?'pr-6 ':''}font-medium font-size-responsive text-[#323438] font-roboto line-height-[16.41px] ${
               valueStyles ? valueStyles : "text-justify" 
             }`}
