@@ -101,6 +101,8 @@ const ShellLayout: React.FC = () => {
               <div className="header-navs-right">
                 <div className="flex gap-4 items-center">
                   <Badge
+                  showZero 
+
                     count={
                       data?.data?.output?.filter((i) => i.taskId?.length > 0)
                         ?.length
@@ -259,12 +261,12 @@ const ShellLayout: React.FC = () => {
           placement="right"
           onClose={() => setDrawerVisible(false)}
           open={
-            drawerVisible &&
-            data?.data?.output?.filter((i) => i.taskId?.length > 0)?.length > 0
+            drawerVisible
           }
           width={400}
         >
           <List
+          // locale={()=>data?.data?.output?.filter((i) => i.taskId?.length > 0).length>0?"d":""}
             dataSource={data?.data?.output?.filter((i) => i.taskId?.length > 0)}
             renderItem={(item: any) => (
               <List.Item
@@ -304,8 +306,8 @@ const ShellLayout: React.FC = () => {
             )}
           />
           {/* Show message if there are no notifications */}
-          {data?.data?.output?.filter((i) => i.taskId?.length > 0)?.length ===
-            0 && <p>No notifications</p>}
+          {/* {data?.data?.output?.filter((i) => i.taskId?.length > 0)?.length ===
+            0 && <p>No notifications</p>} */}
         </Drawer>
       </>
     </Layout>

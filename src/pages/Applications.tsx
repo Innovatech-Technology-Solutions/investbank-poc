@@ -16,7 +16,7 @@ import {
 } from "../services/hostApiServices";
 import { useGetInterfaceByIDQuery } from "../services/hostApiServices";
 import useLanguage from "../hooks/useLanguage";
-import { Empty, Tag } from "antd";
+import { Badge, Empty, Tag } from "antd";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
@@ -38,8 +38,10 @@ type ApplicationsProps = {
 const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
   const [params, setParams] = useState<any>(null);
   const [params1, setParams1] = useState<any>(null);
+  const [params2, setParams2] = useState<any>(null);
+
   const apiData = useGetMyApplicationsQuery(params as any);
-  const [downLoadRDl] = useDownloadRDLMutation();
+  const [downLoadRDl,downloadRes] = useDownloadRDLMutation();
   const navigate = useNavigate();
   const { data, isFetching, isLoading, isSuccess } = apiData;
   const { data: uiData } = useGetInterfaceByIDQuery("159");
@@ -225,6 +227,28 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
       {data?.data?.output?.length > 0 && isSuccess ? (
         <div className="flex flex-col gap-2 ">
           <div className="flex gap-2 justify-end items-center">
+            {params2 ? (
+              <div
+                onClick={() => {
+                  setParams("");
+                  setParams1("");
+                }}
+              >
+                <Tag
+                  onClick={() => {
+                    setParams("");
+                    setParams2("");
+                    setParams1("");
+                  }}
+                  color="cyan-inverse"
+                >
+                  <div className="flex gap-2 items-center justify-center">
+                    {uiConfiguration?.UI_LABELS?.CLEAR_SEARCH || "Clear Search"}{" "}
+                    <XCircle size={18} />
+                  </div>
+                </Tag>
+              </div>
+            ) : null}
             <SearchBar
               input={params1}
               onSearch={function (value: string): void {
@@ -234,6 +258,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
               onAdvancedSearch={function (val): void {
                 console.log(val);
                 setParams(`&${val}`);
+                setParams2(val);
               }}
             />
             {isSales() && !isMyapplications ? (
@@ -253,8 +278,8 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                   buttonSize="xs"
                   buttonText={
                     <span className="flex gap-2 items-center justify-center">
-                      {uiConfiguration?.UI_LABELS?.EXPORT || "Export"}
-                      <CaretDown size={18} />
+                      {downloadRes?.isLoading?uiConfiguration?.UI_LABELS?.EXPORTING || "Exporting..":uiConfiguration?.UI_LABELS?.EXPORT || "Export"}
+                      {downloadRes?.isLoading?<Loader/>:<CaretDown size={18} />}
                     </span>
                   }
                   items={[
@@ -337,6 +362,7 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                       onClick={() => {
                         setParams("");
                         setParams1("");
+                        setParams2("")
                       }}
                       sizeVariant="xs"
                     >

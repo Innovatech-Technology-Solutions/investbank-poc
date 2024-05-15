@@ -34,13 +34,13 @@ const SearchBar: React.FC<{
             sizeVariant={"sm"}
             placeholder={uiConfiguration?.UI_LABELS?.SEARCH || "Search..."}
             value={searchText}
-            suffxIcon={
-              !input ? (
-                <MagnifyingGlass onClick={() => onSearch(searchText)} />
-              ) : (
-                <XCircle onClick={() => onSearch("" as any)} size={16} />
-              )
-            }
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onSearch(searchText);
+                }
+              }} 
+
+            suffxIcon={!input?<MagnifyingGlass onClick={() => onSearch(searchText)} />: <XCircle onClick={() => onSearch('' as any)} size={16} />}
             onChange={(e) => handleBasicSearch(e.target.value)}
             isError={false}
             id={""}
