@@ -4,6 +4,7 @@ import SectionDetails from "./pages/SectionDetails";
 import Attachments from "./Attachments";
 import { useGetInterfaceByIDQuery } from "./services/hostApiServices";
 import useLanguage from "./hooks/useLanguage";
+import { Tag } from "antd";
 
 const Preview = ({ data }: any) => {
   const { data: uiData } = useGetInterfaceByIDQuery("159");
@@ -30,7 +31,7 @@ const Preview = ({ data }: any) => {
               "Full Name in Arabic",
             fieldKey: "fullNameAr",
             value: data?.fullNameAr,
-            direction: "rtl",
+            direction: language==='EN'?"rtl":'ltr'
           },
           {
             key:
@@ -57,7 +58,7 @@ const Preview = ({ data }: any) => {
           {
             key: uiConfiguration?.UI_LABELS?.SEX || "Sex",
             fieldKey: "sex",
-            value: data?.sex,
+            value: [null,undefined,''].includes(data?.sex)?'-': data?.sex==0?<Tag color="cyan">Female</Tag>:<Tag color="cyan">Male</Tag>
           },
           {
             key: uiConfiguration?.UI_LABELS?.DATE_OF_BIRTH || "Date of Birth",
@@ -87,13 +88,15 @@ const Preview = ({ data }: any) => {
               "National ID Expiry Date",
             fieldKey: "nationalIdExpiryDate",
             value: data?.nationalIdExpiryDate,
+            
           },
           {
             key:
               uiConfiguration?.UI_LABELS?.IS_BANK_BLACKLISTED ||
               "Is Bank Blacklisted?",
             fieldKey: "isBankBlacklisted",
-            value: data?.isBankBlacklisted,
+            value: [null,undefined,''].includes(data?.isBankBlacklisted)?'-': data?.isBankBlacklisted==0?<Tag color="cyan">No</Tag>:<Tag color="cyan">Yes</Tag>
+
           },
           {
             key: uiConfiguration?.UI_LABELS?.BIRTH_COUNTRY || "Birth Country",

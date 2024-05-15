@@ -234,19 +234,19 @@ const Applications = ({ isMyapplications = false }: ApplicationsProps) => {
                   setParams1("");
                 }}
               >
-                <Tag
-                  onClick={() => {
-                    setParams("");
-                    setParams2("");
-                    setParams1("");
-                  }}
-                  color="cyan-inverse"
-                >
-                  <div className="flex gap-2 items-center justify-center">
-                    {uiConfiguration?.UI_LABELS?.CLEAR_SEARCH || "Clear Search"}{" "}
-                    <XCircle size={18} />
-                  </div>
-                </Tag>
+              <Button
+                      styleVariant="secondary"
+                      onClick={() => {
+                        setParams("");
+                        setParams1("");
+                        setParams2("")
+                      }}
+                      sizeVariant="xs"
+                    >
+                      {uiConfiguration?.UI_LABELS?.CLEAR_SEARCH ||
+                        "Clear Search"}{" "}
+                      <XCircle size={32} />
+                    </Button>
               </div>
             ) : null}
             <SearchBar
